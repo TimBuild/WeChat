@@ -27,4 +27,15 @@ public class UserDaoImpl implements UserDao{
 		return false;
 	}
 
+	@Override
+	public boolean addUser(String userId, String username, String password,
+			String icon) {
+		return false;
+	}
+
+	@Override
+	public boolean checkIdUnique(String userId) {
+		return false;
+	}
+
 }

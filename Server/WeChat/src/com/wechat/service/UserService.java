@@ -12,9 +12,15 @@ public class UserService {
 	@GET
 	@Path("/login")
 	@Produces(value = MediaType.TEXT_PLAIN)
-	public String userLogin(@QueryParam("userId")String userId, @QueryParam("psw")String password) {
+	public String login(@QueryParam("userId")String userId, @QueryParam("psw")String password) {
 		String token = "";
 		return token;
 	}
-
+	
+	@GET
+	@Path("/register")
+	@Produces(value = MediaType.TEXT_PLAIN)
+	public String register(@QueryParam("")String username, @QueryParam("")String password){
+		return "false";
+	}
 }
