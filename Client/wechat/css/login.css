@@ -1,0 +1,40 @@
+#login{
+    margin-left: 10%;
+}
+
+#login span{
+    width: 25px;
+    height: 30px;
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.login-action{
+    width: 43%;
+    height: 40px;
+    margin-top: 20px;
+    font-size: 20px;
+    background:none;
+}
+
+#user-login{
+    border: 1px solid #B3C780;
+    color: #B3C780;
+}
+
+#register{
+    border: 1px solid #D87D62;
+    color: #D87D62;
+}
+
+#inputs{
+    margin-top: 20px;
+    width: 87%;
+}
+#inputs input{
+    height: 30px;
+}
+.user-info{
+    border-bottom: 1px solid #BEBCBD;
+    margin-top: 13px;
+}

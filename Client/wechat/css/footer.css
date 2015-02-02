@@ -1,0 +1,28 @@
+.footer{
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+#chat,#contact{
+    float: left;
+    width: 33%;
+}
+
+.header{
+    position: fixed;
+    width: 100%;
+    padding-top: 10px;
+    background: black;
+    color: white;
+}
+
+.appName{
+    float: left;
+    margin-left: 10px;
+}
+#addContact{
+    float: right;
+    margin-right: 10px;
+}

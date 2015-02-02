@@ -1,0 +1,19 @@
+@font-face{
+    font-family: "weChat-icon";
+    src: url("../fonts/icomoon.eot"); /* IE9 兼容模式 */
+    src: url("../fonts/icomoon.eot?#iefix") format("embedded-opentype")
+    ,url("../fonts/icomoon.woff") format("woff")
+    ,url("../fonts/icomoon.ttf") format("truetype")
+    ,url("../fonts/icomoon.svg") format("svg");
+    font-weight: normal;
+    font-style: normal;
+}
+
+.weChat-icon{
+    font-family: "weChat-icon";
+    font-style: normal;
+    font-weight: normal;
+    font-size: 27px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
