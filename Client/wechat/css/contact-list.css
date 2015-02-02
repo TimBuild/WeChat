@@ -1,0 +1,40 @@
+#contacts-div {
+    background:#EBEBEB;
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+}
+#contact-list-wrapper {
+    position:absolute;
+    top:20px;
+    bottom:0px;
+    width:100%;
+    overflow:hidden;
+}
+
+ul.contact-list {
+    padding:0px;
+    margin:0px 20px 0px 20px;
+    list-style-type:none;
+    background:white;
+}
+.contact-list li {
+    padding-left:15px;
+    height:55px;
+    line-height:55px;
+}
+
+.contact-list li img{
+    width:40px;
+    height:40px;
+    margin-right:10px;
+}
+.contact-list li span {
+    font-size:medium;
+}
+
+
+
+
