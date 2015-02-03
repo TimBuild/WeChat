@@ -13,7 +13,12 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import com.wechat.dao.impl.UserDaoImpl;
+import com.wechat.entity.User;
+import com.wechat.tool.ApiHttpClient;
+import com.wechat.tool.ReadProperties;
+import com.wechat.tool.SdkHttpResult;
 import com.wechat.tool.SystemUtil;
+import com.wechat.util.FormatType;
 
 @Path("/UserService")
 public class UserService {
@@ -22,15 +27,35 @@ public class UserService {
 	
 	@GET
 	@Path("/login")
+	@Consumes(value = MediaType.TEXT_PLAIN)
 	@Produces(value = MediaType.TEXT_PLAIN)
 	public String login(@QueryParam("userId") String userId,
 			@QueryParam("psw") String password) {
+		
 		String token = "";
+		User user = userDaoImpl.getUser(userId, password);
+		if(user != null){
+			SdkHttpResult result = null;
+			try {
+				result = ApiHttpClient.getToken(
+						ReadProperties.read("configure", "appkey"), 
+						ReadProperties.read("configure", "appsecret"),
+						user.getUserId(),
+						user.getUsername(),
+						"http://aa.com/a.png", 
+						FormatType.json);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			System.out.println("gettoken=" + result);
+			
+		}
 		return token;
 	}
 
 	@GET
 	@Path("/register")
+	@Consumes(value = MediaType.TEXT_PLAIN)
 	@Produces(value = MediaType.TEXT_PLAIN)
 	public String register(@QueryParam("username") String username,
 			@QueryParam("psw") String password) {
