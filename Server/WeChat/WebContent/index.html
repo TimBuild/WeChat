@@ -1,18 +1,63 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Testing websockets</title>
+<meta charset="utf-8">
+<title>index</title>
+<script type="text/javascript" src="scripts/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="scripts/ajaxfileupload.js"></script>
 </head>
 <body>
-	<form action="UploadImageServlet" method="post"
-		enctype="multipart/form-data" onsubmit="return uploadFile();">
-		<div>
-			<input type="text" value="30482656" name="userId" id="userId"/>
-		</div>
-		<div>
-			<input type="file" name="icon" id="icon"/>
-		</div>
+	<div>
+		<input type="file" name="icon" id="icon" />
+	</div>
+	<div>
+		<input type="button" value="Submit" id="submit" />
+	</div>
+	<script type="text/javascript">
+		$("#submit").click(function(){
+			//alert("ok");
+			uploadImage();
+		});
 		
-	</form>
+		function uploadImage(){
+			var imgPath = $("#icon").val();
+			if(imgPath == ""){
+				alert("请选择上传图片！");
+				return;
+			}
+			
+			var strExtension = imgPath.substr(imgPath.lastIndexOf('.') + 1);
+			if (strExtension != 'jpg' && strExtension != 'gif' && strExtension !='png' && strExtension != 'bmp'){
+				alert("请选择图片文件");
+				return;
+			}
+			
+			$.ajaxFileUpload({
+				url: "http://192.168.1.78:8080/WeChat/rest/UserService/uploadIcon/11",
+				secureuri: false,
+				fileElementId: 'icon',
+				success: function(data){
+					alert("上传成功");
+				},
+				error:function(data){
+					alert("上传失败");
+				}
+			});
+			
+			/*$.ajax({
+				type: "POST",
+				url: "http://192.168.1.78:8080/WeChat/rest/uploadIcon/12345678",
+				data: { imgPath: $("#icon").val()},
+				crossDomain:true,
+				cache: false,
+				success: function(data){
+					alert("上传成功");
+				},
+				error: function(data){
+					alert("上传失败");
+				}
+			});*/
+		}
+	</script>
 </body>
 </html>
