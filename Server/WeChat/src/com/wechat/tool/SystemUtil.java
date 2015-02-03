@@ -2,6 +2,8 @@ package com.wechat.tool;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,12 +31,15 @@ public class SystemUtil {
 				String savePath = request.getSession().getServletContext()
 						.getRealPath("/")
 						+ "upload/";
+				
 				// 文件上传缓冲区
 				String tempPath = request.getSession().getServletContext()
 						.getRealPath("/")
 						+ "upload/temp/";
 				File saveFile = new File(savePath);
 				File tempFile = new File(tempPath);
+				System.out.println(savePath);
+				System.out.println(tempPath);
 				// 不存在以上路径则创建
 				// isDirectory()是一个目录吗？
 				if (!saveFile.isDirectory())
@@ -59,9 +64,7 @@ public class SystemUtil {
 					if (!item.isFormField()) {
 						// 上传项目
 						String fileName = item.getName();
-						String fix = fileName.substring(
-								fileName.lastIndexOf(".") + 1,
-								fileName.length());
+						String fix = fileName.substring(fileName.lastIndexOf(".") + 1);
 						fileName = userId + "." + fix;
 						saveFileName = "/upload/" + fileName;
 						// 构建文件对象的路径
@@ -79,5 +82,16 @@ public class SystemUtil {
 			e.printStackTrace();
 		}
 		return path;
+	}
+	
+	public static String changePath(String path){
+		String changePath = null;
+		try {
+			String ip = InetAddress.getLocalHost().getHostAddress().toString();
+			changePath = "http://" + ip + ":8080/" + path.substring(path.lastIndexOf("WeChat"));
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+		return changePath;
 	}
 }
