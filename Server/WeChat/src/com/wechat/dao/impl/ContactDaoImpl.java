@@ -41,6 +41,7 @@ public class ContactDaoImpl implements ContactDao {
 					userContact = queryRunner.query(conn,
 							ReadProperties.read("sql", "getUserByContactId"),
 							new BeanHandler<>(User.class), contactId);
+					userContact.setPassword(null);
 					user.add(userContact);
 				}
 				if (user.size() != 0) {
