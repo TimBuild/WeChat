@@ -1,7 +1,5 @@
 package com.wechat.dao;
 
-import java.sql.SQLException;
-
 import com.wechat.entity.User;
 
 public interface UserDao {
