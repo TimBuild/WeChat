@@ -11,33 +11,43 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import com.wechat.dao.impl.UserDaoImpl;
+import com.wechat.tool.SystemUtil;
+
 @Path("/UserService")
 public class UserService {
+
+	private UserDaoImpl userDaoImpl = new UserDaoImpl();
 	
 	@GET
 	@Path("/login")
 	@Produces(value = MediaType.TEXT_PLAIN)
-	public String login(@QueryParam("userId")String userId, @QueryParam("psw")String password) {
+	public String login(@QueryParam("userId") String userId,
+			@QueryParam("psw") String password) {
 		String token = "";
 		return token;
 	}
-	
+
 	@GET
 	@Path("/register")
 	@Produces(value = MediaType.TEXT_PLAIN)
-	public String register(@QueryParam("")String username, @QueryParam("")String password){
+	public String register(@QueryParam("username") String username,
+			@QueryParam("psw") String password) {
 		return "false";
 	}
-	
+
 	@POST
-	@Path("/upload")
-	@Consumes({ MediaType.MULTIPART_FORM_DATA, MediaType.APPLICATION_JSON })
+	@Path("/uploadIcon")
+	@Consumes({ MediaType.MULTIPART_FORM_DATA })
 	@Produces(value = MediaType.TEXT_PLAIN)
-	public String uploadHeadImg(@QueryParam("userId")String userId, 
-			@Context HttpServletRequest request, 
-			@Context HttpServletResponse response){
-		response.setContentType("text/html;charset=UTF-8");
-		return "";
+	public String uploadIcon(@QueryParam("userId") String userId,
+			@Context HttpServletRequest request,
+			@Context HttpServletResponse response) {
+		String path = SystemUtil.uploadIcon(userId, request);
+		if(path != null){
+			
+		}
+		return null;
 	}
 
 }
