@@ -6,6 +6,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
@@ -37,17 +38,22 @@ public class UserService {
 	}
 
 	@POST
-	@Path("/uploadIcon")
+	@Path("/uploadIcon/{userId}")
 	@Consumes({ MediaType.MULTIPART_FORM_DATA })
 	@Produces(value = MediaType.TEXT_PLAIN)
-	public String uploadIcon(@QueryParam("userId") String userId,
-			@Context HttpServletRequest request,
-			@Context HttpServletResponse response) {
+	public String uploadIcon(@PathParam("userId") String userId, @Context HttpServletRequest request, @Context HttpServletResponse response) {
+		
 		String path = SystemUtil.uploadIcon(userId, request);
+		String changePath = SystemUtil.changePath(path);
 		if(path != null){
-			
+			if(userDaoImpl.modifyUserIcon(userId, changePath)){
+				return "true";
+			} else {
+				return "false";
+			}
+		} else {
+			return "false";
 		}
-		return null;
 	}
 
 }
