@@ -1,0 +1,100 @@
+#chatting-div {
+    background:#EBEBEB;
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+}
+#chatting-wrapper {
+    position:absolute;
+    top:20px;
+    bottom:0px;
+    width:100%;
+    overflow:hidden;
+}
+
+.xiaoxiti {
+    position: relative;
+    overflow: hidden;
+    width:auto;
+    margin-top: 18px;
+}
+.xiaoxiti.msg-right {
+    text-align: right;
+    float: right;
+    padding-right: 10px;
+}
+
+.msg-right .user-img {
+    float:right;
+}
+.user-img img {
+    width: 44px;
+    height: 44px;
+    border: 1px solid #fff;
+    box-shadow: 0px 1px 0px #d7d7d7;
+}
+.msg-right .msg {
+    margin-right: 50px;
+    padding-left: 30px;
+    text-align: right;
+}
+
+.msg-right .msg div {
+    float: right;
+}
+.msg-body {
+    border-radius: 5px;
+    min-height: 20px;
+    box-shadow: 0px 1px 0px #cdcdcd;
+    text-align: left;
+    background-color: #30b5ee;
+    max-width: 300px;
+    padding: 12px 10px 12px 19px;
+    line-height: 22px;
+    border: 1px solid #a1d6fa;
+    
+}
+.msg-right .msg .msg-body {
+    margin-right: 4px;
+    float: none;
+}
+
+.msg-arrow img {
+    width: 6px;
+}
+
+.xiaoxiti.msg-left {
+    text-align: left;
+    float: left;
+    padding-left: 10px;
+}
+.msg-left .msg div {
+    float:left;
+}
+.msg-left .user-img {
+    float:left;
+}
+.msg-left .msg {
+    margin-left: 50px;
+    padding-right: 30px;
+    text-align: left;
+}
+.msg-left .msg .msg-body {
+    margin-left: 4px;
+    float: none;
+}
+.msg-left .msg-arrow img {
+    -moz-transform:scale(-1,1) !important;
+    -webkit-transform:scale(-1,1) !important;
+    -o-transform:scale(-1,1)!important;
+    transform:scale(-1,1)!important;
+}
+.msg-time {
+    clear:both;
+    color:gray;
+    font-size:2px;
+    text-align:center;
+    padding-top:10px;
+}

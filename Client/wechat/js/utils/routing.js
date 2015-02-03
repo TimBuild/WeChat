@@ -23,6 +23,10 @@ weChatApp.config(function ($stateProvider, $urlRouterProvider) {
     }).state('user-detail', {
         url: '/user-detail',
         templateUrl: 'pages/routePages/user-detail.html'
+    }).state('chatting', {
+        url: '/chatting',
+        templateUrl: 'pages/routePages/chatting.html',
+        controller: 'chatting-ctrl'
     });
 
     $urlRouterProvider.otherwise("/login");
