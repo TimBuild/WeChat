@@ -12,7 +12,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import com.wechat.dao.impl.ContactDaoImpl;
 import com.wechat.dao.impl.UserDaoImpl;
+import com.wechat.entity.Contact;
 import com.wechat.entity.User;
 import com.wechat.tool.ApiHttpClient;
 import com.wechat.tool.ReadProperties;
@@ -24,10 +26,10 @@ import com.wechat.util.FormatType;
 public class UserService {
 
 	private UserDaoImpl userDaoImpl = new UserDaoImpl();
+	private ContactDaoImpl contactDaoImpl = new ContactDaoImpl();
 	
 	@GET
 	@Path("/login")
-	@Consumes(value = MediaType.TEXT_PLAIN)
 	@Produces(value = MediaType.TEXT_PLAIN)
 	public String login(@QueryParam("userId") String userId,
 			@QueryParam("psw") String password) {
@@ -55,11 +57,19 @@ public class UserService {
 
 	@GET
 	@Path("/register")
-	@Consumes(value = MediaType.TEXT_PLAIN)
 	@Produces(value = MediaType.TEXT_PLAIN)
 	public String register(@QueryParam("username") String username,
 			@QueryParam("psw") String password) {
-		return "false";
+		String userId = "";
+		do{
+			userId = String.valueOf(SystemUtil.generateUserId());
+		} while (userDaoImpl.checkIdUnique(userId));
+		
+		if(userDaoImpl.addUser(userId, username, password)){
+			return userId;
+		} else {
+			return "";	
+		}
 	}
 
 	@POST
@@ -78,6 +88,31 @@ public class UserService {
 			}
 		} else {
 			return "false";
+		}
+	}
+	
+	@GET
+	@Path("/getContacts")
+	@Produces(value = MediaType.APPLICATION_JSON)
+	public String getContacts(@QueryParam("userId") String userId){
+		contactDaoImpl.getContacts(userId);
+		return null;
+	}
+	
+	@GET
+	@Path("/addContact")
+	@Produces(value = MediaType.TEXT_PLAIN)
+	public String addContact(@QueryParam("userId") String userId,
+			@QueryParam("contactId") String contactId){
+		if(!userDaoImpl.checkIdUnique(contactId)){
+			return "no-user";
+		} else {
+			Contact contact = contactDaoImpl.getContact(userId, contactId);
+			if(contact != null){
+				return "exist-contact";
+			} else{
+				return "true";
+			}
 		}
 	}
 

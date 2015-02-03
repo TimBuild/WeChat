@@ -11,7 +11,7 @@ public class TestUserDao {
 	public void test() {
 		System.out.println("ok");
 		UserDaoImpl userDaoImpl = new UserDaoImpl();
-		Boolean addUserFlag = userDaoImpl.addUser("11", "Tim1", "1234561", "cc1");
+		Boolean addUserFlag = userDaoImpl.addUser("11", "Tim1", "1234561");
 //		Boolean checkIdUniqueFlag = userDaoImpl.checkIdUnique("12");
 //		User getUserUser = userDaoImpl.getUser("11", "123456");
 		Boolean modifyUserIconFlag = userDaoImpl.modifyUserIcon("14", "");
