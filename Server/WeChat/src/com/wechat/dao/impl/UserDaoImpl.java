@@ -50,15 +50,14 @@ public class UserDaoImpl implements UserDao {
 	 * java.lang.String, java.lang.String)
 	 */
 	@Override
-	public boolean addUser(String userId, String username, String password,
-			String icon) {
+	public boolean addUser(String userId, String username, String password) {
 		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
 		try {
 			conn.setAutoCommit(false);
 			int ret = -1;
 			ret = queryRunner.update(conn,
 					ReadProperties.read("sql", "addUser"), userId, username,
-					password, icon);
+					password);
 			if (ret > 0) {
 				conn.commit();
 				return true;
@@ -87,11 +86,6 @@ public class UserDaoImpl implements UserDao {
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc) OK
-	 * 
-	 * @see com.wechat.dao.UserDao#checkIdUnique(java.lang.String)
-	 */
 	@Override
 	public boolean checkIdUnique(String userId) {
 
