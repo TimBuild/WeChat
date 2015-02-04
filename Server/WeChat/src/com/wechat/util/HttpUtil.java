@@ -1,4 +1,4 @@
-﻿package com.wechat.util;
+package com.wechat.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
