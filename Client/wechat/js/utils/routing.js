@@ -5,34 +5,34 @@ weChatApp.config(function ($stateProvider, $urlRouterProvider) {
 	 */
     $stateProvider.state('login', {
         url: '/login',
-        templateUrl: 'pages/routePages/login.html',
+        templateUrl: 'pages/routepages/login.html',
         controller:'login-ctrl'
     }).state('register', {
         url: '/register',
-        templateUrl: 'pages/routePages/register.html',
+        templateUrl: 'pages/routepages/register.html',
         controller:'register-ctrl'
     }).state('main', {
         url: '/main',
-        templateUrl: 'pages/routePages/main.html',
+        templateUrl: 'pages/routepages/main.html',
         controller:'main-ctrl'
     }).state('main.chat-list', {
         url: '/chat-list',
-        templateUrl: 'pages/routePages/chat-list.html',
+        templateUrl: 'pages/routepages/chat-list.html',
         controller: 'chat-list-ctrl'
     }).state('main.contact-list', {
         url: '/contact-list',
-        templateUrl: 'pages/routePages/contact-list.html',
+        templateUrl: 'pages/routepages/contact-list.html',
         controller: 'contact-list-ctrl'
     }).state('user-detail', {
         url: '/user-detail',
-        templateUrl: 'pages/routePages/user-detail.html'
+        templateUrl: 'pages/routepages/user-detail.html'
     }).state('chatting', {
         url: '/chatting/:userId/:userName/:icon',
-        templateUrl: 'pages/routePages/chatting.html',
+        templateUrl: 'pages/routepages/chatting.html',
         controller: 'chatting-ctrl'
     }).state('add-contact', {
             url: '/add-contact',
-            templateUrl: 'pages/routePages/add-contact.html',
+            templateUrl: 'pages/routepages/add-contact.html',
     });
 
     $urlRouterProvider.otherwise("/login");
