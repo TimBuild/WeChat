@@ -13,7 +13,7 @@ public interface UserDao {
 	public boolean checkIdUnique(String userId);
 
 	/**
-	 * 通过id和密码检查用户
+	 * check user by userid and password
 	 * 
 	 * @param userId
 	 * @param password
@@ -31,7 +31,7 @@ public interface UserDao {
 
 	/**
 	 * no password
-	 * 
+	 * no token
 	 * @param username
 	 * @return
 	 */
@@ -42,30 +42,42 @@ public interface UserDao {
 	 * @param userId
 	 * @param username
 	 * @param password
+	 * @param token
 	 * @return
 	 */
-	public boolean addUser(String userId, String username, String password);
+	public boolean addUser(String userId, String username, String password, String token);
 
 	/**
+	 * modify icon
 	 * 
 	 * @param userId
 	 * @param icon
 	 * @return
 	 */
 	public boolean modifyUserIcon(String userId, String icon);
-	
+
 	/**
-	 * 修改用户名
+	 * modify username
+	 * 
 	 * @param userId
 	 * @param username
 	 * @param password
 	 * @return
 	 */
 	public boolean modifyUserName(String userId, String username);
+
 	/**
+	 * modify password
+	 * 
 	 * @param userId
 	 * @param password
 	 * @return
 	 */
-	public boolean modifyUserPsw(String userId,  String password);
+	public boolean modifyUserPsw(String userId, String password);
+	/**
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	public boolean getToken(String userId);
 }

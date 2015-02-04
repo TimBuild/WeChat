@@ -3,7 +3,6 @@
 import java.net.HttpURLConnection;
 import java.net.URLEncoder;
 
-import com.wechat.util.FormatType;
 import com.wechat.util.HttpUtil;
 
 public class ApiHttpClient {

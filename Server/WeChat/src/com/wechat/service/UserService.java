@@ -33,33 +33,24 @@ public class UserService {
 	private UserDao userDao = new UserDaoImpl();
 	private ContactDao contactDao = new ContactDaoImpl();
 	
+	/**
+	 * user login
+	 * @param userId
+	 * @param password
+	 * @return
+	 */
 	@GET
 	@Path("/login")
 	@Produces(value = MediaType.TEXT_PLAIN)
 	public String login(@QueryParam("userId") String userId,
 			@QueryParam("psw") String password) {
 		
-		String token = "";
 		User user = userDao.checkUser(userId, password);
 		if(user != null){
-			try {
-				token = ApiHttpClient.getToken(
-						ReadProperties.read("configure", "appkey"), 
-						ReadProperties.read("configure", "appsecret"),
-						user.getUserId(),
-						user.getUsername(),
-						"null",
-						"json");	//数据类型 json, xml
-				JSONObject jsonObject = new JSONObject(token);
-				token = (String) jsonObject.get("token");
-				UserPool.addToken(userId, token);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			System.out.println(token);
-			
+			return user.getToken();
+		} else {
+			return null;
 		}
-		return token;
 	}
 	
 	/**
@@ -79,11 +70,19 @@ public class UserService {
 			userId = String.valueOf(SystemUtil.generateUserId());
 		} while (userDao.checkIdUnique(userId));
 		
-		if(userDao.addUser(userId, username, password)){
-			return userId;
-		} else {
-			return "";
+		try {
+			String token = ApiHttpClient.getToken(
+							ReadProperties.read("configure", "appkey"), 
+							ReadProperties.read("configure", "appsecret"),
+							userId, username, "null", "json");
+			
+			JSONObject jsonObject = new JSONObject(token);
+			token = (String) jsonObject.get("token");
+			userDao.addUser(userId, username, password, token);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		return userId;
 	}
 
 	/**
@@ -215,5 +214,42 @@ public class UserService {
 		} else {
 			return null;
 		}
+	}
+	
+	/**
+	 * modify username or password
+	 * @param token
+	 * @param userId
+	 * @param username
+	 * @param password
+	 * @return
+	 */
+	@GET
+	@Path("/modifyUserNameOrPsw/{token}")
+	@Produces({ MediaType.TEXT_PLAIN })
+	public String modifyUserNameOrPsw(
+			@PathParam("token") String token, 
+			@QueryParam("userId") String userId, 
+			@QueryParam("username") String username,
+			@QueryParam("psw") String password
+			){
+		if(UserPool.isTokenExist(token)){
+			if(password == null || "".equals(password)){
+				if(userDao.modifyUserName(userId, username)){
+					return "true";
+				} else {
+					return "false";
+				}
+			} else {
+				if(userDao.modifyUserPsw(userId, password)){
+					return "true";
+				} else {
+					return "false";
+				}
+			}
+		} else {
+			return "false";
+		}
+		
 	}
 }
