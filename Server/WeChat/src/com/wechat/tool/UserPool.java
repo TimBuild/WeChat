@@ -11,6 +11,9 @@ public class UserPool {
 	}
 	
 	public static void addToken(String id, String token){
+		if(tokens.containsKey(id)){
+			tokens.remove(id);
+		}
 		tokens.put(id, token);
 	}
 	

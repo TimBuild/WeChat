@@ -19,11 +19,6 @@ public class ContactDaoImpl implements ContactDao {
 
 	private QueryRunner queryRunner = new QueryRunner();
 
-	/*
-	 * (non-Javadoc) 通过ownerId 找到对应之下所有的contactId的用户信息 如果没有联系人的话会返回null
-	 * 
-	 * @see com.wechat.dao.ContactDao#getContacts(java.lang.String)
-	 */
 	@Override
 	public List<User> getContacts(String ownerId) {
 		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
@@ -64,9 +59,6 @@ public class ContactDaoImpl implements ContactDao {
 		return null;
 	}
 
-	/* (non-Javadoc) 通过owenerId 和contactId来增加一条联系人的记录
-	 * @see com.wechat.dao.ContactDao#addContact(java.lang.String, java.lang.String)
-	 */
 	@Override
 	public boolean addContact(String ownerId, String contactId) {
 		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
@@ -105,9 +97,6 @@ public class ContactDaoImpl implements ContactDao {
 		return false;
 	}
 
-	/* (non-Javadoc)通过owenerId 和contactId来删除一条联系人的记录
-	 * @see com.wechat.dao.ContactDao#deleteContact(java.lang.String, java.lang.String)
-	 */
 	@Override
 	public boolean deleteContact(String ownerId, String contactId) {
 		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
@@ -147,17 +136,14 @@ public class ContactDaoImpl implements ContactDao {
 		return false;
 	}
 
-	/* (non-Javadoc)通过owenerId 和contactId来查找是否存在联系人的记录 ，为增加联系人记录之前判断
-	 * @see com.wechat.dao.ContactDao#getContact(java.lang.String, java.lang.String)
-	 */
 	@Override
 	public Contact getContact(String ownerId, String contactId) {
 		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
 		Contact contact = null;
 		try {
-			contact = queryRunner.query(conn, ReadProperties
-					.read("sql", "getContactByOwnerContactId"), new BeanHandler<>(Contact.class),
-					ownerId, contactId);
+			contact = queryRunner.query(conn,
+					ReadProperties.read("sql", "getContactByOwnerContactId"),
+					new BeanHandler<>(Contact.class), ownerId, contactId);
 
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -14,6 +14,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import org.codehaus.jettison.json.JSONObject;
+
 import com.wechat.dao.ContactDao;
 import com.wechat.dao.UserDao;
 import com.wechat.dao.impl.ContactDaoImpl;
@@ -22,10 +24,8 @@ import com.wechat.entity.Contact;
 import com.wechat.entity.User;
 import com.wechat.tool.ApiHttpClient;
 import com.wechat.tool.ReadProperties;
-import com.wechat.tool.SdkHttpResult;
 import com.wechat.tool.SystemUtil;
 import com.wechat.tool.UserPool;
-import com.wechat.util.FormatType;
 
 @Path("/UserService")
 public class UserService {
@@ -42,24 +42,32 @@ public class UserService {
 		String token = "";
 		User user = userDao.checkUser(userId, password);
 		if(user != null){
-			SdkHttpResult result = null;
 			try {
-				result = ApiHttpClient.getToken(
+				token = ApiHttpClient.getToken(
 						ReadProperties.read("configure", "appkey"), 
 						ReadProperties.read("configure", "appsecret"),
 						user.getUserId(),
 						user.getUsername(),
 						"null",
-						FormatType.json);
+						"json");	//数据类型 json, xml
+				JSONObject jsonObject = new JSONObject(token);
+				token = (String) jsonObject.get("token");
+				UserPool.addToken(userId, token);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			System.out.println("gettoken=" + result);
+			System.out.println(token);
 			
 		}
 		return token;
 	}
-
+	
+	/**
+	 * user register
+	 * @param username
+	 * @param password
+	 * @return
+	 */
 	@GET
 	@Path("/register")
 	@Produces(value = MediaType.TEXT_PLAIN)
@@ -78,6 +86,14 @@ public class UserService {
 		}
 	}
 
+	/**
+	 * upload user header
+	 * @param token
+	 * @param userId
+	 * @param request
+	 * @param response
+	 * @return
+	 */
 	@POST
 	@Path("/uploadIcon/{token}/{userId}")
 	@Consumes({ MediaType.MULTIPART_FORM_DATA })
@@ -106,7 +122,7 @@ public class UserService {
 	}
 	
 	/**
-	 * 通过 userId 得到该用户的所有联系人
+	 * get contacts by userId
 	 * @param token
 	 * @param userId
 	 * @return
@@ -126,7 +142,7 @@ public class UserService {
 	}
 	
 	/**
-	 * 通过 userId 添加联系人
+	 * add user by userId
 	 * @param token
 	 * @param userId
 	 * @param contactId
@@ -162,7 +178,7 @@ public class UserService {
 	}
 	
 	/**
-	 * 通过 userId 查询
+	 * query user by userId
 	 * @param token
 	 * @param userId
 	 * @return 
@@ -182,7 +198,7 @@ public class UserService {
 	}
 	
 	/**
-	 * 通过 username 模糊查询
+	 * query user by username
 	 * @param token
 	 * @param username
 	 * @return 
