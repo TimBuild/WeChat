@@ -1,0 +1,17 @@
+#commit{
+    border: 1px solid #B3C780;
+    color: #B3C780;
+}
+#reset{
+    border: 1px solid #D87D62;
+    color: #D87D62;
+}
+
+#register-form{
+    margin-left: 10%;
+}
+
+#reg-inputs{
+    margin-top: 20px;
+    width: 87%;
+}
