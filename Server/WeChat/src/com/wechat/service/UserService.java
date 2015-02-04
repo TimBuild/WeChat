@@ -102,7 +102,9 @@ public class UserService {
 			@Context HttpServletRequest request, 
 			@Context HttpServletResponse response) {
 		
-		if(token.equals(userDao.getToken(userid))){
+		if( (SystemUtil.changeToken(token)).equals(userDao.getToken(userid)) ){
+			System.out.println("ok");
+			
 			String path = SystemUtil.uploadIcon(userid, request);
 			String changePath = SystemUtil.changePath(path, request);
 			if(path != null){
@@ -131,7 +133,7 @@ public class UserService {
 	public List<User> getContacts(
 			@PathParam("token") String token,
 			@PathParam("userid") String userid){
-		if(token.equals(userDao.getToken(userid))){
+		if((SystemUtil.changeToken(token)).equals(userDao.getToken(userid))){
 			List<User> list = contactDao.getContacts(userid);
 			return list;
 		} else {
@@ -153,7 +155,7 @@ public class UserService {
 			@PathParam("token") String token,
 			@PathParam("userid") String userid,
 			@QueryParam("contactId") String contactId){
-		if(token.equals(userDao.getToken(userid))){
+		if( (SystemUtil.changeToken(token)).equals(userDao.getToken(userid))){
 			if(!userDao.checkIdUnique(contactId)){
 				return "no-user";
 			} else {
@@ -186,7 +188,7 @@ public class UserService {
 			@PathParam("token") String token,
 			@PathParam("userid") String userid,
 			@QueryParam("id") String id){
-		if(token.equals(userDao.getToken(userid))){
+		if( (SystemUtil.changeToken(token)).equals(userDao.getToken(userid))){
 			User user = userDao.getUserById(userid);
 			return user;
 		} else {
@@ -207,7 +209,7 @@ public class UserService {
 			@PathParam("token") String token,
 			@PathParam("userid") String userid,
 			@QueryParam("username") String username){
-		if(token.equals(userDao.getToken(userid))){
+		if( (SystemUtil.changeToken(token)).equals(userDao.getToken(userid))){
 			List<User> list = userDao.getUsersByName(username);
 			return list;
 		} else {
@@ -232,7 +234,7 @@ public class UserService {
 			@QueryParam("username") String username,
 			@QueryParam("psw") String password
 			){
-		if(token.equals(userDao.getToken(userid))){
+		if( (SystemUtil.changeToken(token)).equals(userDao.getToken(userid))){
 			if(password == null || "".equals(password)){
 				if(userDao.modifyUserName(userid, username)){
 					return "true";

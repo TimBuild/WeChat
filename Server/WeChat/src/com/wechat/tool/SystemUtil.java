@@ -73,4 +73,8 @@ public class SystemUtil {
 		String port = String.valueOf(request.getLocalPort());
 		return "http://" + ip + ":" + port + "/" + path.substring(path.lastIndexOf("WeChat"));
 	}
+	
+	public static String changeToken(String token){
+		return token.replace("__", "/");
+	}
 }
