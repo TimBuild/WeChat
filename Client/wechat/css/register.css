@@ -8,7 +8,10 @@
 }
 
 #register-form{
-    margin-left: 10%;
+    margin-left: 6%;
+    position: fixed;
+    margin-top: 45px;
+    width: 100%;
 }
 
 #reg-inputs{

@@ -5,10 +5,12 @@ weChatApp.config(function ($stateProvider, $urlRouterProvider) {
 	 */
     $stateProvider.state('login', {
         url: '/login',
-        templateUrl: 'pages/routePages/login.html'
+        templateUrl: 'pages/routePages/login.html',
+        controller:'login-ctrl'
     }).state('register', {
         url: '/register',
-        templateUrl: 'pages/routePages/register.html'
+        templateUrl: 'pages/routePages/register.html',
+        controller:'register-ctrl'
     }).state('main', {
         url: '/main',
         templateUrl: 'pages/routePages/main.html',
@@ -28,6 +30,9 @@ weChatApp.config(function ($stateProvider, $urlRouterProvider) {
         url: '/chatting/:userId/:userName/:icon',
         templateUrl: 'pages/routePages/chatting.html',
         controller: 'chatting-ctrl'
+    }).state('add-contact', {
+            url: '/add-contact',
+            templateUrl: 'pages/routePages/add-contact.html',
     });
 
     $urlRouterProvider.otherwise("/login");

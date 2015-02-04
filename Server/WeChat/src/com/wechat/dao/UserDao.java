@@ -31,7 +31,7 @@ public interface UserDao {
 
 	/**
 	 * no password
-	 * 
+	 * no token
 	 * @param username
 	 * @return
 	 */
@@ -42,9 +42,10 @@ public interface UserDao {
 	 * @param userId
 	 * @param username
 	 * @param password
+	 * @param token
 	 * @return
 	 */
-	public boolean addUser(String userId, String username, String password);
+	public boolean addUser(String userId, String username, String password, String token);
 
 	/**
 	 * modify icon
@@ -73,4 +74,10 @@ public interface UserDao {
 	 * @return
 	 */
 	public boolean modifyUserPsw(String userId, String password);
+	
+	/**
+	 * @param userId
+	 * @return
+	 */
+	public String getToken(String userId);
 }

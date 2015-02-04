@@ -25,7 +25,6 @@ import com.wechat.entity.User;
 import com.wechat.tool.ApiHttpClient;
 import com.wechat.tool.ReadProperties;
 import com.wechat.tool.SystemUtil;
-import com.wechat.tool.UserPool;
 
 @Path("/UserService")
 public class UserService {
@@ -35,37 +34,22 @@ public class UserService {
 	
 	/**
 	 * user login
-	 * @param userId
+	 * @param userid
 	 * @param password
 	 * @return
 	 */
 	@GET
 	@Path("/login")
 	@Produces(value = MediaType.TEXT_PLAIN)
-	public String login(@QueryParam("userId") String userId,
+	public String login(@QueryParam("userid") String userid,
 			@QueryParam("psw") String password) {
 		
-		String token = "";
-		User user = userDao.checkUser(userId, password);
+		User user = userDao.checkUser(userid, password);
 		if(user != null){
-			try {
-				token = ApiHttpClient.getToken(
-						ReadProperties.read("configure", "appkey"), 
-						ReadProperties.read("configure", "appsecret"),
-						user.getUserId(),
-						user.getUsername(),
-						"null",
-						"json");	//数据类型 json, xml
-				JSONObject jsonObject = new JSONObject(token);
-				token = (String) jsonObject.get("token");
-				UserPool.addToken(userId, token);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			System.out.println(token);
-			
+			return user.getToken();
+		} else {
+			return null;
 		}
-		return token;
 	}
 	
 	/**
@@ -80,41 +64,50 @@ public class UserService {
 	public String register(
 			@QueryParam("username") String username,
 			@QueryParam("psw") String password) {
-		String userId = "";
+		String userid = "";
 		do{
-			userId = String.valueOf(SystemUtil.generateUserId());
-		} while (userDao.checkIdUnique(userId));
+			userid = String.valueOf(SystemUtil.generateUserId());
+		} while (userDao.checkIdUnique(userid));
 		
-		if(userDao.addUser(userId, username, password)){
-			return userId;
-		} else {
-			return "";
+		try {
+			String token = ApiHttpClient.getToken(
+							ReadProperties.read("configure", "appkey"), 
+							ReadProperties.read("configure", "appsecret"),
+							userid, username, "null", "json");
+			
+			JSONObject jsonObject = new JSONObject(token);
+			token = (String) jsonObject.get("token");
+			userDao.addUser(userid, username, password, token);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		return userid;
 	}
 
 	/**
 	 * upload user header
 	 * @param token
-	 * @param userId
+	 * @param userid
 	 * @param request
 	 * @param response
 	 * @return
 	 */
 	@POST
-	@Path("/uploadIcon/{token}/{userId}")
+	@Path("/uploadIcon/{token}/{userid}")
 	@Consumes({ MediaType.MULTIPART_FORM_DATA })
 	@Produces(value = MediaType.TEXT_PLAIN)
 	public String uploadIcon(
 			@PathParam("token") String token,
-			@PathParam("userId") String userId, 
+			@PathParam("userid") String userid, 
 			@Context HttpServletRequest request, 
 			@Context HttpServletResponse response) {
 		
-		if(UserPool.isTokenExist(token)){
-			String path = SystemUtil.uploadIcon(userId, request);
+		if( (SystemUtil.changeToken(token)).equals(userDao.getToken(userid)) ){
+			
+			String path = SystemUtil.uploadIcon(userid, request);
 			String changePath = SystemUtil.changePath(path, request);
 			if(path != null){
-				if(userDao.modifyUserIcon(userId, changePath)){
+				if(userDao.modifyUserIcon(userid, changePath)){
 					return "true";
 				} else {
 					return "false";
@@ -128,19 +121,19 @@ public class UserService {
 	}
 	
 	/**
-	 * get contacts by userId
+	 * get contacts by userid
 	 * @param token
-	 * @param userId
+	 * @param userid
 	 * @return
 	 */
 	@GET
-	@Path("/getContacts/{token}")
+	@Path("/getContacts/{token}/{userid}")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public List<User> getContacts(
 			@PathParam("token") String token,
-			@QueryParam("userId") String userId){
-		if(UserPool.isTokenExist(token)){
-			List<User> list = contactDao.getContacts(userId);
+			@PathParam("userid") String userid){
+		if((SystemUtil.changeToken(token)).equals(userDao.getToken(userid))){
+			List<User> list = contactDao.getContacts(userid);
 			return list;
 		} else {
 			return null;
@@ -148,28 +141,27 @@ public class UserService {
 	}
 	
 	/**
-	 * add user by userId
+	 * add user by userid
 	 * @param token
-	 * @param userId
+	 * @param userid
 	 * @param contactId
 	 * @return
 	 */
 	@GET
-	@Path("/addContact/{token}")
+	@Path("/addContact/{token}/{userid}")
 	@Produces(value = MediaType.TEXT_PLAIN)
 	public String addContact(
 			@PathParam("token") String token,
-			@QueryParam("userId") String userId,
+			@PathParam("userid") String userid,
 			@QueryParam("contactId") String contactId){
-		
-		if( UserPool.isTokenExist(token)){
+		if( (SystemUtil.changeToken(token)).equals(userDao.getToken(userid))){
 			if(!userDao.checkIdUnique(contactId)){
 				return "no-user";
 			} else {
-				if(userId.equals(contactId)){
+				if(userid.equals(contactId)){
 					return "can't-add-oneself";
 				} else {
-					Contact contact = contactDao.getContact(userId, contactId);
+					Contact contact = contactDao.getContact(userid, contactId);
 					if(contact != null){
 						return "exist-contact";
 					} else{
@@ -180,23 +172,23 @@ public class UserService {
 		} else {
 			return "false";
 		}
-		
 	}
 	
 	/**
-	 * query user by userId
+	 * query user by id
 	 * @param token
-	 * @param userId
+	 * @param userid
 	 * @return 
 	 */
 	@GET
-	@Path("/queryUserById/{token}")
+	@Path("/queryUserById/{token}/{userid}")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public User queryUserById(
 			@PathParam("token") String token,
-			@QueryParam("userId") String userId){
-		if(UserPool.isTokenExist(token)){
-			User user = userDao.getUserById(userId);
+			@PathParam("userid") String userid,
+			@QueryParam("id") String id){
+		if( (SystemUtil.changeToken(token)).equals(userDao.getToken(userid))){
+			User user = userDao.getUserById(userid);
 			return user;
 		} else {
 			return null;
@@ -210,12 +202,13 @@ public class UserService {
 	 * @return 
 	 */
 	@GET
-	@Path("/queryUserByName/{token}")
+	@Path("/queryUserByName/{token}/{userid}")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public List<User> queryUserByName(
 			@PathParam("token") String token,
+			@PathParam("userid") String userid,
 			@QueryParam("username") String username){
-		if(UserPool.isTokenExist(token)){
+		if( (SystemUtil.changeToken(token)).equals(userDao.getToken(userid))){
 			List<User> list = userDao.getUsersByName(username);
 			return list;
 		} else {
@@ -226,32 +219,36 @@ public class UserService {
 	/**
 	 * modify username or password
 	 * @param token
-	 * @param userId
+	 * @param userid
 	 * @param username
 	 * @param password
 	 * @return
 	 */
 	@GET
-	@Path("/modifyUserNameOrPsw/{token}")
+	@Path("/modifyUserNameOrPsw/{token}/{userid}")
 	@Produces({ MediaType.TEXT_PLAIN })
 	public String modifyUserNameOrPsw(
-			@PathParam("token") String token, 
-			@QueryParam("userId") String userId, 
+			@PathParam("token") String token,
+			@PathParam("userid") String userid, 
 			@QueryParam("username") String username,
 			@QueryParam("psw") String password
 			){
-		if(password == null || "".equals(password)){
-			if(userDao.modifyUserName(userId, username)){
-				return "true";
+		if( (SystemUtil.changeToken(token)).equals(userDao.getToken(userid))){
+			if(password == null || "".equals(password)){
+				if(userDao.modifyUserName(userid, username)){
+					return "true";
+				} else {
+					return "false";
+				}
 			} else {
-				return "false";
+				if(userDao.modifyUserPsw(userid, password)){
+					return "true";
+				} else {
+					return "false";
+				}
 			}
 		} else {
-			if(userDao.modifyUserPsw(userId, password)){
-				return "true";
-			} else {
-				return "false";
-			}
+			return "false";
 		}
 	}
 }

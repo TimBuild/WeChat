@@ -5,16 +5,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class User {
 
-	private String userId;
+	private String userid;
 	private String username;
 	private String password;
 	private String icon;
+	private String token;
 	
-	public String getUserId() {
-		return userId;
+	
+	public String getUserid() {
+		return userid;
 	}
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setUserid(String userid) {
+		this.userid = userid;
 	}
 	public String getUsername() {
 		return username;
@@ -34,10 +36,11 @@ public class User {
 	public void setIcon(String icon) {
 		this.icon = icon;
 	}
-	@Override
-	public String toString() {
-		return "User [userId=" + userId + ", username=" + username
-				+ ", password=" + password + ", icon=" + icon + "]";
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
 	}
 	
 }
