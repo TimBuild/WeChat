@@ -20,13 +20,13 @@ public interface UserDao {
 	 */
 	public User checkUser(String userId, String password);
 	/**
-	 * 
+	 * no password
 	 * @param userId
 	 * @return
 	 */
 	public User getUserById(String userId);
 	/**
-	 * 
+	 * no password
 	 * @param username
 	 * @return
 	 */
