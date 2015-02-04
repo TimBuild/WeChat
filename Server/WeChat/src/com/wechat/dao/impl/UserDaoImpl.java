@@ -148,6 +148,7 @@ public class UserDaoImpl implements UserDao {
 			user = queryRunner.query(conn,
 					ReadProperties.read("sql", "getUserByUserId"),
 					new BeanHandler<>(User.class), userId);
+			user.setPassword(null);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -166,12 +167,17 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public List<User> getUsersByName(String username) {
 		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
-		List<User> user = null;
+		List<User> userList = null;
+		List<User> user = new ArrayList<User>();
 		try {
 
-			user = queryRunner.query(conn,
+			userList = queryRunner.query(conn,
 					ReadProperties.read("sql", "getUserByUsername"),
 					new BeanListHandler<>(User.class), "%" + username + "%");
+			for(User u:userList){
+				u.setPassword(null);
+				user.add(u);
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
