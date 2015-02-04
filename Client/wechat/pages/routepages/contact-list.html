@@ -1,26 +1,10 @@
 ﻿<div id="contacts-div">
     <div id="contact-list-wrapper">
         <ul class="contact-list">
-            <li><img src="img/head.jpg"><span>木木</span></li>
-            <hr />
-            <li><img src="img/head.jpg"><span>木木</span></li>
-            <hr />
-            <li><img src="img/head.jpg"><span>木木</span></li>
-            <hr />
-            <li><img src="img/head.jpg"><span>丫丫</span></li>
-            <hr />
-            <li><img src="img/head.jpg"><span>木木</span></li>
-            <hr />
-            <li><img src="img/head.jpg"><span>木木</span></li>
-            <hr />
-            <li><img src="img/head.jpg"><span>木木</span></li>
-            <hr />
-            <li><img src="img/head.jpg"><span>木木</span></li>
-            <hr />
-            <li><img src="img/head.jpg"><span>木木</span></li>
-            <hr />
-            <li><img src="img/head.jpg"><span>木木</span></li>
-            <hr />
+            <li ng-repeat="contact in contacts" ui-sref="chatting({userId:{{contact.userid}},userName:{{contact.username}},icon:{{contact.icon}}})">
+                <img ng-src="{{contact.icon}}"><span>{{contact.username}}</span>
+                <hr />
+            </li>
         </ul>
     </div>
 </div>

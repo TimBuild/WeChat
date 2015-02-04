@@ -1,4 +1,4 @@
-weChatApp.service('chattingService', ['$http',"appInfo", function ($http,appInfo) {
+weChatApp.service('chatting-service', ['$http',"appInfo", function ($http,appInfo) {
 
     var messages = [];
 
