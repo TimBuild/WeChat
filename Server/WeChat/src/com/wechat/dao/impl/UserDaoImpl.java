@@ -40,9 +40,9 @@ public class UserDaoImpl implements UserDao {
 		}
 		return user;
 	}
-
+	///////////////////////////////////
 	@Override
-	public boolean addUser(String userId, String username, String password) {
+	public boolean addUser(String userId, String username, String password, String token) {
 		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
 		try {
 			conn.setAutoCommit(false);
@@ -265,5 +265,13 @@ public class UserDaoImpl implements UserDao {
 
 		return false;
 	}
+
+	@Override
+	public boolean getToken(String userId) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	
 
 }
