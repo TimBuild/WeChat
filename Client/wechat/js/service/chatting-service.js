@@ -1,5 +1,7 @@
 
-weChatApp.service('chatting-service', ['$http', function ($http) {
+weChatApp.service('chattingService', ['$http', function ($http) {
+
+    
     //init rongyu
     RongIMClient.init(appInfo.appKey);
 
@@ -34,29 +36,25 @@ weChatApp.service('chatting-service', ['$http', function ($http) {
 
     });
 
-    var messageSend = function (message) {
-        //define message type, text message should user RongIMClient.TextMessage 
-        var msg = new RongIMClient.TextMessage();
-        // set message content
-        msg.setContent(message);
+    var sendMsg = function (targetId,message) {
+
         //or use RongIMClient.TextMessage.obtain method. see the document
         var msg = RongIMClient.TextMessage.obtain(message);
         var content = new RongIMClient.MessageContent(msg);
-        var conversationtype = RongIMClient.ConversationType.PRIVATE; // personal chat
-        var targetId = "1234567"; // target id Id
+        var conversationtype = RongIMClient.ConversationType.PRIVATE; // private chat
         RongIMClient.getInstance().sendMessage(conversationtype, targetId, content, null, {
-            // 发送消息成功
+            // message send success
             onSuccess: function () {
-
-                chat.innerHTML = chat.innerHTML + "<br/>"
-             + "123456" + ":" + msg.getContent();
-                console.log("Send successfully");
+                console.log("Send successfully " + msg.getContent());
             },
             onError: function (errorCode) {
                 console.log("发送失败" + errorCode.getValue(), errorCode.getMessage());
             }
-        }
-               );
+        });
+    }
+
+    return {
+        sendMsg:sendMsg
     }
 
 }]);
