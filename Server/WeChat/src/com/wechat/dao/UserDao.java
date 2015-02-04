@@ -55,7 +55,7 @@ public interface UserDao {
 	public boolean modifyUserIcon(String userId, String icon);
 	
 	/**
-	 * 
+	 * 修改用户名和密码
 	 * @param userId
 	 * @param username
 	 * @param password
