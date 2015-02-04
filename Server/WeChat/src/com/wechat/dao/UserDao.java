@@ -74,10 +74,10 @@ public interface UserDao {
 	 * @return
 	 */
 	public boolean modifyUserPsw(String userId, String password);
+	
 	/**
-	 * 
 	 * @param userId
 	 * @return
 	 */
-	public boolean getToken(String userId);
+	public String getToken(String userId);
 }

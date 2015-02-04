@@ -37,6 +37,7 @@ public class ContactDaoImpl implements ContactDao {
 							ReadProperties.read("sql", "getUserByContactId"),
 							new BeanHandler<>(User.class), contactId);
 					userContact.setPassword(null);
+					userContact.setToken(null);;
 					user.add(userContact);
 				}
 				if (user.size() != 0) {
@@ -107,7 +108,6 @@ public class ContactDaoImpl implements ContactDao {
 			ret = queryRunner.update(conn,
 					ReadProperties.read("sql", "deleteContact"), ownerId,
 					contactId);
-			System.out.println(ret);
 			if (ret > 0) {
 				conn.commit();
 				return true;

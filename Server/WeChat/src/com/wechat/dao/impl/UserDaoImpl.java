@@ -40,7 +40,7 @@ public class UserDaoImpl implements UserDao {
 		}
 		return user;
 	}
-	///////////////////////////////////
+	
 	@Override
 	public boolean addUser(String userId, String username, String password, String token) {
 		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
@@ -49,7 +49,7 @@ public class UserDaoImpl implements UserDao {
 			int ret = -1;
 			ret = queryRunner.update(conn,
 					ReadProperties.read("sql", "addUser"), userId, username,
-					password);
+					password,token);
 			if (ret > 0) {
 				conn.commit();
 				return true;
@@ -148,6 +148,7 @@ public class UserDaoImpl implements UserDao {
 					ReadProperties.read("sql", "getUserByUserId"),
 					new BeanHandler<>(User.class), userId);
 			user.setPassword(null);
+			user.setToken(null);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -175,6 +176,7 @@ public class UserDaoImpl implements UserDao {
 					new BeanListHandler<>(User.class), "%" + username + "%");
 			for (User u : userList) {
 				u.setPassword(null);
+				u.setToken(null);
 				user.add(u);
 			}
 
@@ -202,7 +204,6 @@ public class UserDaoImpl implements UserDao {
 			ret = queryRunner.update(conn,
 					ReadProperties.read("sql", "modifyUserName"),
 					username, userId);
-			System.out.println(ret);
 			if (ret > 0) {
 				conn.commit();
 				return true;
@@ -239,7 +240,6 @@ public class UserDaoImpl implements UserDao {
 			ret = queryRunner.update(conn,
 					ReadProperties.read("sql", "modifyUserPsw"),
 					password, userId);
-			System.out.println(ret);
 			if (ret > 0) {
 				conn.commit();
 				return true;
@@ -267,9 +267,29 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public boolean getToken(String userId) {
-		// TODO Auto-generated method stub
-		return false;
+	public String getToken(String userId) {
+		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
+		User user = null;
+		try {
+			user = queryRunner.query(conn,
+					ReadProperties.read("sql", "getUserTokenByUserId"),
+					new BeanHandler<>(User.class), userId);
+			if(user!=null){
+				return user.getToken();
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
 	}
 
 	
