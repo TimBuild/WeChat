@@ -12,14 +12,23 @@ public class ApiHttpClient {
 	
 	private static final String UTF8 = "UTF-8";
 
-	// 获取token
-	public static SdkHttpResult getToken(String appKey, String appSecret,
-			String userId, String userName, String portraitUri,
-			FormatType format) throws Exception {
+	/**
+	 * 
+	 * @param appKey
+	 * @param appSecret
+	 * @param userId
+	 * @param userName
+	 * @param portraitUri
+	 * @param type	json or xml
+	 * @return
+	 * @throws Exception
+	 */
+	public static String getToken(String appKey, String appSecret,
+			String userId, String userName, String portraitUri, String type) throws Exception {
 
 		HttpURLConnection conn = HttpUtil
 				.CreatePostHttpConnection(appKey, appSecret, RONGCLOUDURI
-						+ "/user/getToken." + format.toString());
+						+ "/user/getToken." + type);
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("userId=").append(URLEncoder.encode(userId, UTF8));

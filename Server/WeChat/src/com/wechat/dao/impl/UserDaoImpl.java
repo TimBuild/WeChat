@@ -9,11 +9,10 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
+import com.wechat.dao.UserDao;
+import com.wechat.entity.User;
 import com.wechat.tool.C3P0DBConnectionPool;
 import com.wechat.tool.ReadProperties;
-import com.wechat.dao.UserDao;
-import com.wechat.entity.Contact;
-import com.wechat.entity.User;
 
 public class UserDaoImpl implements UserDao {
 
@@ -191,6 +190,43 @@ public class UserDaoImpl implements UserDao {
 			}
 		}
 		return user;
+	}
+
+	@Override
+	public boolean modifyUserNameOrPsw(String userId, String username,
+			String password) {
+		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
+
+		try {
+			conn.setAutoCommit(false);
+			int ret = -1;
+			ret = queryRunner.update(conn,
+					ReadProperties.read("sql", "modifyUserNameOrPsw"), username,password, userId);
+			System.out.println(ret);
+			if (ret > 0) {
+				conn.commit();
+				return true;
+			} else {
+				conn.rollback();
+			}
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return false;
 	}
 
 }
