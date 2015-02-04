@@ -55,11 +55,17 @@ public interface UserDao {
 	public boolean modifyUserIcon(String userId, String icon);
 	
 	/**
-	 * 修改用户名和密码
+	 * 修改用户名
 	 * @param userId
 	 * @param username
 	 * @param password
 	 * @return
 	 */
-	public boolean modifyUserNameOrPsw(String userId, String username, String password);
+	public boolean modifyUserName(String userId, String username);
+	/**
+	 * @param userId
+	 * @param password
+	 * @return
+	 */
+	public boolean modifyUserPsw(String userId,  String password);
 }
