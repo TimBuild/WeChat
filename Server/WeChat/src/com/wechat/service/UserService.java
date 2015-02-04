@@ -103,7 +103,6 @@ public class UserService {
 			@Context HttpServletResponse response) {
 		
 		if( (SystemUtil.changeToken(token)).equals(userDao.getToken(userid)) ){
-			System.out.println("ok");
 			
 			String path = SystemUtil.uploadIcon(userid, request);
 			String changePath = SystemUtil.changePath(path, request);
