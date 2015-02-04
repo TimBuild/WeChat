@@ -2,6 +2,7 @@ package com.wechat.dao.impl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
@@ -15,13 +16,8 @@ public class UserDaoImpl implements UserDao {
 
 	private QueryRunner queryRunner = new QueryRunner();
 
-	/*
-	 * (non-Javadoc) user Login OK
-	 * 
-	 * @see com.wechat.dao.UserDao#Login(java.lang.String, java.lang.String)
-	 */
 	@Override
-	public User getUser(String userId, String password) {
+	public User checkUser(String userId, String password) {
 		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
 		User user = null;
 		try {
@@ -43,12 +39,6 @@ public class UserDaoImpl implements UserDao {
 		return user;
 	}
 
-	/*
-	 * (non-Javadoc) add User OK
-	 * 
-	 * @see com.wechat.dao.UserDao#addUser(java.lang.String, java.lang.String,
-	 * java.lang.String, java.lang.String)
-	 */
 	@Override
 	public boolean addUser(String userId, String username, String password) {
 		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
@@ -112,9 +102,6 @@ public class UserDaoImpl implements UserDao {
 		return false;
 	}
 
-	/* (non-Javadoc) OK
-	 * @see com.wechat.dao.UserDao#modifyUserIcon(java.lang.String, java.lang.String)
-	 */
 	@Override
 	public boolean modifyUserIcon(String userId, String icon) {
 		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
@@ -148,6 +135,16 @@ public class UserDaoImpl implements UserDao {
 		}
 
 		return false;
+	}
+
+	@Override
+	public User getUserById(String userId) {
+		return null;
+	}
+
+	@Override
+	public List<User> getUsersByName(String username) {
+		return null;
 	}
 
 }

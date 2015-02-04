@@ -1,5 +1,7 @@
 package com.wechat.service;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
@@ -12,6 +14,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import com.wechat.dao.ContactDao;
+import com.wechat.dao.UserDao;
 import com.wechat.dao.impl.ContactDaoImpl;
 import com.wechat.dao.impl.UserDaoImpl;
 import com.wechat.entity.Contact;
@@ -20,13 +24,14 @@ import com.wechat.tool.ApiHttpClient;
 import com.wechat.tool.ReadProperties;
 import com.wechat.tool.SdkHttpResult;
 import com.wechat.tool.SystemUtil;
+import com.wechat.tool.UserPool;
 import com.wechat.util.FormatType;
 
 @Path("/UserService")
 public class UserService {
 
-	private UserDaoImpl userDaoImpl = new UserDaoImpl();
-	private ContactDaoImpl contactDaoImpl = new ContactDaoImpl();
+	private UserDao userDao = new UserDaoImpl();
+	private ContactDao contactDao = new ContactDaoImpl();
 	
 	@GET
 	@Path("/login")
@@ -35,7 +40,7 @@ public class UserService {
 			@QueryParam("psw") String password) {
 		
 		String token = "";
-		User user = userDaoImpl.getUser(userId, password);
+		User user = userDao.checkUser(userId, password);
 		if(user != null){
 			SdkHttpResult result = null;
 			try {
@@ -44,7 +49,7 @@ public class UserService {
 						ReadProperties.read("configure", "appsecret"),
 						user.getUserId(),
 						user.getUsername(),
-						"http://aa.com/a.png", 
+						"null",
 						FormatType.json);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -58,31 +63,40 @@ public class UserService {
 	@GET
 	@Path("/register")
 	@Produces(value = MediaType.TEXT_PLAIN)
-	public String register(@QueryParam("username") String username,
+	public String register(
+			@QueryParam("username") String username,
 			@QueryParam("psw") String password) {
 		String userId = "";
 		do{
 			userId = String.valueOf(SystemUtil.generateUserId());
-		} while (userDaoImpl.checkIdUnique(userId));
+		} while (userDao.checkIdUnique(userId));
 		
-		if(userDaoImpl.addUser(userId, username, password)){
+		if(userDao.addUser(userId, username, password)){
 			return userId;
 		} else {
-			return "";	
+			return "";
 		}
 	}
 
 	@POST
-	@Path("/uploadIcon/{userId}")
+	@Path("/uploadIcon/{token}/{userId}")
 	@Consumes({ MediaType.MULTIPART_FORM_DATA })
 	@Produces(value = MediaType.TEXT_PLAIN)
-	public String uploadIcon(@PathParam("userId") String userId, @Context HttpServletRequest request, @Context HttpServletResponse response) {
+	public String uploadIcon(
+			@PathParam("token") String token,
+			@PathParam("userId") String userId, 
+			@Context HttpServletRequest request, 
+			@Context HttpServletResponse response) {
 		
-		String path = SystemUtil.uploadIcon(userId, request);
-		String changePath = SystemUtil.changePath(path);
-		if(path != null){
-			if(userDaoImpl.modifyUserIcon(userId, changePath)){
-				return "true";
+		if(UserPool.isTokenExist(token)){
+			String path = SystemUtil.uploadIcon(userId, request);
+			String changePath = SystemUtil.changePath(path, request);
+			if(path != null){
+				if(userDao.modifyUserIcon(userId, changePath)){
+					return "true";
+				} else {
+					return "false";
+				}
 			} else {
 				return "false";
 			}
@@ -91,29 +105,99 @@ public class UserService {
 		}
 	}
 	
+	/**
+	 * 通过 userId 得到该用户的所有联系人
+	 * @param token
+	 * @param userId
+	 * @return
+	 */
 	@GET
-	@Path("/getContacts")
-	@Produces(value = MediaType.APPLICATION_JSON)
-	public String getContacts(@QueryParam("userId") String userId){
-		contactDaoImpl.getContacts(userId);
-		return null;
-	}
-	
-	@GET
-	@Path("/addContact")
-	@Produces(value = MediaType.TEXT_PLAIN)
-	public String addContact(@QueryParam("userId") String userId,
-			@QueryParam("contactId") String contactId){
-		if(!userDaoImpl.checkIdUnique(contactId)){
-			return "no-user";
+	@Path("/getContacts/{token}")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public List<User> getContacts(
+			@PathParam("token") String token,
+			@QueryParam("userId") String userId){
+		if(UserPool.isTokenExist(token)){
+			List<User> list = contactDao.getContacts(userId);
+			return list;
 		} else {
-			Contact contact = contactDaoImpl.getContact(userId, contactId);
-			if(contact != null){
-				return "exist-contact";
-			} else{
-				return "true";
-			}
+			return null;
 		}
 	}
-
+	
+	/**
+	 * 通过 userId 添加联系人
+	 * @param token
+	 * @param userId
+	 * @param contactId
+	 * @return
+	 */
+	@GET
+	@Path("/addContact/{token}")
+	@Produces(value = MediaType.TEXT_PLAIN)
+	public String addContact(
+			@PathParam("token") String token,
+			@QueryParam("userId") String userId,
+			@QueryParam("contactId") String contactId){
+		
+		if( UserPool.isTokenExist(token)){
+			if(!userDao.checkIdUnique(contactId)){
+				return "no-user";
+			} else {
+				if(userId.equals(contactId)){
+					return "can't-add-oneself";
+				} else {
+					Contact contact = contactDao.getContact(userId, contactId);
+					if(contact != null){
+						return "exist-contact";
+					} else{
+						return "true";
+					}
+				}
+			}
+		} else {
+			return "false";
+		}
+		
+	}
+	
+	/**
+	 * 通过 userId 查询
+	 * @param token
+	 * @param userId
+	 * @return 
+	 */
+	@GET
+	@Path("/queryUserById/{token}")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public User queryUserById(
+			@PathParam("token") String token,
+			@QueryParam("userId") String userId){
+		if(UserPool.isTokenExist(token)){
+			User user = userDao.getUserById(userId);
+			return user;
+		} else {
+			return null;
+		}
+	}
+	
+	/**
+	 * 通过 username 模糊查询
+	 * @param token
+	 * @param username
+	 * @return 
+	 */
+	@GET
+	@Path("/queryUserByName/{token}")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public List<User> queryUserByName(
+			@PathParam("token") String token,
+			@QueryParam("username") String username){
+		if(UserPool.isTokenExist(token)){
+			List<User> list = userDao.getUsersByName(username);
+			return list;
+		} else {
+			return null;
+		}
+	}
 }

@@ -84,14 +84,9 @@ public class SystemUtil {
 		return path;
 	}
 	
-	public static String changePath(String path){
-		String changePath = null;
-		try {
-			String ip = InetAddress.getLocalHost().getHostAddress().toString();
-			changePath = "http://" + ip + ":8080/" + path.substring(path.lastIndexOf("WeChat"));
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
-		return changePath;
+	public static String changePath(String path, HttpServletRequest request){
+		String ip = request.getLocalAddr().toString();
+		String port = String.valueOf(request.getLocalPort());
+		return "http://" + ip + ":" + port + "/" + path.substring(path.lastIndexOf("WeChat"));
 	}
 }
