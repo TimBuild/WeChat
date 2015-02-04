@@ -9,11 +9,10 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
+import com.wechat.dao.UserDao;
+import com.wechat.entity.User;
 import com.wechat.tool.C3P0DBConnectionPool;
 import com.wechat.tool.ReadProperties;
-import com.wechat.dao.UserDao;
-import com.wechat.entity.Contact;
-import com.wechat.entity.User;
 
 public class UserDaoImpl implements UserDao {
 
@@ -191,6 +190,12 @@ public class UserDaoImpl implements UserDao {
 			}
 		}
 		return user;
+	}
+
+	@Override
+	public boolean modifyUserNameOrPsw(String userId, String username,
+			String password) {
+		return false;
 	}
 
 }

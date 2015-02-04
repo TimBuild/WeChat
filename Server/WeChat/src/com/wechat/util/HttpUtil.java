@@ -9,8 +9,6 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 
-import com.wechat.tool.SdkHttpResult;
-
 public class HttpUtil {
 
 	private static final String APPKEY = "RC-App-Key";
@@ -69,7 +67,7 @@ public class HttpUtil {
 		return data;
 	}
 
-	public static SdkHttpResult returnResult(HttpURLConnection conn)
+	public static String returnResult(HttpURLConnection conn)
 			throws Exception, IOException {
 		String result;
 		InputStream input = null;
@@ -79,6 +77,6 @@ public class HttpUtil {
 			input = conn.getErrorStream();
 		}
 		result = new String(readInputStream(input));
-		return new SdkHttpResult(conn.getResponseCode(), result);
+		return result;
 	}
 }

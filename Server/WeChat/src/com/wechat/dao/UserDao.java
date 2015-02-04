@@ -53,4 +53,13 @@ public interface UserDao {
 	 * @return
 	 */
 	public boolean modifyUserIcon(String userId, String icon);
+	
+	/**
+	 * 
+	 * @param userId
+	 * @param username
+	 * @param password
+	 * @return
+	 */
+	public boolean modifyUserNameOrPsw(String userId, String username, String password);
 }
