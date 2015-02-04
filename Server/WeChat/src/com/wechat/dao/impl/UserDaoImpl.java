@@ -2,26 +2,25 @@ package com.wechat.dao.impl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import com.wechat.tool.C3P0DBConnectionPool;
 import com.wechat.tool.ReadProperties;
 import com.wechat.dao.UserDao;
+import com.wechat.entity.Contact;
 import com.wechat.entity.User;
 
 public class UserDaoImpl implements UserDao {
 
 	private QueryRunner queryRunner = new QueryRunner();
 
-	/*
-	 * (non-Javadoc) user Login OK
-	 * 
-	 * @see com.wechat.dao.UserDao#Login(java.lang.String, java.lang.String)
-	 */
 	@Override
-	public User getUser(String userId, String password) {
+	public User checkUser(String userId, String password) {
 		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
 		User user = null;
 		try {
@@ -43,12 +42,6 @@ public class UserDaoImpl implements UserDao {
 		return user;
 	}
 
-	/*
-	 * (non-Javadoc) add User OK
-	 * 
-	 * @see com.wechat.dao.UserDao#addUser(java.lang.String, java.lang.String,
-	 * java.lang.String, java.lang.String)
-	 */
 	@Override
 	public boolean addUser(String userId, String username, String password) {
 		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
@@ -112,9 +105,6 @@ public class UserDaoImpl implements UserDao {
 		return false;
 	}
 
-	/* (non-Javadoc) OK
-	 * @see com.wechat.dao.UserDao#modifyUserIcon(java.lang.String, java.lang.String)
-	 */
 	@Override
 	public boolean modifyUserIcon(String userId, String icon) {
 		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
@@ -148,6 +138,53 @@ public class UserDaoImpl implements UserDao {
 		}
 
 		return false;
+	}
+
+	@Override
+	public User getUserById(String userId) {
+		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
+		User user = null;
+		try {
+			user = queryRunner.query(conn,
+					ReadProperties.read("sql", "getUserByUserId"),
+					new BeanHandler<>(User.class), userId);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return user;
+	}
+
+	@Override
+	public List<User> getUsersByName(String username) {
+		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
+		List<User> user = null;
+		try {
+
+			user = queryRunner.query(conn,
+					ReadProperties.read("sql", "getUserByUsername"),
+					new BeanListHandler<>(User.class), "%" + username + "%");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return user;
 	}
 
 }
