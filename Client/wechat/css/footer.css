@@ -18,6 +18,7 @@
     background: #22292C;;
     color: white;
     z-index: 100;
+    top: 0;
 }
 
 .appName{
