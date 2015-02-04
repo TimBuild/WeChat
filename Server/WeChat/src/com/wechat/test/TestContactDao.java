@@ -16,12 +16,12 @@ public class TestContactDao {
 	@Test
 	public void test() {
 		ContactDaoImpl contactDaoImpl = new ContactDaoImpl();
-		//List<User> user = contactDaoImpl.getContacts("13");
+		List<User> user = contactDaoImpl.getContacts("11");
 		
 		//boolean addContactFlag = contactDaoImpl.addContact("14", "11");
 		//boolean deleteContactFlag = contactDaoImpl.deleteContact("14", "11");
-		Contact contact = contactDaoImpl.getContact("11", "12");
-		System.out.println(contact);
+		//Contact contact = contactDaoImpl.getContact("11", "12");
+		System.out.println(user.get(0).toString());
 	}
 
 }

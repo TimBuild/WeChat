@@ -13,24 +13,30 @@ public interface UserDao {
 	public boolean checkIdUnique(String userId);
 
 	/**
+	 * 通过id和密码检查用户
 	 * 
 	 * @param userId
 	 * @param password
-	 * @return
+	 * @return user
 	 */
 	public User checkUser(String userId, String password);
+
 	/**
 	 * no password
+	 * 
 	 * @param userId
 	 * @return
 	 */
 	public User getUserById(String userId);
+
 	/**
 	 * no password
+	 * 
 	 * @param username
 	 * @return
 	 */
 	public List<User> getUsersByName(String username);
+
 	/**
 	 * 
 	 * @param userId
@@ -39,6 +45,7 @@ public interface UserDao {
 	 * @return
 	 */
 	public boolean addUser(String userId, String username, String password);
+
 	/**
 	 * 
 	 * @param userId

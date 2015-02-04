@@ -2,14 +2,17 @@ package com.wechat.dao.impl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import com.wechat.tool.C3P0DBConnectionPool;
 import com.wechat.tool.ReadProperties;
 import com.wechat.dao.UserDao;
+import com.wechat.entity.Contact;
 import com.wechat.entity.User;
 
 public class UserDaoImpl implements UserDao {
@@ -139,12 +142,49 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public User getUserById(String userId) {
-		return null;
+		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
+		User user = null;
+		try {
+			user = queryRunner.query(conn,
+					ReadProperties.read("sql", "getUserByUserId"),
+					new BeanHandler<>(User.class), userId);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return user;
 	}
 
 	@Override
 	public List<User> getUsersByName(String username) {
-		return null;
+		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
+		List<User> user = null;
+		try {
+
+			user = queryRunner.query(conn,
+					ReadProperties.read("sql", "getUserByUsername"),
+					new BeanListHandler<>(User.class), "%" + username + "%");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return user;
 	}
 
 }
