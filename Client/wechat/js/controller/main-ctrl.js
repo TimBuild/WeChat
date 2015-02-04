@@ -1,7 +1,9 @@
 weChatApp.controller('main-ctrl', ['$scope', '$timeout', "$stateParams", "$location",'$state',  function ($scope, $timeout, $stateParams, $location,$state) {
-    var isChatSelected=false;
+    var isChatSelected=true;
     var isContactSelected=false;
     var isSelfInfoSelected=false;
+
+    $("#chat").addClass("selected");
 
     $scope.chatList=function(){
         if(isChatSelected==false){
@@ -41,4 +43,8 @@ weChatApp.controller('main-ctrl', ['$scope', '$timeout', "$stateParams", "$locat
 
         $state.go('user-detail');
     };
+
+    $scope.addContact=function(){
+        $state.go('add-contact');
+    }
 }]);
