@@ -33,6 +33,12 @@ public class UserService {
 	private UserDao userDao = new UserDaoImpl();
 	private ContactDao contactDao = new ContactDaoImpl();
 	
+	/**
+	 * user login
+	 * @param userId
+	 * @param password
+	 * @return
+	 */
 	@GET
 	@Path("/login")
 	@Produces(value = MediaType.TEXT_PLAIN)
@@ -214,6 +220,38 @@ public class UserService {
 			return list;
 		} else {
 			return null;
+		}
+	}
+	
+	/**
+	 * modify username or password
+	 * @param token
+	 * @param userId
+	 * @param username
+	 * @param password
+	 * @return
+	 */
+	@GET
+	@Path("/modifyUserNameOrPsw/{token}")
+	@Produces({ MediaType.TEXT_PLAIN })
+	public String modifyUserNameOrPsw(
+			@PathParam("token") String token, 
+			@QueryParam("userId") String userId, 
+			@QueryParam("username") String username,
+			@QueryParam("psw") String password
+			){
+		if(password == null || "".equals(password)){
+			if(userDao.modifyUserName(userId, username)){
+				return "true";
+			} else {
+				return "false";
+			}
+		} else {
+			if(userDao.modifyUserPsw(userId, password)){
+				return "true";
+			} else {
+				return "false";
+			}
 		}
 	}
 }
