@@ -12,7 +12,7 @@ public class TestUserDao {
 
 	@Test
 	public void test() {
-		System.out.println("ok");
+	//	System.out.println("ok");
 		UserDao userDaoImpl = new UserDaoImpl();
 //		Boolean addUserFlag = userDaoImpl.addUser("11", "Tim1", "1234561");
 //		Boolean checkIdUniqueFlag = userDaoImpl.checkIdUnique("12");
@@ -21,8 +21,9 @@ public class TestUserDao {
 		
 		
 //		User getUserByIdUser = userDaoImpl.getUserById("11");
-		List<User> user = userDaoImpl.getUsersByName("a");
-		System.out.println(user);
+//		List<User> user = userDaoImpl.getUsersByName("a");
+		Boolean modifyUserNameOrPswFlag = userDaoImpl.modifyUserNameOrPsw("12", "aa", "aaa");
+		System.out.println(modifyUserNameOrPswFlag);
 		//fail("Not yet implemented");
 	}
 
