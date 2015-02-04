@@ -1,4 +1,4 @@
-﻿package com.wechat.util;
+package com.wechat.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 
+
 public class HttpUtil {
 
 	private static final String APPKEY = "RC-App-Key";
@@ -16,7 +17,12 @@ public class HttpUtil {
 	private static final String TIMESTAMP = "RC-Timestamp";
 	private static final String SIGNATURE = "RC-Signature";
 
-	// 设置body体
+	
+	/**
+	 * @param sb
+	 * @param conn
+	 * @throws IOException
+	 */
 	public static void setBodyParameter(StringBuilder sb, HttpURLConnection conn)
 			throws IOException {
 		DataOutputStream out = new DataOutputStream(conn.getOutputStream());
@@ -25,7 +31,16 @@ public class HttpUtil {
 		out.close();
 	}
 
-	// 添加签名header
+	
+	/**
+	 * @param appKey
+	 * @param appSecret
+	 * @param uri
+	 * @return
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 * @throws ProtocolException
+	 */
 	public static HttpURLConnection CreatePostHttpConnection(String appKey,
 			String appSecret, String uri) throws MalformedURLException,
 			IOException, ProtocolException {
@@ -54,6 +69,11 @@ public class HttpUtil {
 		return conn;
 	}
 
+	/**
+	 * @param inStream
+	 * @return
+	 * @throws Exception
+	 */
 	public static byte[] readInputStream(InputStream inStream) throws Exception {
 		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
 		byte[] buffer = new byte[1024];
@@ -67,6 +87,12 @@ public class HttpUtil {
 		return data;
 	}
 
+	/**
+	 * @param conn
+	 * @return
+	 * @throws Exception
+	 * @throws IOException
+	 */
 	public static String returnResult(HttpURLConnection conn)
 			throws Exception, IOException {
 		String result;

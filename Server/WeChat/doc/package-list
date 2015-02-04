@@ -1,0 +1,7 @@
+com.wechat.dao
+com.wechat.dao.impl
+com.wechat.entity
+com.wechat.service
+com.wechat.test
+com.wechat.tool
+com.wechat.util
