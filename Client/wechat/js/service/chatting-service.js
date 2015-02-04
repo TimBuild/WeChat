@@ -20,7 +20,7 @@ weChatApp.service('chattingService', ['$http',"appInfo", function ($http,appInfo
     // listen connection status
     RongIMClient.setConnectionStatusListener({
         onChanged: function (status) {
-            // status:RongIMClient.ConnectionStatusListener.ConnectionStatus 对象
+            // status:RongIMClient.ConnectionStatusListener.ConnectionStatus object
             console.log("status " + status.getValue(), status.getMessage());
         }
     });
@@ -29,11 +29,10 @@ weChatApp.service('chattingService', ['$http',"appInfo", function ($http,appInfo
     RongIMClient.getInstance().setOnReceiveMessageListener({
         // message receiver
         onReceived: function (message) {
-            // message:RongIMClient.RongIMMessage 子类
+            // message:RongIMClient.RongIMMessage sub class
             // process data       
             console.log(message.getSenderUserId() + ":" +message.getContent());
         }
-
     });
 
     var getAllMsg = function(){

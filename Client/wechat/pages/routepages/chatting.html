@@ -2,34 +2,15 @@
     <div id="chatting-wrapper">
         <div class="chating-list">
             <div class="xiaoxiti-item" ng-repeat="msg in messages">
-                <div class="xiaoxiti" ng-class='{"msg-right":!isCurrentUser,"msg-left":isCurrentUser}'>
+                <div class="xiaoxiti" ng-class='{"msg-right":!isCurrentUser(msg),"msg-left":isCurrentUser(msg)}'>
                     <div class="user-img"><img src="img/personPhoto.png" /></div>
                     <div class="msg">
                         <div class="msg-arrow"><img src="img/blue_arrow.png" /></div>
                         <div class="msg-body">{{msg.content}}</div>
                     </div>
                 </div>
-                <div class="msg-time">{{msg.date}}</div>
+                <div class="msg-time">{{msg.date | date :' yyyy-MM-dd HH:mm'}}</div>
             </div>
-
-           <!-- <div class="xiaoxiti-item">
-                <div class="xiaoxiti msg-left">
-                    <div class="user-img"><img src="img/personPhoto.png" /></div>
-                    <div class="msg">
-                        <div class="msg-arrow"><img src="img/blue_arrow.png" /></div>
-                        <div class="msg-body">
-                            哈哈哈哈哈哈哈哈哈哈哈哈哈哈
-                            哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈
-                            哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈
-                            哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈
-                            哈哈哈哈哈哈
-                        </div>
-                    </div>
-                </div>
-                <div class="msg-time">2015-1-2 12:22</div>
-            </div>
-
-           -->
          </div>
     </div>
 </div>
