@@ -1,12 +1,12 @@
+weChatApp.service('chattingService', ['$http',"appInfo", function ($http,appInfo) {
 
-weChatApp.service('chattingService', ['$http', function ($http) {
+    var messages = [];
 
-    
     //init rongyu
     RongIMClient.init(appInfo.appKey);
 
     // connect to rongyun server
-    RongIMClient.connect(token, {
+    RongIMClient.connect(appInfo.token, {
         onSuccess: function (userId) {
             // connect success
             console.log("Login successfully." + userId);
@@ -36,6 +36,14 @@ weChatApp.service('chattingService', ['$http', function ($http) {
 
     });
 
+    var getAllMsg = function(){
+        return messages;
+    }
+
+    var addMsg = function (msg) {
+        messages.push(msg);
+    }
+
     var sendMsg = function (targetId,message) {
 
         //or use RongIMClient.TextMessage.obtain method. see the document
@@ -54,7 +62,9 @@ weChatApp.service('chattingService', ['$http', function ($http) {
     }
 
     return {
-        sendMsg:sendMsg
+        getAllMsg:getAllMsg,
+        sendMsg: sendMsg,
+        addMsg:addMsg
     }
 
 }]);
