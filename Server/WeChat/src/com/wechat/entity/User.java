@@ -9,6 +9,10 @@ public class User {
 	private String username;
 	private String password;
 	private String icon;
+	
+	public User() {
+		super();
+	}
 	public String getUserId() {
 		return userId;
 	}
@@ -33,6 +37,15 @@ public class User {
 	public void setIcon(String icon) {
 		this.icon = icon;
 	}
+	@Override
+	public String toString() {
+		return "User [userId=" + userId + ", username=" + username
+				+ ", password=" + password + ", icon=" + icon + "]";
+	}
+	
+	
+	
+	
 	
 	
 }
