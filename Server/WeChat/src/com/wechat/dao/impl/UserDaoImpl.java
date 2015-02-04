@@ -168,11 +168,10 @@ public class UserDaoImpl implements UserDao {
 		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
 		List<User> user = null;
 		try {
-			
+
 			user = queryRunner.query(conn,
-				//	ReadProperties.read("sql", "getUserByUsername"),
-					"select * from tb_user where username like '%"+username+"%'",
-					new BeanListHandler<>(User.class));
+					ReadProperties.read("sql", "getUserByUsername"),
+					new BeanListHandler<>(User.class), "%" + username + "%");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
