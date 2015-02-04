@@ -173,7 +173,7 @@ public class UserDaoImpl implements UserDao {
 			userList = queryRunner.query(conn,
 					ReadProperties.read("sql", "getUserByUsername"),
 					new BeanListHandler<>(User.class), "%" + username + "%");
-			for(User u:userList){
+			for (User u : userList) {
 				u.setPassword(null);
 				user.add(u);
 			}
@@ -193,15 +193,52 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public boolean modifyUserNameOrPsw(String userId, String username,
-			String password) {
+	public boolean modifyUserName(String userId, String username) {
 		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
 
 		try {
 			conn.setAutoCommit(false);
 			int ret = -1;
 			ret = queryRunner.update(conn,
-					ReadProperties.read("sql", "modifyUserNameOrPsw"), username,password, userId);
+					ReadProperties.read("sql", "modifyUserName"),
+					username, userId);
+			System.out.println(ret);
+			if (ret > 0) {
+				conn.commit();
+				return true;
+			} else {
+				conn.rollback();
+			}
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return false;
+	}
+
+	@Override
+	public boolean modifyUserPsw(String userId, String password) {
+		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
+
+		try {
+			conn.setAutoCommit(false);
+			int ret = -1;
+			ret = queryRunner.update(conn,
+					ReadProperties.read("sql", "modifyUserPsw"),
+					password, userId);
 			System.out.println(ret);
 			if (ret > 0) {
 				conn.commit();
