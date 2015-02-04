@@ -25,7 +25,6 @@ import com.wechat.entity.User;
 import com.wechat.tool.ApiHttpClient;
 import com.wechat.tool.ReadProperties;
 import com.wechat.tool.SystemUtil;
-import com.wechat.tool.UserPool;
 
 @Path("/UserService")
 public class UserService {
@@ -103,7 +102,7 @@ public class UserService {
 			@Context HttpServletRequest request, 
 			@Context HttpServletResponse response) {
 		
-		if(UserPool.isTokenExist(token)){
+		if(token.equals(userDao.getToken(userId))){
 			String path = SystemUtil.uploadIcon(userId, request);
 			String changePath = SystemUtil.changePath(path, request);
 			if(path != null){
@@ -127,12 +126,12 @@ public class UserService {
 	 * @return
 	 */
 	@GET
-	@Path("/getContacts/{token}")
+	@Path("/getContacts/{token}/{userId}")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public List<User> getContacts(
 			@PathParam("token") String token,
-			@QueryParam("userId") String userId){
-		if(UserPool.isTokenExist(token)){
+			@PathParam("userId") String userId){
+		if(token.equals(userDao.getToken(userId))){
 			List<User> list = contactDao.getContacts(userId);
 			return list;
 		} else {
@@ -148,14 +147,13 @@ public class UserService {
 	 * @return
 	 */
 	@GET
-	@Path("/addContact/{token}")
+	@Path("/addContact/{token}/{userId}")
 	@Produces(value = MediaType.TEXT_PLAIN)
 	public String addContact(
 			@PathParam("token") String token,
-			@QueryParam("userId") String userId,
+			@PathParam("userId") String userId,
 			@QueryParam("contactId") String contactId){
-		
-		if( UserPool.isTokenExist(token)){
+		if(token.equals(userDao.getToken(userId))){
 			if(!userDao.checkIdUnique(contactId)){
 				return "no-user";
 			} else {
@@ -173,22 +171,22 @@ public class UserService {
 		} else {
 			return "false";
 		}
-		
 	}
 	
 	/**
-	 * query user by userId
+	 * query user by id
 	 * @param token
 	 * @param userId
 	 * @return 
 	 */
 	@GET
-	@Path("/queryUserById/{token}")
+	@Path("/queryUserById/{token}/{userId}")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public User queryUserById(
 			@PathParam("token") String token,
-			@QueryParam("userId") String userId){
-		if(UserPool.isTokenExist(token)){
+			@PathParam("userId") String userId,
+			@QueryParam("id") String id){
+		if(token.equals(userDao.getToken(userId))){
 			User user = userDao.getUserById(userId);
 			return user;
 		} else {
@@ -203,12 +201,13 @@ public class UserService {
 	 * @return 
 	 */
 	@GET
-	@Path("/queryUserByName/{token}")
+	@Path("/queryUserByName/{token}/{userId}")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public List<User> queryUserByName(
 			@PathParam("token") String token,
+			@PathParam("userId") String userId,
 			@QueryParam("username") String username){
-		if(UserPool.isTokenExist(token)){
+		if(token.equals(userDao.getToken(userId))){
 			List<User> list = userDao.getUsersByName(username);
 			return list;
 		} else {
@@ -225,15 +224,15 @@ public class UserService {
 	 * @return
 	 */
 	@GET
-	@Path("/modifyUserNameOrPsw/{token}")
+	@Path("/modifyUserNameOrPsw/{token}/{userId}")
 	@Produces({ MediaType.TEXT_PLAIN })
 	public String modifyUserNameOrPsw(
-			@PathParam("token") String token, 
-			@QueryParam("userId") String userId, 
+			@PathParam("token") String token,
+			@PathParam("userId") String userId, 
 			@QueryParam("username") String username,
 			@QueryParam("psw") String password
 			){
-		if(UserPool.isTokenExist(token)){
+		if(token.equals(userDao.getToken(userId))){
 			if(password == null || "".equals(password)){
 				if(userDao.modifyUserName(userId, username)){
 					return "true";
@@ -250,6 +249,5 @@ public class UserService {
 		} else {
 			return "false";
 		}
-		
 	}
 }
