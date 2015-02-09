@@ -8,19 +8,22 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams", "$l
     $scope.isCurrentUser = function (msg) {
         return userInfo.userId == msg.userId;
     }
+    
+    $scope.targetIcon = $stateParams.icon;
+    $scope.targetId = $stateParams.userId;
+    $scope.targetName = $stateParams.name;
 
-    $scope.messages = chattingService.getAllMsg();
+    $scope.icon = userInfo.icon;
+    console.log("targetId " + $scope.targetId);
+
+    $scope.messages = chattingService.getAllMsg($scope.targetId);
     /*var msg1 = Message.newMsg("123456", "1234567", "hahahha");
     var msg2 = Message.newMsg("1234567", "1234566", "ȥ���");
 
     chattingService.addMsg(msg1);
     chattingService.addMsg(msg2);*/
 
-    $scope.targetIcon = $stateParams.icon;
-    $scope.targetId = $stateParams.userId;
-    $scope.targetName = $stateParams.name;
-
-    $scope.icon = userInfo.icon;
+   
 
     var textarea = document.getElementById("msg-txt");
     textarea.addEventListener("input", inputListener, false);
@@ -35,7 +38,7 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams", "$l
     }
 
     $scope.send = function () {
-        var msg = Message.newMsg("123456", "1234567", $scope.msgContent);
+        var msg = Message.newMsg("123456", $scope.targetId, $scope.msgContent);
         chattingService.sendMsg(msg);
         chattingService.addMsg(msg);
     }

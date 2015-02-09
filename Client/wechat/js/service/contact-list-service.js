@@ -1,9 +1,9 @@
 weChatApp.service('contact-list-service', ['$http', "appInfo", "userInfo", function ($http, appInfo, userInfo) {
 
 
-    var contacts = [{ "icon": "", "userid": "12", "username": "aaa" },
-        { "icon": "", "userid": "13", "username": "55" },
-        { "icon": "", "userid": "14", "username": "66" }];
+    var contacts = [{ "icon": "", "userid": "1234567", "username": "aaa" },
+        { "icon": "", "userid": "111111", "username": "55" },
+        { "icon": "", "userid": "222222", "username": "66" }];
 
     var getContacts = function () {
         console.log("token " + appInfo.token);

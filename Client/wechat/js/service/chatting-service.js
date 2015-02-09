@@ -1,6 +1,6 @@
 weChatApp.service('chatting-service', ['$http',"appInfo", function ($http,appInfo) {
 
-    var messages = [];
+    var messages = {};
 
     //init rongyu
     RongIMClient.init(appInfo.appKey);
@@ -35,12 +35,17 @@ weChatApp.service('chatting-service', ['$http',"appInfo", function ($http,appInf
         }
     });
 
-    var getAllMsg = function(){
-        return messages;
+    var getAllMsg = function (id) {
+        if (messages[id] == undefined) {
+            messages[id] = [];
+        }
+        console.log(messages[id] + id);
+        return messages[id];
     }
 
     var addMsg = function (msg) {
-        messages.push(msg);
+        console.log("msg  " + msg.targetId);
+        messages[msg.targetId].push(msg);
         console.log(messages);
     }
 
