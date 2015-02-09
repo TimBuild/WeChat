@@ -41,23 +41,28 @@ weChatApp.service('chatting-service', ['$http',"appInfo", function ($http,appInf
 
     var addMsg = function (msg) {
         messages.push(msg);
+        console.log(messages);
     }
 
-    var sendMsg = function (targetId,message) {
+    var sendMsg = function (msgObj) {
 
-        //or use RongIMClient.TextMessage.obtain method. see the document
-        var msg = RongIMClient.TextMessage.obtain(message);
+        //use RongIMClient.TextMessage.obtainmethod.see document
+        var msg = RongIMClient.TextMessage.obtain(msgObj.content);
         var content = new RongIMClient.MessageContent(msg);
         var conversationtype = RongIMClient.ConversationType.PRIVATE; // private chat
+        var targetId = msgObj.targetId; // Ä¿±ê Id
+
         RongIMClient.getInstance().sendMessage(conversationtype, targetId, content, null, {
             // message send success
             onSuccess: function () {
-                console.log("Send successfully " + msg.getContent());
+                console.log("success");
+                
             },
             onError: function (errorCode) {
                 console.log("·¢ËÍÊ§°Ü" + errorCode.getValue(), errorCode.getMessage());
             }
-        });
+        }
+               );
     }
 
     return {

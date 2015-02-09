@@ -5,6 +5,6 @@ weChatApp.value('appInfo', {
 });
 
 weChatApp.value('userInfo', {
-    "userId": "40221349",
+    "userId": "123456",
     "icon":"../../img/personPhoto.png"
 });

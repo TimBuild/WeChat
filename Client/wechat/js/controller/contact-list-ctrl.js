@@ -7,4 +7,5 @@ weChatApp.controller('contact-list-ctrl', ['$scope', '$timeout', "$stateParams",
 
 
     $scope.contacts = contactListService.getContacts();
+    console.log("name" + $scope.contacts[0].username);
 }]);
