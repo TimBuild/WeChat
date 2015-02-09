@@ -1,7 +1,7 @@
 ﻿<div id="contacts-div">
     <div id="contact-list-wrapper">
         <ul class="contact-list">
-            <li ng-repeat="contact in contacts" ui-sref="chatting({userId:{{contact.userid}},name:'{{contact.username}}',icon:'{{contact.icon}}'})">
+            <li ng-repeat="contact in contacts" ui-sref="contact-detail({userId:{{contact.userid}},name:'{{contact.username}}',icon:'{{contact.icon}}'})">
                 <img ng-src="{{contact.icon | imgFilter}}"><span>{{contact.username}}</span>
                 <hr />
             </li>

@@ -1,52 +1,41 @@
-weChatApp.controller('main-ctrl', ['$scope', '$timeout', "$stateParams", "$location",'$state',  function ($scope, $timeout, $stateParams, $location,$state) {
-    var isChatSelected=true;
-    var isContactSelected=false;
-    var isSelfInfoSelected=false;
-
-    $("#chat").addClass("selected");
-
-    $scope.chatList=function(){
-        if(isChatSelected==false){
-            $("#chat").addClass("selected");
-            $("#contact").removeClass("selected");
-            $("#me").removeClass("selected");
-            isChatSelected=true;
-            isContactSelected=false;
-            isSelfInfoSelected=false;
-        }
-
-        $state.go('main.chat-list');
+weChatApp.controller('main-ctrl', ['$scope', '$timeout', "$stateParams", "$location", '$state', '$rootScope', function ($scope, $timeout, $stateParams, $location, $state, $rootScope) {
+    $rootScope.swipe = {
+        "isToLeft": true,
+        "isToRight": false
     };
 
-    $scope.contactList=function(){
-        if(isContactSelected==false){
-            $("#chat").removeClass("selected");
-            $("#contact").addClass("selected");
-            $("#me").removeClass("selected");
-            isChatSelected=false;
-            isContactSelected=true;
-            isSelfInfoSelected=false;
+    $scope.urls = ['main.chat-list', 'main.contact-list', 'main.current-user'];
+    var urlIndex = 0;
+
+
+    $scope.swipeRight = function () {
+        console.log("right");
+        $rootScope.swipe.isToLeft = false;
+        $rootScope.swipe.isToRight = true;
+        if (urlIndex > 0) {
+
+            $timeout(function () {
+                $state.go($scope.urls[--urlIndex]);
+            }, 100);
+            console.log("urlIndex------------->" + urlIndex);
+
         }
-
-        $state.go('main.contact-list');
-    };
-
-    $scope.selfInfo=function(){
-        if(isSelfInfoSelected==false){
-            $("#chat").removeClass("selected");
-            $("#contact").removeClass("selected");
-            $("#me").addClass("selected");
-            isChatSelected=false;
-            isContactSelected=false;
-            isSelfInfoSelected=true;
-        }
-
-        $state.go('user-detail');
-    };
-
-    $scope.addContact=function(){
-        $state.go('add-contact');
     }
+
+    $scope.swipeLeft = function () {
+        console.log("left");
+        $rootScope.swipe.isToLeft = true;
+        $rootScope.swipe.isToRight = false;
+
+        if (urlIndex < 2) {
+
+            $timeout(function () {
+                $state.go($scope.urls[++urlIndex]);
+            }, 100);
+            console.log("urlIndex------------->" + urlIndex);
+        }
+    }
+
 }]).filter("imgFilter", function () {
     var convert = function (icon) {
         if (icon == "") {

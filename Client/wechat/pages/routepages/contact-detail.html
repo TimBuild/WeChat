@@ -1,0 +1,20 @@
+﻿<div id="user-detail-div">
+    <div class="header">
+        <div class="back-icon" ng-click="back()"><i class="weChat-icon">&#xea40</i></div>
+        <div class="content">Contact Information</div>
+    </div>
+
+    <div class="detail-info">
+        <ul>
+            <li><span class="pull-left">Head</span><img src="img/head.jpg" class="head-img pull-right" /></li>
+            <hr />
+            <li><span class="pull-left">Id</span><span class="pull-right">{{contact.userId}}</span></li>
+            <hr />
+            <li><span class="pull-left">Name</span><span class="pull-right">{{contact.name}}</span></li>
+            <hr />
+        </ul>
+    </div>
+
+    <input type="button" class="btn btn-primary" style="width:100%;margin-top:20px;" value="开始聊天" ui-sref="chatting({userId:{{contact.userId}},name:'{{contact.name}}',icon:'{{contact.icon}}'})" />
+   
+</div>

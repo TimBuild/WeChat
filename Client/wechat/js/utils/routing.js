@@ -23,18 +23,21 @@ weChatApp.config(function ($stateProvider, $urlRouterProvider) {
         url: '/contact-list',
         templateUrl: 'pages/routepages/contact-list.html',
         controller: 'contact-list-ctrl'
-    }).state('user-detail', {
-        url: '/user-detail',
-        templateUrl: 'pages/routepages/user-detail.html',
-        controller: 'user-detail-ctrl'
+    }).state('contact-detail', {
+        url: '/contact-detail/{userId}/{name}/{icon}',
+        templateUrl: 'pages/routepages/contact-detail.html',
+        controller: 'contact-detail-ctrl'
     }).state('chatting', {
         url: '/chatting/{userId}/{name}/{icon}',
         templateUrl: 'pages/routepages/chatting.html',
         controller: 'chatting-ctrl'
     }).state('add-contact', {
-            url: '/add-contact',
-            templateUrl: 'pages/routepages/add-contact.html',
-            controller: 'add-contact-ctrl'
+        url: '/add-contact',
+        templateUrl: 'pages/routepages/add-contact.html',
+        controller: 'add-contact-ctrl'
+    }).state('main.current-user', {
+        url: '/current-user',
+        templateUrl: 'pages/routepages/current-user.html'
     });
 
     $urlRouterProvider.otherwise("/login");

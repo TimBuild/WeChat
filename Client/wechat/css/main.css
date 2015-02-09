@@ -1,0 +1,36 @@
+﻿#main-div {
+    overflow:hidden;
+}
+#page-container{
+    width:100%;
+    height:100%;
+    position:absolute;
+}
+/* enter animation */
+#page-container.right.ng-enter { 
+    -webkit-animation:slideInFromLeft 0.3s both ease;
+    -moz-animation:slideInFromLeft 0.3s both ease;
+    animation:slideInFromLeft 0.3s both ease;  
+}
+ 
+/* leave animation */
+#page-container.right.ng-leave { 
+    -webkit-animation:slideOutToRight 0.3s both ease;
+    -moz-animation:slideOutToRight 0.3s both ease;
+    animation:slideOutToRight 0.3s both ease;   
+}
+ 
+
+/* enter animation */
+#page-container.left.ng-enter { 
+   -webkit-animation:slideInFromRight 0.3s both ease;
+    -moz-animation:slideInFromRight 0.3s both ease;
+    animation:slideInFromRight 0.3s both ease; 
+}
+ 
+/* leave animation */
+#page-container.left.ng-leave { 
+     -webkit-animation:slideOutToLeft 0.3s both ease;
+    -moz-animation:slideOutToLeft 0.3s both ease;
+    animation:slideOutToLeft 0.3s both ease;    
+}

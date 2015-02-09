@@ -1,0 +1,58 @@
+﻿/* ANIMATIONS
+============================================================================= */
+
+/* slide out to the left */
+@keyframes slideOutToLeft {
+    to         { transform: translateX(-100%); }
+}
+@-moz-keyframes slideOutToLeft {    
+    to         { -moz-transform: translateX(-100%); }
+}
+@-webkit-keyframes slideOutToLeft {
+    to         { -webkit-transform: translateX(-100%); }
+}
+ 
+/* slide in from the right */
+@keyframes slideInFromRight {
+    from     { transform:translateX(100%); }
+    to         { transform: translateX(0); }
+}
+@-moz-keyframes slideInFromRight {
+    from     { -moz-transform:translateX(100%); }
+    to         { -moz-transform: translateX(0); }
+}
+@-webkit-keyframes slideInFromRight {
+    from     { -webkit-transform:translateX(100%); }
+    to         { -webkit-transform: translateX(0%); }
+}
+
+
+
+/* slide out to right */
+@keyframes slideOutToRight {
+    to         { transform: translateX(100%); }
+}
+@-moz-keyframes slideOutToRight {    
+    to         { -moz-transform: translateX(100%); }
+}
+@-webkit-keyframes slideOutToRight {
+    to         { -webkit-transform: translateX(100%); }
+}
+
+
+
+/* slide in from left*/
+@keyframes slideInFromLeft {
+    from     { transform:translateX(-100%); }
+    to         { transform: translateX(0); }
+}
+@-moz-keyframes slideInFromLeft {
+    from     { -moz-transform:translateX(-100%); }
+    to         { -moz-transform: translateX(0); }
+}
+@-webkit-keyframes slideInFromLeft {
+    from     { -webkit-transform:translateX(-100%); }
+    to         { -webkit-transform: translateX(0%); }
+}
+
+
