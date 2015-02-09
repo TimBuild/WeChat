@@ -18,7 +18,7 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams", "$l
 
     $scope.targetIcon = $stateParams.icon;
     $scope.targetId = $stateParams.userId;
-    $scope.targetName = $stateParams.userName;
+    $scope.targetName = $stateParams.name;
 
     $scope.icon = userInfo.icon;
 
