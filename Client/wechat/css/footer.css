@@ -19,6 +19,8 @@
     color: white;
     z-index: 100;
     top: 0;
+    height: 50px;
+    font-size: large;
 }
 
 .appName{

@@ -8,8 +8,8 @@
 }
 #chat-list-wrapper {
     position:absolute;
-    top:20px;
-    bottom:0px;
+    top:50px;
+    bottom:65px;
     width:100%;
     overflow:hidden;
 }
