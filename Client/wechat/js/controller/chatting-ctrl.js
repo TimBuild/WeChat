@@ -11,7 +11,7 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams", "$l
 
     $scope.messages = chattingService.getAllMsg();
     /*var msg1 = Message.newMsg("123456", "1234567", "hahahha");
-    var msg2 = Message.newMsg("1234567", "1234566", "È¥ÄãµÄ");
+    var msg2 = Message.newMsg("1234567", "1234566", "È¥ï¿½ï¿½ï¿½");
 
     chattingService.addMsg(msg1);
     chattingService.addMsg(msg2);*/
@@ -40,4 +40,7 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams", "$l
         chattingService.addMsg(msg);
     }
 
+    $scope.back=function(){
+        $state.go('main.chat-list');
+    }
 }]);
