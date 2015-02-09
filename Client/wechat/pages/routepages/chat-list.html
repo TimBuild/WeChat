@@ -1,64 +1,14 @@
 ﻿<div id="chat-list-div">
     <div id="chat-list-wrapper">
         <div class="chat-list">
-            <div class="chat-item">
-                <div class="chat-head"><img src="img/head.jpg"></div>
+            <div class="chat-item" ng-repeat="chat in chats" ui-sref="chatting({userId:{{chat.userid}},name:'{{chat.username}}',icon:'{{chat.icon}}'})">
+                <div class=" chat-head"><img src="img/head.jpg"></div>
                 <div class="chat-container">
-                    <div class="user-name">木木</div>
-                    <div class="chat-content">从前有个人叫高兴，后来他死了</div>
-                </div>
-                <hr/>
-            </div>
-           
-            <div class="chat-item">
-                <div class="chat-head"><img src="img/head.jpg"></div>
-                <div class="chat-container">
-                    <div class="user-name">木木</div>
-                    <div class="chat-content">从前有个人叫高兴，后来他死了</div>
+                    <div class="user-name">{{chat.username}}</div>
+                    <div class="chat-content">{{chat.content}}</div>
                 </div>
                 <hr />
-            </div>
-            <div class="chat-item">
-                <div class="chat-head"><img src="img/head.jpg"></div>
-                <div class="chat-container">
-                    <div class="user-name">木木</div>
-                    <div class="chat-content">从前有个人叫高兴，后来他死了</div>
-                </div>
-                <hr />
-            </div>
-            <div class="chat-item">
-                <div class="chat-head"><img src="img/head.jpg"></div>
-                <div class="chat-container">
-                    <div class="user-name">木木</div>
-                    <div class="chat-content">从前有个人叫高兴，后来他死了</div>
-                </div>
-                <hr />
-            </div>
-            <div class="chat-item">
-                <div class="chat-head"><img src="img/head.jpg"></div>
-                <div class="chat-container">
-                    <div class="user-name">木木</div>
-                    <div class="chat-content">从前有个人叫高兴，后来他死了</div>
-                </div>
-                <hr />
-            </div>
-            <div class="chat-item">
-                <div class="chat-head"><img src="img/head.jpg"></div>
-                <div class="chat-container">
-                    <div class="user-name">木木</div>
-                    <div class="chat-content">从前有个人叫高兴，后来他死了</div>
-                </div>
-                <hr />
-            </div>
-            <div class="chat-item">
-                <div class="chat-head"><img src="img/head.jpg"></div>
-                <div class="chat-container">
-                    <div class="user-name">木木</div>
-                    <div class="chat-content">从前有个人叫高兴，后来他死了</div>
-                </div>
-                <hr />
-            </div>
-            
+            </div>         
         </div>
     </div>
 </div>
