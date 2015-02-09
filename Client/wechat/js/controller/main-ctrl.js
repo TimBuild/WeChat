@@ -47,4 +47,13 @@ weChatApp.controller('main-ctrl', ['$scope', '$timeout', "$stateParams", "$locat
     $scope.addContact=function(){
         $state.go('add-contact');
     }
-}]);
+}]).filter("imgFilter", function () {
+    var convert = function (icon) {
+        if (icon == "") {
+            return "img/personPhoto.png";
+        }
+
+    }
+
+    return convert;
+});
