@@ -1,5 +1,5 @@
-weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams", "$location", "chatting-service", "userInfo",
-    function ($scope, $timeout, $stateParams, $location, chattingService,userInfo) {
+weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams", "$location", "chatting-service", "userInfo","$state",
+    function ($scope, $timeout, $stateParams, $location, chattingService,userInfo,$state) {
     var myScroll = new IScroll('#chatting-wrapper', {
         scrollbars: true,
         bounce: false
