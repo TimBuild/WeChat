@@ -1,19 +1,19 @@
 ﻿<div id="chatting-div">
     <div class="header">
         <div class="back-icon" ng-click="back()"><i class="weChat-icon">&#xea40</i></div>
-        <div class="content">{{targetName}}</div>
+        <div class="content">{{contact.targetName}}</div>
     </div>
     <div id="chatting-wrapper">
         <div class="chating-list">
             <div class="xiaoxiti-item" ng-repeat="msg in messages">
                 <div class="xiaoxiti" ng-class='{"msg-right":!isCurrentUser(msg),"msg-left":isCurrentUser(msg)}'>
                     <div class="user-img">
-                        <img ng-src="{{targetIcon | imgFilter}}" ng-if="!isCurrentUser(msg)" />
-                        <img ng-src="{{icon | imgFilter}}" ng-if="isCurrentUser(msg)" />
+                        <img ng-src="{{contact.targetIcon | imgFilter}}" ng-if="!isCurrentUser(msg)" />
+                        <img ng-src="{{userInfo.icon | imgFilter}}" ng-if="isCurrentUser(msg)" />
                     </div>
                     <div class="msg">
                         <div class="msg-arrow"><img src="img/blue_arrow.png" /></div>
-                        <div class="msg-body">{{msg.content}}{{icon}}</div>
+                        <div class="msg-body">{{msg.content}}</div>
                     </div>
                 </div>
                 <div class="msg-time">{{msg.date | date :' yyyy-MM-dd HH:mm'}}</div>

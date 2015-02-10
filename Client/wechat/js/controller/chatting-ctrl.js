@@ -8,13 +8,12 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams", "$l
     $scope.isCurrentUser = function (msg) {
         return userInfo.userId == msg.userId;
     }
-    
-    $scope.targetIcon = $stateParams.icon;
-    $scope.targetId = $stateParams.userId;
-    $scope.targetName = $stateParams.name;
-
-    $scope.icon = userInfo.icon;
-    console.log("targetId " + $scope.targetId);
+    $scope.contact = {};
+    $scope.contact.targetIcon = $stateParams.icon;
+    $scope.contact.targetId = $stateParams.userId;
+    $scope.contact.targetName = $stateParams.name;
+    $scope.userInfo = userInfo;
+    console.log("targetId " + $scope.targetName);
 
     $scope.messages = chattingService.getAllMsg($scope.targetId);
     /*var msg1 = Message.newMsg("123456", "1234567", "hahahha");
@@ -39,7 +38,7 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams", "$l
 
     $scope.send = function () {
         var msg = Message.newMsg("123456", $scope.targetId, $scope.msgContent);
-        chattingService.sendMsg(msg);
+        //chattingService.sendMsg(msg);
         chattingService.addMsg(msg);
     }
 
