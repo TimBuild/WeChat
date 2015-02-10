@@ -1,27 +1,33 @@
-weChatApp.service('contact-list-service', ['$http', "appInfo", "userInfo", function ($http, appInfo, userInfo) {
+weChatApp.service('contact-list-service', [
+		'$http',"appInfo","userInfo",'$q',function($http, appInfo, userInfo,$q) {
 
+			var contacts;
+			
+			var getContacts = function(){
+				contacts = [];
+				return contacts;
+			}
 
-    var contacts = [{ "icon": "", "userid": "1234567", "username": "aaa" },
-        { "icon": "", "userid": "111111", "username": "55" },
-        { "icon": "", "userid": "222222", "username": "66" }];
+			var getContactsFromServer = function() {
+				var tempToken = appInfo.token.replace(/\//g, "__");
+				var deferred = $q.defer();
+				$http.get(appInfo.basicUrl + "getContacts/" + tempToken + "/"
+								+ userInfo.userId).success(function(response) {
+					deferred.resolve(response);
+				}).error(function(response) {
 
-    var getContacts = function () {
-        console.log("token " + appInfo.token);
-        var tempToken = appInfo.token.replace(/\//g, "__");
-        console.log("temptoken " + tempToken);
+				});
+				return deferred.promise;
+			}
+			
+			var getContactsFromLocal = function(){
+				
+			}
 
-        $http.get(appInfo.basicUrl + "getContacts/" + tempToken + "/" + userInfo.userId)
-                .success(function (response) {
-                    console.log("response ")
-                    console.log(response);
-                }).error(function (response) {
-                        
-                });
-            return contacts;
-        }
+			return {
+				getContacts:getContacts,
+				getContactsFromServer : getContactsFromServer,
+				getContactsFromLocal: getContactsFromLocal
+			}
 
-    return {
-        getContacts: getContacts
-    }
-
-}]);
+		} ]);

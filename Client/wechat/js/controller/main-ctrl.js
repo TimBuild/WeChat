@@ -1,4 +1,7 @@
-weChatApp.controller('main-ctrl', ['$scope', '$timeout', "$stateParams", "$location", '$state', '$rootScope', function ($scope, $timeout, $stateParams, $location, $state, $rootScope) {
+weChatApp.controller('main-ctrl', ['$scope', '$timeout', "$stateParams", 
+                                   "$location", '$state', '$rootScope', 'file-service','userInfo',
+                                   function ($scope, $timeout, $stateParams, $location, 
+                                		   $state, $rootScope,fileService,userInfo) {
     $rootScope.swipe = {
         "isToLeft": true,
         "isToRight": false
@@ -40,12 +43,12 @@ weChatApp.controller('main-ctrl', ['$scope', '$timeout', "$stateParams", "$locat
         $state.go('add-contact');
     }
 
+    fileService.createRootDir(userInfo.userId);//create dir wechat/userId
 }]).filter("imgFilter", function () {
     var convert = function (icon) {
         if (icon == "") {
             return "img/personPhoto.png";
         }
-
     }
 
     return convert;

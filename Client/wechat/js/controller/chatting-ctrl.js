@@ -13,7 +13,7 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams", "$l
     $scope.contact.targetId = $stateParams.userId;
     $scope.contact.targetName = $stateParams.name;
     $scope.userInfo = userInfo;
-    console.log("targetId " + $scope.targetName);
+    console.log("targetId " + $scope.contact.targetName);
 
     $scope.messages = chattingService.getAllMsg($scope.targetId);
     /*var msg1 = Message.newMsg("123456", "1234567", "hahahha");
