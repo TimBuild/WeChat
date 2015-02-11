@@ -56,6 +56,16 @@
     right:10px;
     margin-top: -5px;
 }
+.no-data{
+	padding-left:15px;
+    height:60px;
+    position:relative;
+    padding-right:15px;
+    background:white;
+    text-align:center;
+    font-size:20px;
+    line-height:60px;
+}
 
 
 

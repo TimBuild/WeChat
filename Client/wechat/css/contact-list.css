@@ -41,6 +41,16 @@ ul.contact-list {
 .contact-list li span {
     font-size:medium;
 }
+.no-data{
+	padding-left:15px;
+    height:60px;
+    position:relative;
+    padding-right:15px;
+    background:white;
+    text-align:center;
+    font-size:20px;
+    line-height:60px;
+}
 
 
 

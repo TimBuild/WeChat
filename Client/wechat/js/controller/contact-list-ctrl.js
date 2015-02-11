@@ -21,6 +21,9 @@ weChatApp.controller('contact-list-ctrl', ['$scope', '$timeout', "$stateParams",
     var getContactsFromLocal = function(){
     	fileService.getContactFromLocal();
     }
+    $scope.noData = function(){
+  	  return $scope.contacts.length ==0;
+    }
 
    
 }]);

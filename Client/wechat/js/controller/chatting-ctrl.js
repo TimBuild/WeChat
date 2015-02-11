@@ -1,5 +1,7 @@
-weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams", "$location", "chatting-service", "userInfo","$state",
-    function ($scope, $timeout, $stateParams, $location, chattingService,userInfo,$state) {
+weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams", 
+                                       "$location", "chatting-service", "userInfo","$state",
+                                       function ($scope, $timeout, $stateParams,
+                                    		   $location, chattingService,userInfo,$state) {
     var myScroll = new IScroll('#chatting-wrapper', {
         scrollbars: true,
         bounce: false
@@ -37,9 +39,9 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams", "$l
     }
 
     $scope.send = function () {
-        var msg = Message.newMsg("123456", $scope.targetId, $scope.msgContent);
-        //chattingService.sendMsg(msg);
-        chattingService.addMsg(msg);
+        var msg = Message.newMsg(userInfo.userId, $scope.targetId, $scope.msgContent);
+        chattingService.sendMsg(msg);
+        chattingService.addMsg($scope.contact,msg);
     }
 
     $scope.back=function(){

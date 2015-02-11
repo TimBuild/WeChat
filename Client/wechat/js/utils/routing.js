@@ -44,5 +44,5 @@ weChatApp.config(function ($stateProvider, $urlRouterProvider) {
             controller: 'search-user-ctrl'
     });
 
-    $urlRouterProvider.otherwise("/login");
+    $urlRouterProvider.otherwise("/main/chat-list");
 });

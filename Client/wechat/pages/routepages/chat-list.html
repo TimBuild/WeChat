@@ -1,5 +1,8 @@
-﻿<div id="chat-list-div">
+<div id="chat-list-div">
     <div id="chat-list-wrapper">
+    	<div class="no-data" ng-if="noData">
+    	 no datas
+    	</div>
         <div class="chat-list">
             <div class="chat-item" ng-repeat="chat in chats" ui-sref="chatting({userId:{{chat.userid}},name:'{{chat.username}}',icon:'{{chat.icon}}'})">
                 <div class=" chat-head"><img src="img/head.jpg"></div>

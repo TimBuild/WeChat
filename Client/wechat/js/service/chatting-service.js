@@ -1,4 +1,4 @@
-weChatApp.service('chatting-service', ['$http',"appInfo", function ($http,appInfo) {
+weChatApp.service('chatting-service', ['$http',"appInfo","file-service", function ($http,appInfo, fileService) {
 
     var messages = {};
 
@@ -32,6 +32,7 @@ weChatApp.service('chatting-service', ['$http',"appInfo", function ($http,appInf
             // message:RongIMClient.RongIMMessage sub class
             // process data       
             console.log(message.getSenderUserId() + ":" +message.getContent());
+            
         }
     });
 
@@ -43,10 +44,17 @@ weChatApp.service('chatting-service', ['$http',"appInfo", function ($http,appInf
         return messages[id];
     }
 
-    var addMsg = function (msg) {
+    var addMsg = function (contact,msg) {
         console.log("msg  " + msg.targetId);
         messages[msg.targetId].push(msg);
         console.log(messages);
+        
+        var history = {};
+        history.userId = contact.targetId;
+        history.userName = contact.targetName;
+        history.icon = contact.targetIcon;
+        history.content = msg.content;
+        fileService.addData(userInfo.userId, history);
     }
 
     var sendMsg = function (msgObj) {
@@ -55,7 +63,7 @@ weChatApp.service('chatting-service', ['$http',"appInfo", function ($http,appInf
         var msg = RongIMClient.TextMessage.obtain(msgObj.content);
         var content = new RongIMClient.MessageContent(msg);
         var conversationtype = RongIMClient.ConversationType.PRIVATE; // private chat
-        var targetId = msgObj.targetId; // Ä¿±ê Id
+        var targetId = msgObj.targetId; // Ä¿ï¿½ï¿½ Id
 
         RongIMClient.getInstance().sendMessage(conversationtype, targetId, content, null, {
             // message send success
@@ -64,7 +72,7 @@ weChatApp.service('chatting-service', ['$http',"appInfo", function ($http,appInf
                 
             },
             onError: function (errorCode) {
-                console.log("·¢ËÍÊ§°Ü" + errorCode.getValue(), errorCode.getMessage());
+                console.log("ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½" + errorCode.getValue(), errorCode.getMessage());
             }
         }
                );

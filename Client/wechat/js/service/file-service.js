@@ -1,5 +1,5 @@
-weChatApp.service('file-service', ['$http',"appInfo","userInfo",
-		function($http, appInfo, userInfo) {
+weChatApp.service('file-service', ['$http',"appInfo","userInfo",'$q',
+		function($http, appInfo, userInfo,$q) {
 	
 			var rootDir = "wechat";
 			var fileDirectory = "wechat/" + userInfo.userId;
@@ -185,11 +185,13 @@ weChatApp.service('file-service', ['$http',"appInfo","userInfo",
 				weChatDB.db = dbShell;
 				
 				function populateDB(tx) {
-					tx.executeSql("create table if not exists " + userId+"(userId unique, userName, icon, content)");
+					var sql = "create table if not exists tb_" + userId+" (userId unique, userName, icon, content)";
+					console.log("创建表 " + sql);
+					tx.executeSql(sql);
 					
 				}
-				function errorCB(){
-					console.log("创建表失败");
+				function errorCB(e){
+					console.log("创建表失败" + e.code);
 				}
 				
 				function successCB(){
@@ -203,10 +205,10 @@ weChatApp.service('file-service', ['$http',"appInfo","userInfo",
 			 * add data， first check if
 			 *  data exist if exist then update else insert
 			 */
-			var addData = function(db, userId, history){
+			var addData = function(userId, history){
 				function populateDB(tx) {
-					tx.executeSql("insert into " + userId +"(userId, userName, icon, content) values(?,?,?,?)",
-							[history.userId, history.userName, history,icon, history.content]);
+					tx.executeSql("insert into tb_" + userId +" (userId, userName, icon, content) values(?,?,?,?)",
+							[history.userId, history.userName, history.icon, history.content]);
 				}
 				
 				function errorCB(){
@@ -222,27 +224,46 @@ weChatApp.service('file-service', ['$http',"appInfo","userInfo",
 			/**
 			 * get all chat history by userId
 			 */
-			var getData = function(db, userId) {
+			var getData = function(userId) {
+				var deferred = $q.defer();
+				
 				function populateDB(tx){
-					tx.executeSql("select * from "+userId,[], function(tx,result){
+					var chats=[];
+					tx.executeSql("select * from tb_"+userId,[], function(tx,result){
 						var len = result.rows.length;
 						for (i = 0; i < len; i++){ 
-					         console.log(results.rows.item(i).userName );  
+					         console.log(result.rows.item(i).userName );  
+					         
 					      } 
+						deferred.resolve(result);
 					},null);
 				}
+				
+				function errorCB(e){
+					console.log("查询失败" + e);
+				}
+				function successCB(){
+					console.log("查询成功");
+				}
 				weChatDB.db.transaction(populateDB, errorCB, successCB);
+				return deferred.promise;
 			}
 			
 			/**
 			 * clear data store values
 			 */
-			var clearTb = function(db, storeName){
-				 
-			}
-			
-			var deleteDB = function(name){
+			var clearTb = function(userId){
+				function populateDB(tx){
+					tx.executeSql("delete * from tb_" + userId);
+				}
 				
+				function errorCB(e){
+					console.log("删除失败" + e);
+				}
+				function successCB(){
+					console.log("删除成功");
+				}
+				weChatDB.db.transaction(populateDB, errorCB, successCB);
 			}
 
 			return {
@@ -251,7 +272,7 @@ weChatApp.service('file-service', ['$http',"appInfo","userInfo",
 				createLog : createLog,
 				getLog : getLog,
 				getContactFromLocal:getContactFromLocal,
-				clearStore:clearStore,
+				clearTb:clearTb,
 				addData:addData,
 				getData:getData,
 				openDB:openDB,

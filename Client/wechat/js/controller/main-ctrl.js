@@ -43,8 +43,13 @@ weChatApp.controller('main-ctrl', ['$scope', '$timeout', "$stateParams",
         $state.go('search-user');
     }
 
-    fileService.createRootDir(userInfo.userId);//create dir wechat/userId
-    fileService.openDB(fileService.weChatDB.name, userInfo.userId);
+    fileService.openDB(userInfo.userId);
+    
+    $timeout(function(){
+    	fileService.createRootDir(userInfo.userId);//create dir wechat/userId
+    },2*1000);
+    
+    
     
 }]).filter("imgFilter", function () {
     var convert = function (icon) {
