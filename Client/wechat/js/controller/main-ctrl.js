@@ -40,7 +40,7 @@ weChatApp.controller('main-ctrl', ['$scope', '$timeout', "$stateParams",
     }
 
     $scope.addContact = function () {
-        $state.go('add-contact');
+        $state.go('search-user');
     }
 
     fileService.createRootDir(userInfo.userId);//create dir wechat/userId
