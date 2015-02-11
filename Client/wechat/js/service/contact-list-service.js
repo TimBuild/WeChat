@@ -15,19 +15,14 @@ weChatApp.service('contact-list-service', [
 								+ userInfo.userId).success(function(response) {
 					deferred.resolve(response);
 				}).error(function(response) {
-
+					console.log("获取联系人失败 " + response);
 				});
 				return deferred.promise;
-			}
-			
-			var getContactsFromLocal = function(){
-				
 			}
 
 			return {
 				getContacts:getContacts,
-				getContactsFromServer : getContactsFromServer,
-				getContactsFromLocal: getContactsFromLocal
+				getContactsFromServer : getContactsFromServer
 			}
 
 		} ]);

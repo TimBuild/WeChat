@@ -14,12 +14,22 @@ weChatApp.controller('contact-list-ctrl', ['$scope', '$timeout', "$stateParams",
         for (var i=0; i < response.user.length; i++) {
         	$scope.contacts.push(response.user[i]);
         }
-        fileService.saveContact(userInfo.userId, response);
+        console.log("联系人列表 " + $scope.contacts.length);
+        if ($scope.contacts.length != 0) {
+        	fileService.saveContact(userInfo.userId, response);
+        } else {
+        	getContactsFromLocal();
+        }
+        
+        
+        
      });
     
     /*从文件获取联系人*/
     var getContactsFromLocal = function(){
-    	fileService.getContactFromLocal();
+    	fileService.getContactFromLocal().then(function(response) {
+    		console.log("从本地获取联系人 " + response);
+    	});
     }
     $scope.noData = function(){
   	  return $scope.contacts.length ==0;

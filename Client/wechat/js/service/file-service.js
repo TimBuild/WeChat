@@ -152,9 +152,17 @@ weChatApp.service('file-service', ['$http',"appInfo","userInfo",'$q',
 			
 			var getContactFromLocal = function() {
 				
+				var deferred = $q.defer();
+				
 				var gotFileEntry = function(fileEntry){
 					fileEntry.file(function(file){
-						readAsText(file);
+						var reader = new FileReader();
+				        reader.onloadend = function(evt) {
+				            console.log("读取文本");
+				            console.log(evt.target.result);
+				            deferred.resolve(evt.target.result);
+				        };
+				        reader.readAsText(file);
 					}, function(){
 						console.log("文件读取失败");
 					});
@@ -170,6 +178,7 @@ weChatApp.service('file-service', ['$http',"appInfo","userInfo",'$q',
 						onFSWin, function() {
 							console.log("fs fail ");
 						});
+				return deferred.promise;
 			}
 			
 			var weChatDB = {
@@ -207,12 +216,28 @@ weChatApp.service('file-service', ['$http',"appInfo","userInfo",'$q',
 			 */
 			var addData = function(userId, history){
 				function populateDB(tx) {
-					tx.executeSql("insert into tb_" + userId +" (userId, userName, icon, content) values(?,?,?,?)",
-							[history.userId, history.userName, history.icon, history.content]);
+					var sql = "select * from tb_"+userId +" where userId='"+history.userId+"'";
+					var sqlInsert = "insert into tb_" + userId +
+					" (userId, userName, icon, content) values('"+history.userId+"','"+
+					history.userName+"','"+"icon"+"','"+history.content+"')";
+					
+					var sqlUpdate = "update tb_"+userId+" set content='"+history.content+"' where userId='" + history.userId+"'";
+					
+					tx.executeSql(sql,[], function(tx,result){
+						var len = result.rows.length;
+						console.log("result " + len);
+						if (len ==0) {
+							console.log("插入 " + sqlInsert);
+							tx.executeSql(sqlInsert);
+						} else {
+							console.log("修改 " + sqlUpdate);
+							tx.executeSql(sqlUpdate);
+						}
+					},null);
 				}
 				
-				function errorCB(){
-					console.log("添加history失败");
+				function errorCB(e){
+					console.log("添加history失败" + e);
 				}
 				
 				function successCB(){
@@ -232,7 +257,7 @@ weChatApp.service('file-service', ['$http',"appInfo","userInfo",'$q',
 					tx.executeSql("select * from tb_"+userId,[], function(tx,result){
 						var len = result.rows.length;
 						for (i = 0; i < len; i++){ 
-					         console.log(result.rows.item(i).userName );  
+					         console.log(result.rows.item(i).userId );  
 					         
 					      } 
 						deferred.resolve(result);
@@ -254,7 +279,7 @@ weChatApp.service('file-service', ['$http',"appInfo","userInfo",'$q',
 			 */
 			var clearTb = function(userId){
 				function populateDB(tx){
-					tx.executeSql("delete * from tb_" + userId);
+					tx.executeSql("delete from tb_" + userId);
 				}
 				
 				function errorCB(e){

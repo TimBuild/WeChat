@@ -1,4 +1,4 @@
-weChatApp.service('chatting-service', ['$http',"appInfo","file-service", function ($http,appInfo, fileService) {
+weChatApp.service('chatting-service', ['$http',"appInfo","file-service","userInfo", function ($http,appInfo, fileService,userInfo) {
 
     var messages = {};
 
@@ -58,6 +58,7 @@ weChatApp.service('chatting-service', ['$http',"appInfo","file-service", functio
     }
 
     var sendMsg = function (msgObj) {
+    	console.log("content " + msgObj.content + "targetId " + msgObj.targetId);
 
         //use RongIMClient.TextMessage.obtainmethod.see document
         var msg = RongIMClient.TextMessage.obtain(msgObj.content);

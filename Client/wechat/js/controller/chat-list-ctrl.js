@@ -9,7 +9,7 @@ weChatApp.controller('chat-list-ctrl', ['$scope', '$timeout',
 
 //    $scope.chats = chatListService.getChats();
 //    chatListService.getHistory();
-      fileService.clearTb(userInfo.userId);
+//      fileService.clearTb(userInfo.userId);
       
       $scope.chats = [];
       fileService.getData(userInfo.userId).then(function(response){
