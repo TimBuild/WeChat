@@ -44,6 +44,8 @@ weChatApp.controller('main-ctrl', ['$scope', '$timeout', "$stateParams",
     }
 
     fileService.createRootDir(userInfo.userId);//create dir wechat/userId
+    fileService.openDB(fileService.weChatDB.name, userInfo.userId);
+    
 }]).filter("imgFilter", function () {
     var convert = function (icon) {
         if (icon == "") {
