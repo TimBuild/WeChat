@@ -1,5 +1,8 @@
-weChatApp.controller('add-contact-ctrl', ['$scope', '$timeout', "$stateParams", "$location",'$state',  function ($scope, $timeout, $stateParams, $location,$state) {
-    $scope.back=function(){
-        $state.go('main.chat-list');
-    }
+weChatApp.controller('add-contact-ctrl', ['$scope', '$timeout', "$stateParams", "$location",'$state',
+    'add-contact-service','userInfo',function ($scope, $timeout, $stateParams, $location,$state,addContactServer,userInfo) {
+
+
+        $scope.back=function(){
+            $state.go('main.chat-list');
+        }
 }]);
