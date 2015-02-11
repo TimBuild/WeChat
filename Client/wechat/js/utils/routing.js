@@ -38,6 +38,10 @@ weChatApp.config(function ($stateProvider, $urlRouterProvider) {
     }).state('main.current-user', {
         url: '/current-user',
         templateUrl: 'pages/routepages/current-user.html'
+    }).state('search-user', {
+            url: '/search-user',
+            templateUrl: 'pages/routepages/search-user.html',
+            controller: 'search-user-ctrl'
     });
 
     $urlRouterProvider.otherwise("/login");
