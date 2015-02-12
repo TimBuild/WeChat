@@ -6,10 +6,19 @@ weChatApp.controller('login-ctrl', ['$scope', '$timeout',
 	$scope.userInfo = userInfo;
 	
     $scope.login=function(){
-    	
+
+        if($scope.userInfo.userId==""||$scope.userInfo.psw==""){
+            $("#nullValue").removeClass("hidden");
+            setInterval(function(){
+                $("#nullValue").addClass("hidden");
+            },2000);
+        }
         loginServer.login().then(function(response){
         	if(response=="") {
-        		alert("Error username or psw");
+        		$("#wrongInfo").removeClass("hidden");
+                setInterval(function(){
+                    $("#wrongInfo").addClass("hidden");
+                },2000);
         	} else {
         		appInfo.token = response;
                 $state.go('main.chat-list');
