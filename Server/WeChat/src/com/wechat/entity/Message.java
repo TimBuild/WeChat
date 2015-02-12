@@ -7,6 +7,7 @@ public class Message {
 	private String content;
 	private String time;
 	private String status;
+	
 	public int getId() {
 		return id;
 	}
