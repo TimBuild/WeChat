@@ -260,18 +260,22 @@ public class UserService {
 			@QueryParam("targetid") String targetid,
 			@QueryParam("content") String content
 			){
-		
-		Message msg = new Message();
-		msg.setOwnerId(userid);
-		msg.setContent(content);
-		msg.setTime(String.valueOf(new Date().getTime()));
-		msg.setStatus("0");
-		
-		if(messageDao.addMessage(msg)){
-			return "true";
+		if( (SystemUtil.changeToken(token)).equals(userDao.getToken(userid))){
+			Message msg = new Message();
+			msg.setOwnerId(userid);
+			msg.setContent(content);
+			msg.setTime(String.valueOf(new Date().getTime()));
+			msg.setStatus("0");
+			
+			if(messageDao.addMessage(msg)){
+				return "true";
+			} else {
+				return "false";
+			}
 		} else {
 			return "false";
 		}
+		
 	}
 	
 	/**
@@ -287,9 +291,15 @@ public class UserService {
 			@PathParam("userid") String userid,
 			@QueryParam("targetid") String targetid
 			){
-		List<Message> msgs = messageDao.getMessages(targetid, userid);
-		messageDao.changeStatus(msgs);
 		
-		return msgs;
+		if( (SystemUtil.changeToken(token)).equals(userDao.getToken(userid)) ){
+			List<Message> msgs = messageDao.getMessages(targetid, userid);
+			messageDao.changeStatus(msgs);
+			return msgs;
+		} else {
+			return null;
+		}
+		
+		
 	}
 }
