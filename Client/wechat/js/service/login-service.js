@@ -1,18 +1,21 @@
 weChatApp.service('login-service', [
     '$http',"appInfo","userInfo",'$q',function($http, appInfo, userInfo,$q) {
 
-        var loginCheck = function(password) {
+        var login = function() {
             var deferred = $q.defer();
+            console.log("userId " + userInfo.userId);
+            console.log("psw " + userInfo.psw);
             $http.get(appInfo.basicUrl + "login?userid=" + userInfo.userId + "&psw="
-                    + password).success(function(response) {
+                    + userInfo.psw).success(function(response) {
+                    console.log("登录成功 " + response);
                     deferred.resolve(response);
                 }).error(function(response) {
-
+                	console.log("登录失败 " + response);
                 });
             return deferred.promise;
         }
 
         return {
-            loginCheck:loginCheck
+            login:login
         }
     } ]);

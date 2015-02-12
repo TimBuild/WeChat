@@ -1,12 +1,19 @@
-weChatApp.controller('login-ctrl', ['$scope', '$timeout', "$stateParams", "$location",'$state',
-    'login-service','userInfo',function ($scope, $timeout, $stateParams, $location,$state,loginServer,userInfo) {
-
+weChatApp.controller('login-ctrl', ['$scope', '$timeout', 
+    "$stateParams", "$location",'$state',
+    'login-service','userInfo',"appInfo",
+    function ($scope, $timeout, $stateParams, 
+    		$location,$state,loginServer,userInfo,appInfo) {
+	$scope.userInfo = userInfo;
+	
     $scope.login=function(){
-        var username=$("#username").val();
-        var password=$("#password").val();
-        userInfo.userId=username;
-        loginServer.loginCheck(password).then(function(response){
-            $state.go('main.chat-list');
+    	
+        loginServer.login().then(function(response){
+        	if(response="") {
+        		alert("Error username or psw");
+        	} else {
+        		appInfo.token = response;
+                $state.go('main.chat-list');
+        	}
         })
     };
 
