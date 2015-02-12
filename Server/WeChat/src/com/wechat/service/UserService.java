@@ -1,6 +1,8 @@
 package com.wechat.service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,16 +16,15 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import org.codehaus.jettison.json.JSONObject;
-
 import com.wechat.dao.ContactDao;
+import com.wechat.dao.MessageDao;
 import com.wechat.dao.UserDao;
 import com.wechat.dao.impl.ContactDaoImpl;
+import com.wechat.dao.impl.MessageDaoImpl;
 import com.wechat.dao.impl.UserDaoImpl;
 import com.wechat.entity.Contact;
+import com.wechat.entity.Message;
 import com.wechat.entity.User;
-import com.wechat.tool.ApiHttpClient;
-import com.wechat.tool.ReadProperties;
 import com.wechat.tool.SystemUtil;
 
 @Path("/UserService")
@@ -31,7 +32,7 @@ public class UserService {
 
 	private UserDao userDao = new UserDaoImpl();
 	private ContactDao contactDao = new ContactDaoImpl();
-	
+	private MessageDao messageDao = new MessageDaoImpl();
 	/**
 	 * user login
 	 * @param userid
@@ -69,7 +70,7 @@ public class UserService {
 			userid = String.valueOf(SystemUtil.generateUserId());
 		} while (userDao.checkIdUnique(userid));
 		
-		try {
+		/*try {
 			String token = ApiHttpClient.getToken(
 							ReadProperties.read("configure", "appkey"), 
 							ReadProperties.read("configure", "appsecret"),
@@ -80,8 +81,12 @@ public class UserService {
 			userDao.addUser(userid, username, password, token);
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		return userid;
+		}*/
+		if(userDao.addUser(userid, username, password, UUID.randomUUID().toString())){
+			return userid;
+		} else {
+			return "";
+		}		
 	}
 
 	/**
@@ -252,6 +257,13 @@ public class UserService {
 		}
 	}
 	
+	/**
+	 * @param token
+	 * @param userid
+	 * @param targetid
+	 * @param content
+	 * @return
+	 */
 	@GET
 	@Path("/addMessage/{token}/{userid}")
 	@Produces({ MediaType.TEXT_PLAIN })
@@ -260,6 +272,33 @@ public class UserService {
 			@QueryParam("targetid") String targetid,
 			@QueryParam("content") String content
 			){
-		return "";
+		
+		Message msg = new Message();
+		msg.setOwnerId(userid);
+		msg.setContent(content);
+		msg.setTime(String.valueOf(new Date().getTime()));
+		msg.setStatus("0");
+		
+		if(messageDao.addMessage(msg)){
+			return "true";
+		} else {
+			return "false";
+		}
+	}
+	
+	/**
+	 * @param token
+	 * @param userid
+	 * @param targetid
+	 * @return
+	 */
+	@GET
+	@Path("/getMessages/{token}/{userid}")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public List<Message> getMessages(@PathParam("token") String token,
+			@PathParam("userid") String userid,
+			@QueryParam("targetid") String targetid
+			){
+		return messageDao.getMessages(targetid, userid);
 	}
 }
