@@ -1,4 +1,5 @@
-weChatApp.service('chatting-service', ['$http',"appInfo","file-service","userInfo", function ($http,appInfo, fileService,userInfo) {
+weChatApp.service('chatting-service', ['$http',"appInfo","file-service","userInfo", 
+                    function ($http,appInfo, fileService,userInfo) {
 
     var messages = {};
 
@@ -75,14 +76,29 @@ weChatApp.service('chatting-service', ['$http',"appInfo","file-service","userInf
             onError: function (errorCode) {
                 console.log("����ʧ��" + errorCode.getValue(), errorCode.getMessage());
             }
-        }
-               );
+        });
+    }
+    
+    var createLogDir = function(filePath){
+    	fileService.createSubDir(filePath);
+    }
+    
+    var getLog = function(userId, targetId , date){
+    	fileService.getLog(userId, targetId, date).then(function(response){
+    		console.log("message " + response);
+    	});
+    }
+    
+    var createLog = function(targetId){
+    	fileService.createLog(targetId,messages);
     }
 
     return {
         getAllMsg:getAllMsg,
         sendMsg: sendMsg,
-        addMsg:addMsg
+        addMsg:addMsg,
+        createLogDir:createLogDir,
+        createLog:createLog
     }
 
 }]);

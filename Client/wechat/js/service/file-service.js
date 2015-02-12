@@ -123,10 +123,16 @@ weChatApp.service('file-service', ['$http',"appInfo","userInfo",'$q',
 						+ "_" + date.getDay();
 				var logPath = fileDirectory + "/" + targetId + "/"
 						+ fileName;
-
+				var deferred = $q.defer();
 				var gotFileEntry = function(fileEntry){
 					fileEntry.file(function(file){
-						readAsText(file);
+//						readAsText(file);
+					 var reader = new FileReader();
+				     reader.onloadend = function(evt) {
+				            console.log("读取文本");
+				            deferred.resolve(evt.target.result);
+				     };
+				     reader.readAsText(file);
 					}, function(){
 						console.log("文件读取失败");
 					});
@@ -136,6 +142,7 @@ weChatApp.service('file-service', ['$http',"appInfo","userInfo",'$q',
 						gotFileEntry, function() {
 							console.log("fs fail ");
 					});
+				return deferred.promise;
 			}
 
 			/**
@@ -256,10 +263,6 @@ weChatApp.service('file-service', ['$http',"appInfo","userInfo",'$q',
 					var chats=[];
 					tx.executeSql("select * from tb_"+userId,[], function(tx,result){
 						var len = result.rows.length;
-						for (i = 0; i < len; i++){ 
-					         console.log(result.rows.item(i).userId );  
-					         
-					      } 
 						deferred.resolve(result);
 					},null);
 				}
@@ -301,7 +304,8 @@ weChatApp.service('file-service', ['$http',"appInfo","userInfo",'$q',
 				addData:addData,
 				getData:getData,
 				openDB:openDB,
-				weChatDB:weChatDB
+				weChatDB:weChatDB,
+				createSubDir:createSubDir
 			}
 
 		} ]);

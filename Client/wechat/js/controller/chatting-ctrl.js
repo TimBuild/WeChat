@@ -6,6 +6,7 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams",
         scrollbars: true,
         bounce: false
     });
+    
 
     $scope.isCurrentUser = function (msg) {
         return userInfo.userId == msg.userId;
@@ -18,14 +19,9 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams",
     console.log("targetId " + $scope.contact.targetName);
 
     $scope.messages = chattingService.getAllMsg($scope.contact.targetId);
-    /*var msg1 = Message.newMsg("123456", "1234567", "hahahha");
-    var msg2 = Message.newMsg("1234567", "1234566", "ȥ���");
-
-    chattingService.addMsg(msg1);
-    chattingService.addMsg(msg2);*/
-
-   
-
+    
+    chattingService.createLogDir("wechat/"+userInfo.userId+"/"+$scope.contact.targetId);
+    
     var textarea = document.getElementById("msg-txt");
     textarea.addEventListener("input", inputListener, false);
     function inputListener() {
@@ -38,13 +34,33 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams",
         }
     }
 
+    
+    
+    
     $scope.send = function () {
         var msg = Message.newMsg(userInfo.userId, $scope.contact.targetId, $scope.msgContent);
-        chattingService.sendMsg(msg);
+//        chattingService.sendMsg(msg);
         chattingService.addMsg($scope.contact,msg);
     }
 
     $scope.back=function(){
+    	
         $state.go('main.chat-list');
     }
+    
+    
+    var insertTestMsg = function(){
+    	var msg1 = Message.newMsg(userInfo.userId, $scope.contact.targetId, "aaaaaaaaaa");
+        chattingService.addMsg($scope.contact,msg1);
+        var msg2 = Message.newMsg(userInfo.userId, $scope.contact.targetId, "bbbbbbbbbb");
+        chattingService.addMsg($scope.contact,msg2);
+        var msg3 = Message.newMsg(userInfo.userId, $scope.contact.targetId, "ccccccccccc");
+        chattingService.addMsg($scope.contact,msg3);
+        
+        chattingService.createLog($scope.contact.targetId);
+        
+    }
+    
+    insertTestMsg();
+    
 }]);
