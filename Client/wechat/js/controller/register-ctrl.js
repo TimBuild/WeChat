@@ -13,10 +13,18 @@ weChatApp.controller('register-ctrl', ['$scope', '$timeout', "$stateParams", "$l
         
         $scope.register = function(){
         	console.log("register click");
-        	registerService.registerCheck(userName,psw).then(function(response){
-            	console.log("result " + response);
-            	$scope.registerCB=true;
-            	$scope.registerNum=response;
-            });
+            if(userName==""||psw==""||conPsw==""){
+                alert("Please input all fields");
+            }else{
+                if(psw!=conPsw){
+                    alert("The passwords you entered do not match");
+                }else{
+                    registerService.registerCheck(userName,psw).then(function(response){
+                        console.log("result " + response);
+                        $scope.registerCB=true;
+                        $scope.registerNum=response;
+                    });
+                }
+            }
         }
 }]);

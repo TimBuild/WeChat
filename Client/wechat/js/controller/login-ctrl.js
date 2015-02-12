@@ -11,19 +11,20 @@ weChatApp.controller('login-ctrl', ['$scope', '$timeout',
             $("#nullValue").removeClass("hidden");
             setInterval(function(){
                 $("#nullValue").addClass("hidden");
-            },2000);
+            },5000);
+        }else{
+            loginServer.login().then(function(response){
+                if(response=="") {
+                    $("#wrongInfo").removeClass("hidden");
+                    setInterval(function(){
+                        $("#wrongInfo").addClass("hidden");
+                    },5000);
+                } else {
+                    appInfo.token = response;
+                    $state.go('main.chat-list');
+                }
+            })
         }
-        loginServer.login().then(function(response){
-        	if(response=="") {
-        		$("#wrongInfo").removeClass("hidden");
-                setInterval(function(){
-                    $("#wrongInfo").addClass("hidden");
-                },2000);
-        	} else {
-        		appInfo.token = response;
-                $state.go('main.chat-list');
-        	}
-        })
     };
 
     $scope.register=function(){
