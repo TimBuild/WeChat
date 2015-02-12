@@ -29,7 +29,6 @@ public class MessageDaoImpl implements MessageDao {
 					ReadProperties.read("sql", "addMessage"), msg.getOwnerId(),
 					msg.getContactId(), msg.getContent(), msg.getTime(),
 					msg.getStatus());
-			System.out.println(ret);
 			if (ret > 0) {
 				conn.commit();
 				return true;
@@ -62,17 +61,12 @@ public class MessageDaoImpl implements MessageDao {
 	@Override
 	public List<Message> getMessages(String ownerId, String contactId) {
 		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
-		List<Message> messageList = null;
-		List<Message> message = new ArrayList<Message>();
+		List<Message> message = null;
 		try {
 
-			messageList = queryRunner.query(conn,
+			message = queryRunner.query(conn,
 					ReadProperties.read("sql", "getMessagesByOwnContact"),
-					new BeanListHandler<>(Message.class), ownerId,contactId);
-			for (Message m :messageList) {
-				
-				message.add(m);
-			}
+					new BeanListHandler<>(Message.class), ownerId, contactId);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -90,7 +84,34 @@ public class MessageDaoImpl implements MessageDao {
 
 	@Override
 	public boolean changeStatus(List<Message> msgs) {
-		// TODO Auto-generated method stub
+		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
+		try {
+			conn.setAutoCommit(false);
+			int ret = -1;
+			for (Message m : msgs) {
+				m.setStatus("1");
+				ret = queryRunner.update(conn,
+						ReadProperties.read("sql", "updateStatus"),
+						m.getStatus(), m.getId());
+			}
+			if (ret > 0) {
+				conn.commit();
+				return true;
+			} else {
+				conn.rollback();
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 		return false;
 	}
 
