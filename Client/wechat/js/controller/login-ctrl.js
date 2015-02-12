@@ -8,7 +8,7 @@ weChatApp.controller('login-ctrl', ['$scope', '$timeout',
     $scope.login=function(){
     	
         loginServer.login().then(function(response){
-        	if(response="") {
+        	if(response=="") {
         		alert("Error username or psw");
         	} else {
         		appInfo.token = response;

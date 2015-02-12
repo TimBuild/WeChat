@@ -11,9 +11,15 @@ weChatApp.controller('contact-list-ctrl', ['$scope', '$timeout', "$stateParams",
     $scope.contacts = contactListService.getContacts();
     
     contactListService.getContactsFromServer().then(function(response){
-        for (var i=0; i < response.user.length; i++) {
-        	$scope.contacts.push(response.user[i]);
-        }
+    	console.log("联系人");
+    	if((response+"").indexOf("[") >0 && (response+"").indexOf("]")>0) {
+    		for (var i=0; i < response.user.length; i++) {
+            	$scope.contacts.push(response.user[i]);
+            }
+    	} else {
+    		$scope.contacts.push(response.user);
+    	}
+        
         console.log("联系人列表 " + $scope.contacts.length);
         if ($scope.contacts.length != 0) {
         	fileService.saveContact(userInfo.userId, response);
