@@ -70,18 +70,6 @@ public class UserService {
 			userid = String.valueOf(SystemUtil.generateUserId());
 		} while (userDao.checkIdUnique(userid));
 		
-		/*try {
-			String token = ApiHttpClient.getToken(
-							ReadProperties.read("configure", "appkey"), 
-							ReadProperties.read("configure", "appsecret"),
-							userid, username, "null", "json");
-			
-			JSONObject jsonObject = new JSONObject(token);
-			token = (String) jsonObject.get("token");
-			userDao.addUser(userid, username, password, token);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}*/
 		if(userDao.addUser(userid, username, password, UUID.randomUUID().toString())){
 			return userid;
 		} else {
@@ -299,6 +287,9 @@ public class UserService {
 			@PathParam("userid") String userid,
 			@QueryParam("targetid") String targetid
 			){
-		return messageDao.getMessages(targetid, userid);
+		List<Message> msgs = messageDao.getMessages(targetid, userid);
+		messageDao.changeStatus(msgs);
+		
+		return msgs;
 	}
 }
