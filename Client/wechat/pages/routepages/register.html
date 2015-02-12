@@ -1,4 +1,4 @@
-﻿<div class="header">
+<div class="header">
     <div class="back-icon" ng-click="backToLogin()"><i class="weChat-icon">&#xea40</i></div>
     <div class="content">Register</div>
 </div>
@@ -19,9 +19,14 @@
             </div>
         </fieldset>
         <fieldset id="reg-actions">
-            <input type="submit" class="login-action" id="commit" value="Commit">
+            <input type="submit" class="login-action" id="commit" value="Commit" ng-click="register()">
             <input type="reset" class="login-action" id="reset" value="Reset">
         </fieldset>
     </form>
+    
+    <div ng-if="registerCB">
+    	<div>Register success!</div>
+    	<div>{{registerNum}}</div>
+    </div>
 </div>
 

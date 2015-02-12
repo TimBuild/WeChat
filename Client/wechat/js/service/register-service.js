@@ -7,7 +7,7 @@ weChatApp.service('register-service', [
                     + psw).success(function(response) {
                     deferred.resolve(response);
                 }).error(function(response) {
-
+                	console.log("register error " + response);
                 });
             return deferred.promise;
         }
