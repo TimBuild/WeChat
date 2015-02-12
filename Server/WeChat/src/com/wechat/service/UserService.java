@@ -251,4 +251,15 @@ public class UserService {
 			return "false";
 		}
 	}
+	
+	@GET
+	@Path("/addMessage/{token}/{userid}")
+	@Produces({ MediaType.TEXT_PLAIN })
+	public String addMessage(@PathParam("token") String token,
+			@PathParam("userid") String userid,
+			@QueryParam("targetid") String targetid,
+			@QueryParam("content") String content
+			){
+		return "";
+	}
 }
