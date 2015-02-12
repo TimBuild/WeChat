@@ -3,4 +3,10 @@ weChatApp.controller('add-contact-ctrl', ['$scope', '$timeout', "$stateParams", 
         $scope.back=function(){
             $state.go('search-user');
         }
+
+        $scope.addToContact=function(){
+            addContactServer.addContactCheck($scope.anotherUserId).then(function(response){
+
+            });
+        }
 }]);
