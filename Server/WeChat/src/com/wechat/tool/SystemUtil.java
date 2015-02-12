@@ -21,24 +21,20 @@ public class SystemUtil {
 		String path = null;
 		try {
 			request.setCharacterEncoding("utf-8");
-			String saveFileName = null;
 			boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 			if (isMultipart) {
-				String savePath = request.getSession().getServletContext()
-						.getRealPath("/")
-						+ "upload/";
-				
-				String tempPath = request.getSession().getServletContext()
-						.getRealPath("/")
-						+ "upload/temp/";
+				String savePath = request.getSession().getServletContext().getRealPath("/") + "upload/";
+				String tempPath = request.getSession().getServletContext().getRealPath("/") + "upload/temp/";
 				File saveFile = new File(savePath);
 				File tempFile = new File(tempPath);
 				System.out.println(savePath);
 				System.out.println(tempPath);
-				if (!saveFile.isDirectory())
+				if (!saveFile.isDirectory()){
 					saveFile.mkdirs();
-				if (!tempFile.isDirectory())
+				}
+				if (!tempFile.isDirectory()){
 					tempFile.mkdirs();
+				}
 				DiskFileItemFactory factory = new DiskFileItemFactory();
 				factory.setSizeThreshold(1024 * 4);
 				factory.setRepository(tempFile);
@@ -51,7 +47,6 @@ public class SystemUtil {
 						String fileName = item.getName();
 						String fix = fileName.substring(fileName.lastIndexOf(".") + 1);
 						fileName = userId + "." + fix;
-						saveFileName = "/upload/" + fileName;
 						File file = new File(savePath + fileName);
 						item.write(file);
 						path = savePath + fileName;
