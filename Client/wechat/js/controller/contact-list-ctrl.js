@@ -7,11 +7,23 @@ weChatApp.controller('contact-list-ctrl', ['$scope', '$timeout', "$stateParams",
         bounce: false
     });
 
-
+    $scope.result={"noData":true};
     $scope.contacts = contactListService.getContacts();
     
+//    $scope.$watch("contacts",function(){
+//    	console.log("contact change "+ $scope.contacts.length);
+//    	if ($scope.contacts.length==0){
+//    		$scope.result.noData = true;
+//    	} else {
+//    		$scope.result.noData = false;
+//    	}
+//    });
+    
     contactListService.getContactsFromServer().then(function(response){
-    	console.log("联系人");
+    	if (response =="null" || response=="") {
+    		return ;
+    	}
+    	$scope.result.noData = false;
     	if((response+"").indexOf("[") >0 && (response+"").indexOf("]")>0) {
     		for (var i=0; i < response.user.length; i++) {
             	$scope.contacts.push(response.user[i]);
@@ -20,23 +32,33 @@ weChatApp.controller('contact-list-ctrl', ['$scope', '$timeout', "$stateParams",
     		$scope.contacts.push(response.user);
     	}
         
-        console.log("联系人列表 " + $scope.contacts.length);
         if ($scope.contacts.length != 0) {
         	fileService.saveContact(userInfo.userId, response);
         } else {
         	getContactsFromLocal();
         }
+     },function(){//reject
+    	 getContactsFromLocal();
      });
     
     /*从文件获取联系人*/
     var getContactsFromLocal = function(){
     	fileService.getContactFromLocal().then(function(response) {
-    		console.log("从本地获取联系人 " + response);
+    		var data = JSON.parse(response)["user"];
+    		if (data ==undefined || response ==""){
+    			return;
+    		}
+    		$scope.result.noData = false;
+     		if (data.length == undefined) {
+    			$scope.contacts.push(data);
+    		} else {
+    			for(var i = 0; i < data.length; i++) {
+        			$scope.contacts.push(data[i]);
+        		}
+    		}
     	});
     }
     
-    $scope.noData = function(){
-  	  return $scope.contacts.length ==0;
-    }
+   
    
 }]);
