@@ -260,9 +260,11 @@ public class UserService {
 			@QueryParam("targetid") String targetid,
 			@QueryParam("content") String content
 			){
+		
 		if( (SystemUtil.changeToken(token)).equals(userDao.getToken(userid))){
 			Message msg = new Message();
 			msg.setOwnerId(userid);
+			msg.setContactId(targetid);
 			msg.setContent(content);
 			msg.setTime(String.valueOf(new Date().getTime()));
 			msg.setStatus("0");
@@ -291,7 +293,6 @@ public class UserService {
 			@PathParam("userid") String userid,
 			@QueryParam("targetid") String targetid
 			){
-		
 		if( (SystemUtil.changeToken(token)).equals(userDao.getToken(userid)) ){
 			List<Message> msgs = messageDao.getMessages(targetid, userid);
 			messageDao.changeStatus(msgs);
