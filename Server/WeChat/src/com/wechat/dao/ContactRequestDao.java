@@ -10,5 +10,5 @@ public interface ContactRequestDao {
 	
 	public List<ContactRequest> getContactRequests(String targetId);
 	
-	public boolean changeStatus(String userId, String targetId);
+	public boolean changeStatus(String userId, String targetId, String status);
 }

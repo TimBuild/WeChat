@@ -13,7 +13,7 @@ public class ContactRequestDaoImpl implements ContactRequestDao {
 	}
 
 	@Override
-	public boolean changeStatus(String userId, String targetId) {
+	public boolean changeStatus(String userId, String targetId, String status) {
 		return false;
 	}
 

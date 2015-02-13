@@ -346,11 +346,12 @@ public class UserService {
 	@Produces({ MediaType.TEXT_PLAIN })
 	public String setContactRequestStatus(@PathParam("token") String token,
 			@PathParam("userid") String userid,
-			@QueryParam("targetid") String targetid
+			@QueryParam("targetid") String targetid,
+			@QueryParam("status") String status
 			){
 		if((SystemUtil.changeToken(token)).equals(userDao.getToken(userid))){
 
-			if(crDao.changeStatus(userid, targetid)){
+			if(crDao.changeStatus(userid, targetid, status)){
 				return "true";
 			} else {
 				return "false";
