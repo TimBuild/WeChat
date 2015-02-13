@@ -12,7 +12,7 @@ weChatApp.controller('search-user-ctrl', ['$scope', '$timeout', "$stateParams", 
                         alert("Sorry,the user doesn't exist");
                     }
                     else{
-                        $state.go('add-contact');
+                        $location.path("add-contact/"+response.userid+"/"+response.username);
                     }
                 })
             }
