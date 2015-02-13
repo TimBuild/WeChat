@@ -23,6 +23,10 @@ weChatApp.controller('chat-list-ctrl', ['$scope', '$timeout',
 				$scope.chats.push(history);
 		         
 		    } 
+			
+			$timeout(function(){
+				myScroll.refresh();
+			},100);
       });
       $scope.noData = function(){
     	  return $scope.chats.length ==0;

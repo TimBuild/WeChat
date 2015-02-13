@@ -52,6 +52,7 @@ weChatApp.controller('main-ctrl', ['$scope', '$timeout', "$stateParams",
     
 }]).filter("imgFilter", function () {
     var convert = function (icon) {
+    	console.log("icon " + icon +"  "+(icon == ""));
         if (icon == "" || icon ==undefined) {
             return "img/personPhoto.png";
         }
