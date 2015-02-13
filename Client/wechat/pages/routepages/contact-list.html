@@ -1,5 +1,8 @@
 <div id="contacts-div">
 	<div id="contact-list-wrapper">
+		<div class="no-data" ng-if="result.noData">
+    	 no datas
+    	</div>
 		<ul class="contact-list">
 			<li ng-repeat="contact in contacts"
 				ui-sref="contact-detail({userId:{{contact.userid}},name:'{{contact.username}}',icon:'{{contact.icon}}'})">

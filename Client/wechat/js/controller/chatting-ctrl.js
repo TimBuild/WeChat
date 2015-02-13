@@ -47,6 +47,8 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams",
         var msg = Message.newMsg(userInfo.userId, $scope.contact.targetId, $scope.msgContent);
         chattingService.addMsg($scope.contact,msg);
         myScroll.refresh();
+        myScroll.goToPage(0, $scope.messages.length, 100);
+        $scope.msgContent="";
     }
 
     $scope.back=function(){
@@ -55,22 +57,16 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams",
         $state.go('main.chat-list');
     }
     var loopMsg = function(){
-    	console.log("loop messsage");
     	chattingService.loopMsg($scope.contact.targetId).then(function(response){
-    		console.log("loop message before" + $scope.messages.length);
     		if (response == undefined) {
     			return ;
     		}
     		if (JSON.stringify(response).indexOf('[')>0 && JSON.stringify(response).indexOf(']')>0) {
     			for (var i = 0; i < response; i++) {
-//    				$timeout(function(){
-    					$scope.messages.push(response[i]);
-//    				});
+    				$scope.messages.push(response[i]);
     			}
     		} else {
-//    			$timeout(function(){
-					$scope.messages.push(response);
-//				});
+				$scope.messages.push(response);
     		}
     		$timeout(function(){
 	    		myScroll.refresh();

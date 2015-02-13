@@ -19,6 +19,7 @@ weChatApp.service('contact-list-service', [
 					deferred.resolve(response);
 				}).error(function(response) {
 					console.log("获取联系人失败 " + response);
+					 deferred.reject("error");  
 				});
 				return deferred.promise;
 			}
