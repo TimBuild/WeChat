@@ -234,7 +234,7 @@ weChatApp.service('file-service', ['$http',"appInfo","userInfo",'$q',
 					var sql = "select * from tb_"+userId +" where userId='"+history.userId+"'";
 					var sqlInsert = "insert into tb_" + userId +
 					" (userId, userName, icon, content) values('"+history.userId+"','"+
-					history.userName+"','"+"icon"+"','"+history.content+"')";
+					history.userName+"','"+history.icon+"','"+history.content+"')";
 					
 					var sqlUpdate = "update tb_"+userId+" set content='"+history.content+"' where userId='" + history.userId+"'";
 					
