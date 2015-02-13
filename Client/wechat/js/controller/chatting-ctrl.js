@@ -75,9 +75,9 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams",
     		$timeout(function(){
 	    		myScroll.refresh();
 	    		myScroll.goToPage(0, $scope.messages.length, 100);
-	    		chattingService.changeHistory($scope.contact,$scope.messages[$scope.messages.length]);//change chat history
+	    		chattingService.changeHistory($scope.contact,$scope.messages[$scope.messages.length-1]);//change chat history
 	    	},200);
-    		console.log("获得msg " + JSON.stringify($scope.messages,));
+    		console.log("获得msg " + JSON.stringify($scope.messages));
     	});
     }
     
