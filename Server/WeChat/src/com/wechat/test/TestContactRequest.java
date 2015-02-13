@@ -1,12 +1,9 @@
 package com.wechat.test;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 
 import com.wechat.dao.ContactRequestDao;
 import com.wechat.dao.impl.ContactRequestDaoImpl;
-import com.wechat.entity.ContactRequest;
 
 public class TestContactRequest {
 
