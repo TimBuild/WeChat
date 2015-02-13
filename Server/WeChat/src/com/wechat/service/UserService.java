@@ -181,7 +181,7 @@ public class UserService {
 			@PathParam("userid") String userid,
 			@QueryParam("id") String id){
 		if( (SystemUtil.changeToken(token)).equals(userDao.getToken(userid))){
-			User user = userDao.getUserById(userid);
+			User user = userDao.getUserById(id);
 			return user;
 		} else {
 			return null;
