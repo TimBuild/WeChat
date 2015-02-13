@@ -351,7 +351,11 @@ public class UserService {
 			){
 		if((SystemUtil.changeToken(token)).equals(userDao.getToken(userid))){
 
-			if(crDao.changeStatus(userid, targetid, status)){
+			if(crDao.changeStatus(targetid, userid, status)){
+				if("1".equals(status)){
+					contactDao.addContact(userid, targetid);
+					contactDao.addContact(targetid, userid);
+				}
 				return "true";
 			} else {
 				return "false";
