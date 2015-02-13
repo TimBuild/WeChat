@@ -11,16 +11,9 @@ weChatApp.service('chatting-service', ['$http',"appInfo","file-service","userInf
     }
 
     var addMsg = function (contact,msg) {
-        console.log("msg  " + msg.targetId);
         messages[msg.targetId].push(msg);
-        console.log(messages);
         
-        var history = {};
-        history.userId = contact.targetId;
-        history.userName = contact.targetName;
-        history.icon = contact.targetIcon;
-        history.content = msg.content;
-        fileService.addData(userInfo.userId, history);
+        changeHistory(contact,msg);
         
        // addMessage/[token]/[userid]?targetid=[targetid]&content=[content]
         var tempToken = appInfo.token.replace(/\//g, "__");
@@ -30,6 +23,15 @@ weChatApp.service('chatting-service', ['$http',"appInfo","file-service","userInf
 		}).error(function(response) {
 			console.log("发送消息失败 " + response);
 		});
+    }
+    
+    var changeHistory = function(contact,msg){
+    	var history = {};
+        history.userId = contact.targetId;
+        history.userName = contact.targetName;
+        history.icon = contact.targetIcon;
+        history.content = msg.content;
+        fileService.addData(userInfo.userId, history);
     }
 
 //    var getMsg = function (msgObj) {
@@ -86,16 +88,16 @@ weChatApp.service('chatting-service', ['$http',"appInfo","file-service","userInf
     
     var loopMsg = function(targetId){
     	//http://[ip]:8080/WeChat/rest/UserService/getMessages/[token]/[userid]?targetid=[targetid]
-//    	var deferred = $q.defer();
-//    	var tempToken = appInfo.token.replace(/\//g, "__");
-//    	$http.get(appInfo.basicUrl + "getMessages/" + tempToken + "/"
-//				+ userInfo.userId+"?targetid="+targetId).success(function(response) {
-//			console.log("获得信息成功 " + response);
-//			deferred.resolve(response);
-//		}).error(function(response) {
-//			console.log("获得信息失败 " + response);
-//		});
-//    	return deferred.promise;
+    	var deferred = $q.defer();
+    	var tempToken = appInfo.token.replace(/\//g, "__");
+    	$http.get(appInfo.basicUrl + "getMessages/" + tempToken + "/"
+				+ userInfo.userId+"?targetid="+targetId).success(function(response) {
+			console.log("获得信息成功 " + response.message);
+			deferred.resolve(response.message);
+		}).error(function(response) {
+			console.log("获得信息失败 " + response);
+		});
+    	return deferred.promise;
     }
 
     return {
@@ -104,7 +106,8 @@ weChatApp.service('chatting-service', ['$http',"appInfo","file-service","userInf
         addMsg:addMsg,
         createLogDir:createLogDir,
         createLog:createLog,
-        getLog:getLog
+        getLog:getLog,
+        changeHistory:changeHistory
     }
 
 }]);
