@@ -26,8 +26,8 @@ public class MessageDaoImpl implements MessageDao {
 			conn.setAutoCommit(false);
 			int ret = -1;
 			ret = queryRunner.update(conn,
-					ReadProperties.read("sql", "addMessage"), msg.getOwnerId(),
-					msg.getContactId(), msg.getContent(), msg.getTime(),
+					ReadProperties.read("sql", "addMessage"), msg.getUserId(),
+					msg.getTargetId(), msg.getContent(), msg.getDate(),
 					msg.getStatus());
 			if (ret > 0) {
 				conn.commit();

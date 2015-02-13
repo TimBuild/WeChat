@@ -147,8 +147,10 @@ public class UserDaoImpl implements UserDao {
 			user = queryRunner.query(conn,
 					ReadProperties.read("sql", "getUserByUserId"),
 					new BeanHandler<>(User.class), userId);
-			user.setPassword(null);
-			user.setToken(null);
+			if(user!=null){
+				user.setPassword(null);
+				user.setToken(null);
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();

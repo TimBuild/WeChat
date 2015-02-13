@@ -5,29 +5,28 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Message {
 	private int id;
-	private String ownerId;
-	private String contactId;
+	private String userId;
+	private String targetId;
 	private String content;
-	private String time;
+	private String date;
 	private String status;
-	
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getOwnerId() {
-		return ownerId;
+	public String getUserId() {
+		return userId;
 	}
-	public void setOwnerId(String ownerId) {
-		this.ownerId = ownerId;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
-	public String getContactId() {
-		return contactId;
+	public String getTargetId() {
+		return targetId;
 	}
-	public void setContactId(String contactId) {
-		this.contactId = contactId;
+	public void setTargetId(String targetId) {
+		this.targetId = targetId;
 	}
 	public String getContent() {
 		return content;
@@ -35,11 +34,11 @@ public class Message {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public String getTime() {
-		return time;
+	public String getDate() {
+		return date;
 	}
-	public void setTime(String time) {
-		this.time = time;
+	public void setDate(String date) {
+		this.date = date;
 	}
 	public String getStatus() {
 		return status;
