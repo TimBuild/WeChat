@@ -29,23 +29,7 @@
     color: #B3C780;
     padding-top: 4px;
 }
-.userInfo{
-    position: absolute;
-    top:60px;
-    width:100%;
-    text-align: center;
-}
-#add-contact{
-    width: 100%;
-}
-#addToContact{
-    border: 1px solid #B3C780;
-    width: 60%;
-    text-align: center;
-    margin: 0 auto;
-    height: 40px;
-    margin-top: 20px;
-    font-size: 20px;
-    color: #B3C780;
-    padding-top: 4px;
+
+.hideDiv{
+    visibility: hidden;
 }

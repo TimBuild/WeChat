@@ -5,7 +5,7 @@ weChatApp.value('appInfo', {
 });
 
 weChatApp.value('userInfo', {
-    "userId": "",
+    "userId": "19096902",
     "icon":"",
-    "psw":""
+    "psw":"123"
 });

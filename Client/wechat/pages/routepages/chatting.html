@@ -1,11 +1,11 @@
-﻿<div id="chatting-div">
+<div id="chatting-div">
     <div class="header">
         <div class="back-icon" ng-click="back()"><i class="weChat-icon">&#xea40</i></div>
         <div class="content">{{contact.targetName}}</div>
     </div>
     <div id="chatting-wrapper">
         <div class="chating-list">
-            <div class="xiaoxiti-item" ng-repeat="msg in messages">
+            <div class="xiaoxiti-item" ng-repeat="msg in messages track by $index">
                 <div class="xiaoxiti" ng-class='{"msg-right":!isCurrentUser(msg),"msg-left":isCurrentUser(msg)}'>
                     <div class="user-img">
                         <img ng-src="{{contact.targetIcon | imgFilter}}" ng-if="!isCurrentUser(msg)" />

@@ -6,6 +6,5 @@ var Message = {
         msg.content = content;
         msg.date = new Date().getTime();
         return msg;
-
     }
 }

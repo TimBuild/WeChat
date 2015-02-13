@@ -26,9 +26,6 @@ weChatApp.controller('contact-list-ctrl', ['$scope', '$timeout', "$stateParams",
         } else {
         	getContactsFromLocal();
         }
-        
-        
-        
      });
     
     /*从文件获取联系人*/
@@ -37,9 +34,9 @@ weChatApp.controller('contact-list-ctrl', ['$scope', '$timeout', "$stateParams",
     		console.log("从本地获取联系人 " + response);
     	});
     }
+    
     $scope.noData = function(){
   	  return $scope.contacts.length ==0;
     }
-
    
 }]);

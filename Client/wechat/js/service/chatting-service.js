@@ -1,47 +1,12 @@
-weChatApp.service('chatting-service', ['$http',"appInfo","file-service","userInfo", 
-                    function ($http,appInfo, fileService,userInfo) {
+weChatApp.service('chatting-service', ['$http',"appInfo","file-service","userInfo", "$q",
+                    function ($http,appInfo, fileService,userInfo,$q) {
 
     var messages = {};
 
-    //init rongyu
-    RongIMClient.init(appInfo.appKey);
-
-    // connect to rongyun server
-    RongIMClient.connect(appInfo.token, {
-        onSuccess: function (userId) {
-            // connect success
-            console.log("Login successfully." + userId);
-        },
-        onError: function (errorCode) {
-            // connect error
-            console.log("Login failed." + errorCode.getValue(), "error message: " + errorCode.getMessage());
-        }
-    });
-
-    // listen connection status
-    RongIMClient.setConnectionStatusListener({
-        onChanged: function (status) {
-            // status:RongIMClient.ConnectionStatusListener.ConnectionStatus object
-            console.log("status " + status.getValue(), status.getMessage());
-        }
-    });
-
-    // message listener
-    RongIMClient.getInstance().setOnReceiveMessageListener({
-        // message receiver
-        onReceived: function (message) {
-            // message:RongIMClient.RongIMMessage sub class
-            // process data       
-            console.log(message.getSenderUserId() + ":" +message.getContent());
-            
-        }
-    });
-
     var getAllMsg = function (id) {
-        if (messages[id] == undefined) {
+//        if (messages[id] == undefined) {
             messages[id] = [];
-        }
-        console.log(messages[id] + id);
+//        }
         return messages[id];
     }
 
@@ -56,49 +21,90 @@ weChatApp.service('chatting-service', ['$http',"appInfo","file-service","userInf
         history.icon = contact.targetIcon;
         history.content = msg.content;
         fileService.addData(userInfo.userId, history);
+        
+       // addMessage/[token]/[userid]?targetid=[targetid]&content=[content]
+        var tempToken = appInfo.token.replace(/\//g, "__");
+        $http.get(appInfo.basicUrl + "addMessage/" + tempToken + "/"
+				+ userInfo.userId+"?targetid="+msg.targetId+"&content="+msg.content).success(function(response) {
+			console.log("发送消息 " + response);
+		}).error(function(response) {
+			console.log("发送消息失败 " + response);
+		});
     }
 
-    var sendMsg = function (msgObj) {
-    	console.log("content " + msgObj.content + "targetId " + msgObj.targetId);
-
-        //use RongIMClient.TextMessage.obtainmethod.see document
-        var msg = RongIMClient.TextMessage.obtain(msgObj.content);
-        var content = new RongIMClient.MessageContent(msg);
-        var conversationtype = RongIMClient.ConversationType.PRIVATE; // private chat
-        var targetId = msgObj.targetId; // Ŀ�� Id
-
-        RongIMClient.getInstance().sendMessage(conversationtype, targetId, content, null, {
-            // message send success
-            onSuccess: function () {
-                console.log("success");
-                
-            },
-            onError: function (errorCode) {
-                console.log("����ʧ��" + errorCode.getValue(), errorCode.getMessage());
-            }
-        });
-    }
+//    var getMsg = function (msgObj) {
+//    	//http://[ip]:8080/WeChat/rest/UserService/getMessages/[token]/[userid]?targetid=[targetid]
+//    	var deferred = $q.defer();
+//    	var tempToken = appInfo.token.replace(/\//g, "__");
+//    	$http.get(appInfo.basicUrl + "getMessages/" + tempToken + "/"
+//				+ userInfo.userId+"?targetid="+msgObj.targetId).success(function(response) {
+//			console.log("获得信息成功 " + response);
+//			deferred.resolve(response);
+//		}).error(function(response) {
+//			console.log("huo " + response);
+//		});
+//    	return deferred.promise;
+//    }
     
     var createLogDir = function(filePath){
     	fileService.createSubDir(filePath);
     }
     
     var getLog = function(userId, targetId , date){
+    	
+    	var deferred = $q.defer();
     	fileService.getLog(userId, targetId, date).then(function(response){
-    		console.log("message " + response);
+    		console.log("get log " + eval(response).length);
+    		var data =  eval(response);
+    		for (var i = 0; i < data.length; i++) {
+    			console.log(data[i]);
+    			messages[targetId].push(data[i]);
+    		}
+    		deferred.resolve(true);
+    		
     	});
+    	
+    	return deferred.promise;
     }
     
     var createLog = function(targetId){
-    	fileService.createLog(targetId,messages);
+    	var msg_today = [];
+    	var date = new Date();
+    	var startTime = parseInt(new Date(date.getFullYear(),date.getMonth(),date.getDate(),0,0,0).getTime());
+    	var endTime = parseInt(new Date(date.getFullYear(),date.getMonth(),date.getDate(),23,59,58).getTime());
+    	
+    	for (var i=0; i < messages[targetId].length; i++) {
+			
+			var today = parseInt(messages[targetId][i].date);
+			
+    		if (today > startTime && today < endTime) {
+    			msg_today.push(messages[targetId][i]);
+    		}
+    	}
+    	fileService.createLog(targetId,msg_today);
+    }
+    
+    var loopMsg = function(targetId){
+    	//http://[ip]:8080/WeChat/rest/UserService/getMessages/[token]/[userid]?targetid=[targetid]
+//    	var deferred = $q.defer();
+//    	var tempToken = appInfo.token.replace(/\//g, "__");
+//    	$http.get(appInfo.basicUrl + "getMessages/" + tempToken + "/"
+//				+ userInfo.userId+"?targetid="+targetId).success(function(response) {
+//			console.log("获得信息成功 " + response);
+//			deferred.resolve(response);
+//		}).error(function(response) {
+//			console.log("获得信息失败 " + response);
+//		});
+//    	return deferred.promise;
     }
 
     return {
         getAllMsg:getAllMsg,
-        sendMsg: sendMsg,
+        loopMsg:loopMsg,
         addMsg:addMsg,
         createLogDir:createLogDir,
-        createLog:createLog
+        createLog:createLog,
+        getLog:getLog
     }
 
 }]);

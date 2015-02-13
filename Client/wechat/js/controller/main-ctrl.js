@@ -20,7 +20,6 @@ weChatApp.controller('main-ctrl', ['$scope', '$timeout', "$stateParams",
             $timeout(function () {
                 $state.go($scope.urls[--urlIndex]);
             }, 100);
-            console.log("urlIndex------------->" + urlIndex);
 
         }
     }

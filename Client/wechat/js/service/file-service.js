@@ -84,10 +84,10 @@ weChatApp.service('file-service', ['$http',"appInfo","userInfo",'$q',
 
 				var date = new Date();
 				var fileName = date.getFullYear() + "_" + (date.getMonth() + 1)
-						+ "_" + date.getDay();
+						+ "_" + date.getDate();
 				var logPath = fileDirectory + "/" + targetId + "/"
-						+ fileName;
-
+						+ fileName+".txt";
+				console.log("create log " + logPath);
 				var onGetFileWin = function(fileEntry) {
 					fileEntry.createWriter(function(writer) {
 						writer.onwrite = function() {
@@ -103,7 +103,7 @@ weChatApp.service('file-service', ['$http',"appInfo","userInfo",'$q',
 					console.log("onGetFileFail ");
 				}
 				var onFSWin = function(fileSystem) {
-					fileSystem.root.getFile(filePath, {
+					fileSystem.root.getFile(logPath, {
 						create : true,
 						exclusive : false
 					}, onGetFileWin, onGetFileFail);
@@ -120,28 +120,36 @@ weChatApp.service('file-service', ['$http',"appInfo","userInfo",'$q',
 			 */
 			var getLog = function(userId, targetId, date) {
 				var fileName = date.getFullYear() + "_" + (date.getMonth() + 1)
-						+ "_" + date.getDay();
+						+ "_" + date.getDate()+".txt";
 				var logPath = fileDirectory + "/" + targetId + "/"
 						+ fileName;
+				console.log("get log path " + logPath);
 				var deferred = $q.defer();
+				
 				var gotFileEntry = function(fileEntry){
 					fileEntry.file(function(file){
-//						readAsText(file);
-					 var reader = new FileReader();
-				     reader.onloadend = function(evt) {
+						var reader = new FileReader();
+				        reader.onloadend = function(evt) {
 				            console.log("读取文本");
+				            console.log(evt.target.result);
 				            deferred.resolve(evt.target.result);
-				     };
-				     reader.readAsText(file);
+				        };
+				        reader.readAsText(file);
 					}, function(){
 						console.log("文件读取失败");
 					});
 				}
-
-				window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
-						gotFileEntry, function() {
-							console.log("fs fail ");
+				
+				var onFSWin = function(fileSystem){
+					fileSystem.root.getFile(logPath, null, gotFileEntry, function(){
+						console.log("文件获取失败");
 					});
+				}
+				
+				window.requestFileSystem(LocalFileSystem.PERSISTENT, 0,
+						onFSWin, function() {
+							console.log("fs fail ");
+						});
 				return deferred.promise;
 			}
 
