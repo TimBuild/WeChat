@@ -70,18 +70,6 @@ public class UserService {
 			userid = String.valueOf(SystemUtil.generateUserId());
 		} while (userDao.checkIdUnique(userid));
 		
-		/*try {
-			String token = ApiHttpClient.getToken(
-							ReadProperties.read("configure", "appkey"), 
-							ReadProperties.read("configure", "appsecret"),
-							userid, username, "null", "json");
-			
-			JSONObject jsonObject = new JSONObject(token);
-			token = (String) jsonObject.get("token");
-			userDao.addUser(userid, username, password, token);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}*/
 		if(userDao.addUser(userid, username, password, UUID.randomUUID().toString())){
 			return userid;
 		} else {
@@ -273,17 +261,23 @@ public class UserService {
 			@QueryParam("content") String content
 			){
 		
-		Message msg = new Message();
-		msg.setOwnerId(userid);
-		msg.setContent(content);
-		msg.setTime(String.valueOf(new Date().getTime()));
-		msg.setStatus("0");
-		
-		if(messageDao.addMessage(msg)){
-			return "true";
+		if( (SystemUtil.changeToken(token)).equals(userDao.getToken(userid))){
+			Message msg = new Message();
+			msg.setOwnerId(userid);
+			msg.setContactId(targetid);
+			msg.setContent(content);
+			msg.setTime(String.valueOf(new Date().getTime()));
+			msg.setStatus("0");
+			
+			if(messageDao.addMessage(msg)){
+				return "true";
+			} else {
+				return "false";
+			}
 		} else {
 			return "false";
 		}
+		
 	}
 	
 	/**
@@ -299,6 +293,14 @@ public class UserService {
 			@PathParam("userid") String userid,
 			@QueryParam("targetid") String targetid
 			){
-		return messageDao.getMessages(targetid, userid);
+		if( (SystemUtil.changeToken(token)).equals(userDao.getToken(userid)) ){
+			List<Message> msgs = messageDao.getMessages(targetid, userid);
+			messageDao.changeStatus(msgs);
+			return msgs;
+		} else {
+			return null;
+		}
+		
+		
 	}
 }

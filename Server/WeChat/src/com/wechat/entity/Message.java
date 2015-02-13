@@ -1,5 +1,8 @@
 package com.wechat.entity;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Message {
 	private int id;
 	private String ownerId;
@@ -7,6 +10,7 @@ public class Message {
 	private String content;
 	private String time;
 	private String status;
+	
 	public int getId() {
 		return id;
 	}
