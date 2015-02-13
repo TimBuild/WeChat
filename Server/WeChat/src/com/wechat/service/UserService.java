@@ -263,10 +263,10 @@ public class UserService {
 		
 		if( (SystemUtil.changeToken(token)).equals(userDao.getToken(userid))){
 			Message msg = new Message();
-			msg.setOwnerId(userid);
-			msg.setContactId(targetid);
+			msg.setUserId(userid);
+			msg.setTargetId(targetid);
 			msg.setContent(content);
-			msg.setTime(String.valueOf(new Date().getTime()));
+			msg.setDate(String.valueOf(new Date().getTime()));
 			msg.setStatus("0");
 			
 			if(messageDao.addMessage(msg)){
