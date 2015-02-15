@@ -1,11 +1,10 @@
-weChatApp.controller('current-user-ctrl', ['$scope', '$timeout','userInfo','current-user-service',
-                      function ($scope, $timeout, userInfo, currentUserService) {
+weChatApp.controller('current-user-ctrl', ['$scope', '$timeout','userInfo','current-user-service',"$state",
+                      function ($scope, $timeout, userInfo, currentUserService,$state) {
         $scope.userInfo = userInfo;
-        console.log("icon " + $scope.userInfo.icon);
+        $scope.number = 0;
         
         $scope.uploadIcon = function(){
         	currentUserService.uploadIcon().then(function(result){
-        		console.log("upload success" + JSON.stringify(result));
         		if (result.response != undefined) {
         			$scope.userInfo.icon = result.response;
         		}
@@ -24,6 +23,28 @@ weChatApp.controller('current-user-ctrl', ['$scope', '$timeout','userInfo','curr
     	        	console.log("获取信息失败");
     	        });
         	}
-        	
+        }
+        
+        $scope.requests = [];
+        var getRequest = function(){
+        	currentUserService.getRequest().then(function(response){
+        		console.log("获得请求成功");
+        		if(response != null) {
+        			if (response.contactRequest.length == undefined) {
+        				$scope.requests.push(response.contactRequest);
+        			} else {
+        				for (var i = 0; i < response.contactRequest.length; i++) {
+        					$scope.requests.push(response.contactRequest[i]);
+        				}
+        			}
+        		}
+        	},function(response){
+        		console.log("获得请求失败");
+        	});
+        }
+        getRequest();
+        
+        $scope.back = function(){
+        	$state.go("main.current-user");
         }
 }]);

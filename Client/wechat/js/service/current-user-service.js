@@ -9,7 +9,7 @@ weChatApp.service('current-user-service', [
     						+ userInfo.userId+"?id="+userInfo.userId).success(function(response) {
     			console.log("get user detail success" + response);
     			deferred.resolve(response);
-    		}).error(function(response) {
+    		}).error(function(error) {
     			console.log("get user detail " + error);
     			 deferred.reject("error");  
     		});
@@ -39,8 +39,6 @@ weChatApp.service('current-user-service', [
 		var uploadIcon = function(){
 			var deferred = $q.defer();
 		    navigator.camera.getPicture(function(imageURI){//get photo success
-//		    	var image = document.getElementById('originImg');
-//			    image.src = imageURI;
 			    uploadOrigin(imageURI,deferred);
 			    
 		    }, function(){//get photo error
@@ -50,8 +48,26 @@ weChatApp.service('current-user-service', [
 		    return deferred.promise;
 		}
 		
+		//get all request
+		var getRequest = function(){
+			//getContactRequests/{token}/{userid}
+			var deferred = $q.defer();
+			var tempToken = appInfo.token.replace(/\//g, "__");
+    		var deferred = $q.defer();
+    		$http.get(appInfo.basicUrl + "getContactRequests/" + tempToken + "/"
+    						+ userInfo.userId).success(function(response) {
+    			console.log("get request success" + response);
+    			deferred.resolve(response);
+    		}).error(function(error) {
+    			 console.log("get request error " + error);
+    			 deferred.reject("null");  
+    		});
+    		return deferred.promise;
+		}
+		
     	return {
     		getUserDetail:getUserDetail,
-    		uploadIcon:uploadIcon
+    		uploadIcon:uploadIcon,
+    		getRequest:getRequest
     	}
     } ]);
