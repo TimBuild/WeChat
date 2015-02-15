@@ -4,11 +4,15 @@ weChatApp.controller('current-user-ctrl', ['$scope', '$timeout','userInfo','curr
         console.log("icon " + $scope.userInfo.icon);
         
         $scope.uploadIcon = function(){
-        	currentUserService.uploadIcon().then(function(response){
-        		console.log("upload success");
+        	currentUserService.uploadIcon().then(function(result){
+        		console.log("upload success" + JSON.stringify(result));
+        		if (result.response != undefined) {
+        			$scope.userInfo.icon = result.response;
+        		}
+        		
         	},function(response){
-        		console.log("upload reject");
-        	})
+        		alert("Upload failed");
+        	});
         }
         
         var getUserDetail = function(){
