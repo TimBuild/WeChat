@@ -1,4 +1,5 @@
-weChatApp.service('chat-list-service', ['$http', "userInfo","file-service", function ($http,userInfo,fileService) {
+weChatApp.service('chat-list-service', ['$http', "userInfo","file-service","appInfo","$q",
+                            function ($http,userInfo,fileService,appInfo,$q) {
 
 
     var chats = [{ "icon": "", "userid": "12", "username": "aaa", "content":"hahahha" },
@@ -24,7 +25,23 @@ weChatApp.service('chat-list-service', ['$http', "userInfo","file-service", func
     	});
     }
 
+  ///queryUserById/{token}/{userid}"
+	var getUserDetail = function(){
+		var tempToken = appInfo.token.replace(/\//g, "__");
+		var deferred = $q.defer();
+		$http.get(appInfo.basicUrl + "queryUserById/" + tempToken + "/"
+						+ userInfo.userId+"?id="+userInfo.userId).success(function(response) {
+			console.log("get user detail success" + response);
+			deferred.resolve(response);
+		}).error(function(response) {
+			console.log("get user detail " + error);
+			 deferred.reject("error");  
+		});
+		return deferred.promise;
+	}
+	
     return {
+    	getUserDetail:getUserDetail,
         getChats: getChats,
         getHistory:getHistory
     }

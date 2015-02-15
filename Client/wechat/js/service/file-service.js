@@ -301,7 +301,7 @@ weChatApp.service('file-service', ['$http',"appInfo","userInfo",'$q',
 				}
 				weChatDB.db.transaction(populateDB, errorCB, successCB);
 			}
-
+			
 			return {
 				createRootDir : createRootDir,
 				saveContact : saveContact,

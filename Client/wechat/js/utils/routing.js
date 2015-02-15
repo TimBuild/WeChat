@@ -37,7 +37,8 @@ weChatApp.config(function ($stateProvider, $urlRouterProvider) {
             controller: 'add-contact-ctrl'
         }).state('main.current-user', {
             url: '/current-user',
-            templateUrl: 'pages/routepages/current-user.html'
+            templateUrl: 'pages/routepages/current-user.html',
+            controller:'current-user-ctrl'
         }).state('search-user', {
             url: '/search-user',
             templateUrl: 'pages/routepages/search-user.html',

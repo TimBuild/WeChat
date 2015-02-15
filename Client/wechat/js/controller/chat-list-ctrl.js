@@ -38,4 +38,12 @@ weChatApp.controller('chat-list-ctrl', [
 					myScroll.refresh();
 				}, 100);
 			});
+			
+			chatListService.getUserDetail().then(function(response){
+	        	userInfo.userName = response.username;
+	        	userInfo.icon = response.icon;
+	        	console.log("get icon " + userInfo.icon);
+	        },function(){
+	        	console.log("获取信息失败");
+	        });
 		} ]);
