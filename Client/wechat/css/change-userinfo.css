@@ -1,0 +1,30 @@
+#change-username{
+    position: absolute;
+    top:60px;
+    width:100%;
+    text-align: center;
+}
+#change-username #change{
+    border: 1px solid #B3C780;
+    width: 43%;
+    text-align: center;
+    margin: 0 auto;
+    height: 40px;
+    margin-top: 20px;
+    font-size: 20px;
+    color: #B3C780;
+    padding-top: 4px;
+}
+
+#change-username #username{
+    border: none;
+    border-bottom: 1px solid #B3C780;
+    width: 80%;
+}
+
+#change-password{
+    position: absolute;
+    top:60px;
+    width:80%;
+    margin-left:10%;
+}
