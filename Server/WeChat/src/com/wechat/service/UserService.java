@@ -17,12 +17,15 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import com.wechat.dao.ContactDao;
+import com.wechat.dao.ContactRequestDao;
 import com.wechat.dao.MessageDao;
 import com.wechat.dao.UserDao;
 import com.wechat.dao.impl.ContactDaoImpl;
+import com.wechat.dao.impl.ContactRequestDaoImpl;
 import com.wechat.dao.impl.MessageDaoImpl;
 import com.wechat.dao.impl.UserDaoImpl;
 import com.wechat.entity.Contact;
+import com.wechat.entity.ContactRequest;
 import com.wechat.entity.Message;
 import com.wechat.entity.User;
 import com.wechat.tool.SystemUtil;
@@ -33,6 +36,7 @@ public class UserService {
 	private UserDao userDao = new UserDaoImpl();
 	private ContactDao contactDao = new ContactDaoImpl();
 	private MessageDao messageDao = new MessageDaoImpl();
+	private ContactRequestDao crDao = new ContactRequestDaoImpl();
 	/**
 	 * user login
 	 * @param userid
@@ -300,7 +304,64 @@ public class UserService {
 		} else {
 			return null;
 		}
-		
-		
+	}
+	
+	@GET
+	@Path("/addContactRequest/{token}/{userid}")
+	@Produces({ MediaType.TEXT_PLAIN })
+	public String addContactRequest(@PathParam("token") String token,
+			@PathParam("userid") String userid,
+			@QueryParam("targetid") String targetid
+			){
+		if((SystemUtil.changeToken(token)).equals(userDao.getToken(userid))){
+			ContactRequest cr = new ContactRequest();
+			cr.setStatus("0");
+			cr.setUserId(userid);
+			cr.setTargetId(targetid);
+			if(crDao.addContactRequest(cr)){
+				return "true";
+			} else {
+				return "false";
+			}
+		} else {
+			return "false";
+		}
+	}
+	
+	@GET
+	@Path("/getContactRequests/{token}/{userid}")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public List<ContactRequest> getContactRequests(@PathParam("token") String token,
+			@PathParam("userid") String userid
+			){
+		if((SystemUtil.changeToken(token)).equals(userDao.getToken(userid))){
+			return crDao.getContactRequests(userid);
+		} else {
+			return null;
+		}
+	}
+	
+	@GET
+	@Path("/setContactRequestStatus/{token}/{userid}")
+	@Produces({ MediaType.TEXT_PLAIN })
+	public String setContactRequestStatus(@PathParam("token") String token,
+			@PathParam("userid") String userid,
+			@QueryParam("targetid") String targetid,
+			@QueryParam("status") String status
+			){
+		if((SystemUtil.changeToken(token)).equals(userDao.getToken(userid))){
+
+			if(crDao.changeStatus(targetid, userid, status)){
+				if("1".equals(status)){
+					contactDao.addContact(userid, targetid);
+					contactDao.addContact(targetid, userid);
+				}
+				return "true";
+			} else {
+				return "false";
+			}
+		} else {
+			return "false";
+		}
 	}
 }

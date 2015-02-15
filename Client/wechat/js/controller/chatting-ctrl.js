@@ -8,6 +8,15 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams",
         snap: true
     });
     
+    var loopInteraval = function(){
+    	if ($scope.isBack == false) {
+    		loopMsg();
+    		$timeout(function(){
+        		loopInteraval();
+        	},1000);
+    	}
+    }
+    
     $scope.isCurrentUser = function (msg) {
         return userInfo.userId == msg.userId;
     }
@@ -27,10 +36,13 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams",
     		console.log("获取log成功");
     		$timeout(function(){
         		myScroll.refresh();
+        		loopInteraval();
         	},500);
     		
     	});
     },500);
+    
+    
     
     var textarea = document.getElementById("msg-txt");
     textarea.addEventListener("input", inputListener, false);
@@ -58,21 +70,24 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams",
     }
     var loopMsg = function(){
     	chattingService.loopMsg($scope.contact.targetId).then(function(response){
-    		if (response == undefined) {
+    		if (response == undefined || response =="null") {
     			return ;
     		}
-    		if (JSON.stringify(response).indexOf('[')>0 && JSON.stringify(response).indexOf(']')>0) {
-    			for (var i = 0; i < response; i++) {
-    				$scope.messages.push(response[i]);
+    		if (response.message.length != undefined) {
+    			console.log("消息长度 " + response.message.length);
+    			for (var i = 0; i < response.message.length; i++) {
+    				$scope.messages.push(response.message[i]);
     			}
     		} else {
-				$scope.messages.push(response);
+				$scope.messages.push(response.message);
     		}
+    		
     		$timeout(function(){
 	    		myScroll.refresh();
 	    		myScroll.goToPage(0, $scope.messages.length, 100);
 	    		chattingService.changeHistory($scope.contact,$scope.messages[$scope.messages.length-1]);//change chat history
 	    	},200);
+    		
     		console.log("获得msg " + JSON.stringify($scope.messages));
     	});
     }
@@ -84,18 +99,6 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams",
 //    });
     
 //    var loopInterval = setInterval(loopMsg(),1000);
-    
-    var loopInteraval = function(){
-    	if ($scope.isBack == false) {
-    		loopMsg();
-    		$timeout(function(){
-        		loopInteraval();
-        	},1000);
-    	}
-    	
-    }
-    
-    loopInteraval();
     
     var insertTestMsg = function(){
     	var msg1 = Message.newMsg(userInfo.userId, $scope.contact.targetId, "aaaaaaaaaa");

@@ -24,7 +24,8 @@ weChatApp.controller('contact-list-ctrl', ['$scope', '$timeout', "$stateParams",
     		return ;
     	}
     	$scope.result.noData = false;
-    	if((response+"").indexOf("[") >0 && (response+"").indexOf("]")>0) {
+    	//(response+"").indexOf("[") >0 && (response+"").indexOf("]")>0
+    	if(response.user.length!=undefined) {
     		for (var i=0; i < response.user.length; i++) {
             	$scope.contacts.push(response.user[i]);
             }

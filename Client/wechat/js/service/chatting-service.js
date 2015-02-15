@@ -4,9 +4,7 @@ weChatApp.service('chatting-service', ['$http',"appInfo","file-service","userInf
     var messages = {};
 
     var getAllMsg = function (id) {
-//        if (messages[id] == undefined) {
-            messages[id] = [];
-//        }
+        messages[id] = [];
         return messages[id];
     }
 
@@ -33,20 +31,6 @@ weChatApp.service('chatting-service', ['$http',"appInfo","file-service","userInf
         history.content = msg.content;
         fileService.addData(userInfo.userId, history);
     }
-
-//    var getMsg = function (msgObj) {
-//    	//http://[ip]:8080/WeChat/rest/UserService/getMessages/[token]/[userid]?targetid=[targetid]
-//    	var deferred = $q.defer();
-//    	var tempToken = appInfo.token.replace(/\//g, "__");
-//    	$http.get(appInfo.basicUrl + "getMessages/" + tempToken + "/"
-//				+ userInfo.userId+"?targetid="+msgObj.targetId).success(function(response) {
-//			console.log("获得信息成功 " + response);
-//			deferred.resolve(response);
-//		}).error(function(response) {
-//			console.log("huo " + response);
-//		});
-//    	return deferred.promise;
-//    }
     
     var createLogDir = function(filePath){
     	fileService.createSubDir(filePath);
@@ -56,10 +40,8 @@ weChatApp.service('chatting-service', ['$http',"appInfo","file-service","userInf
     	
     	var deferred = $q.defer();
     	fileService.getLog(userId, targetId, date).then(function(response){
-    		console.log("get log " + eval(response).length);
     		var data =  eval(response);
     		for (var i = 0; i < data.length; i++) {
-    			console.log(data[i]);
     			messages[targetId].push(data[i]);
     		}
     		deferred.resolve(true);
@@ -92,8 +74,7 @@ weChatApp.service('chatting-service', ['$http',"appInfo","file-service","userInf
     	var tempToken = appInfo.token.replace(/\//g, "__");
     	$http.get(appInfo.basicUrl + "getMessages/" + tempToken + "/"
 				+ userInfo.userId+"?targetid="+targetId).success(function(response) {
-			console.log("获得信息成功 " + response.message);
-			deferred.resolve(response.message);
+			deferred.resolve(response);
 		}).error(function(response) {
 			console.log("获得信息失败 " + response);
 		});
