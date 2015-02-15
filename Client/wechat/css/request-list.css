@@ -1,0 +1,57 @@
+#request-div {
+	background: #EBEBEB;
+	position: absolute;
+	top: 40px;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+#request-list-wrapper {
+	position: absolute;
+	top: 20px;
+	bottom: 0px;
+	width: 100%;
+	overflow: hidden;
+}
+
+ul.request-list {
+	padding: 0px;
+	list-style-type: none;
+	background: white;
+}
+
+.request-list li {
+	padding: 0px 15px 0px 15px;
+	height: 55px;
+	line-height: 55px;
+}
+
+.request-list li:hover {
+	background: #F5F5F5;
+}
+
+.request-list li img {
+	width: 40px;
+	height: 40px;
+	margin-right: 10px;
+	background-image: url('../img/personPhoto.png');
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: center;
+}
+
+.request-list li span {
+	font-size: medium;
+}
+
+.no-data {
+	padding-left: 15px;
+	height: 60px;
+	position: relative;
+	padding-right: 15px;
+	background: white;
+	text-align: center;
+	font-size: 20px;
+	line-height: 60px;
+}

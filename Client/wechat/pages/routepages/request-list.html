@@ -1,0 +1,16 @@
+<div id="request-div">
+	<div class="header">
+		<div class="back-icon" ng-click="back()">
+			<i class="weChat-icon">&#xea40</i>
+		</div>
+		<div class="content">Request List</div>
+	</div>
+	<div id="request-list-wrapper">
+		<div class="no-data" ng-if="result.noData">no datas</div>
+		<ul class="request-list">
+			<li ng-repeat="request in requests"><img
+				ng-src="{{request.icon | imgFilter}}"><span>{{request.username}}</span>
+				<hr /></li>
+		</ul>
+	</div>
+</div>
