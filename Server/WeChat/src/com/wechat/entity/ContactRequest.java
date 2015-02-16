@@ -1,5 +1,8 @@
 package com.wechat.entity;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class ContactRequest {
 	private String id;
 	private String userId;

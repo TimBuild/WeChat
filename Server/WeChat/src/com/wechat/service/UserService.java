@@ -1,7 +1,10 @@
 package com.wechat.service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +31,7 @@ import com.wechat.entity.Contact;
 import com.wechat.entity.ContactRequest;
 import com.wechat.entity.Message;
 import com.wechat.entity.User;
+import com.wechat.entity.UserRelatedToCR;
 import com.wechat.tool.SystemUtil;
 
 @Path("/UserService")
@@ -105,7 +109,7 @@ public class UserService {
 			String changePath = SystemUtil.changePath(path, request);
 			if(path != null){
 				if(userDao.modifyUserIcon(userid, changePath)){
-					return "true";
+					return changePath;
 				} else {
 					return "false";
 				}
@@ -331,11 +335,21 @@ public class UserService {
 	@GET
 	@Path("/getContactRequests/{token}/{userid}")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public List<ContactRequest> getContactRequests(@PathParam("token") String token,
+	public List<UserRelatedToCR> getContactRequests(@PathParam("token") String token,
 			@PathParam("userid") String userid
 			){
+		List<UserRelatedToCR> urcrs = new ArrayList<UserRelatedToCR>();
 		if((SystemUtil.changeToken(token)).equals(userDao.getToken(userid))){
-			return crDao.getContactRequests(userid);
+			List<ContactRequest> lists = crDao.getContactRequests(userid);
+			UserRelatedToCR urcr;
+			for(ContactRequest cr : lists){
+				User  user = userDao.getUserById(cr.getUserId());
+				urcr = new UserRelatedToCR();
+				urcr.setUser(user);
+				urcr.setCr(cr);
+				urcrs.add(urcr);
+			}
+			return urcrs;
 		} else {
 			return null;
 		}
