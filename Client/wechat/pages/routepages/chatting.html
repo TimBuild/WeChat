@@ -3,8 +3,10 @@
         <div class="back-icon" ng-click="back()"><i class="weChat-icon">&#xea40</i></div>
         <div class="content">{{contact.targetName}}</div>
     </div>
+    <div class="div-more" ng-click="getMore()" ng-class="{empty:'empty'}">more messages</div>
     <div id="chatting-wrapper">
         <div class="chating-list">
+        	
             <div class="xiaoxiti-item" ng-repeat="msg in messages track by $index |orderBy:'date'">
                 <div class="xiaoxiti" ng-class='{"msg-right":isCurrentUser(msg),"msg-left":!isCurrentUser(msg)}'>
                     <div class="user-img">

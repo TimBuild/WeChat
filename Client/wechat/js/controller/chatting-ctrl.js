@@ -28,22 +28,56 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams",
     $scope.userInfo = userInfo;
     chattingService.createLogDir("wechat/"+userInfo.userId+"/"+$scope.contact.targetId);
     
+    $scope.index = 0;
+    
     $scope.isBack = false;
     $scope.messages = chattingService.getAllMsg($scope.contact.targetId);
-    
-    $timeout(function(){
-    	chattingService.getLog(userInfo.userId, $scope.contact.targetId , new Date()).then(function(response){
-    		console.log("获取log成功");
+    $scope.empty = true;
+    var files = [];
+    var getLogFiles = function(){
+    	chattingService.getFiles($scope.contact.targetId).then(function(response){
+    		files = response;
+    		if (files.length >0) {
+    			$scope.empty=false;
+    		}
+    		$scope.index = 0;
+    	},function(response){
+    		console.log("files error");
+    	});
+    }
+    getLogFiles();
+
+    var getLog = function(fileName){
+		chattingService.getLog( $scope.contact.targetId,fileName).then(function(response){
     		$timeout(function(){
         		myScroll.refresh();
         		loopInteraval();
-        	},500);
-    		
+        	},300);
     	});
-    },500);
+    }
     
+    $timeout(function(){
+    	if (files.length != 0) {//userInfo.userId, $scope.contact.targetId , new Date()
+    		console.log("get log index " + $scope.index);
+    		var filePath = files[$scope.index].substring(1,files[$scope.index].length);
+    		var today = new Date();
+    		if (filePath.indexOf(today.getFullYear()+"_"+(today.getMonth()+1)+"_"+today.getDay())>-1) {
+        		getLog(filePath);
+        		$scope.index ++;
+    		} 
+    	}
+    },300);
     
-    
+    $scope.getMore = function(){
+    	if (files.length > 1 && $scope.index <files.length) {
+    		var filePath = files[$scope.index].substring(1,files[$scope.index].length);
+        	getLog(filePath);
+        	$scope.index ++;
+    	} else {
+    		$scope.empty=false;
+    	}
+    	
+    }
     var textarea = document.getElementById("msg-txt");
     textarea.addEventListener("input", inputListener, false);
     function inputListener() {
@@ -77,7 +111,6 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams",
     			return ;
     		}
     		if (response.message.length != undefined) {
-    			console.log("消息长度 " + response.message.length);
     			for (var i = 0; i < response.message.length; i++) {
     				$scope.messages.push(response.message[i]);
     			}
@@ -91,26 +124,8 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams",
 	    		chattingService.changeHistory($scope.contact,$scope.messages[$scope.messages.length-1]);//change chat history
 	    	},200);
     		
-    		console.log("获得msg " + JSON.stringify($scope.messages));
     	});
     }
-    
-//    $scope.$watch("messages", function(newValue, oldValue){
-//    	$timeout(function(){
-//    		myScroll.refresh();
-//    	},500);
-//    });
-    
-//    var loopInterval = setInterval(loopMsg(),1000);
-    
-//    $scope.$on("back", function (event, message) {
-//    	console.log("back-press");
-//        if (message == "back-press") {
-//        	$scope.isBack = true;
-//        	chattingService.createLog($scope.contact.targetId);
-//        	$state.go('main.chat-list');
-//        }
-//    });
     
   //disable backbutton
     document.addEventListener("deviceready", onDeviceReady, false);
@@ -136,6 +151,11 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams",
     }
     
     
+//    $timeout(function(){
+//    	chattingService.getFiles($scope.contact.targetId);
+//    	 getLogFiles();
+//    },2000);
+   
 //    insertTestMsg();
     
 }]);

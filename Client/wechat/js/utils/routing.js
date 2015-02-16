@@ -47,14 +47,6 @@ weChatApp.config(function ($stateProvider, $urlRouterProvider) {
             url: '/request-list',
             templateUrl: 'pages/routepages/request-list.html',
             controller: 'current-user-ctrl'
-        }).state('change-username', {
-            url: '/change-username',
-            templateUrl: 'pages/routepages/change-username.html',
-            controller:'change-userInfo-ctrl'
-        }).state('change-password', {
-            url: '/change-password',
-            templateUrl: 'pages/routepages/change-password.html',
-            controller:'change-userInfo-ctrl'
         });
 
     $urlRouterProvider.otherwise("/login");
