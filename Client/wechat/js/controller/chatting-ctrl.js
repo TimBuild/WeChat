@@ -56,6 +56,9 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams",
     }
     
     $scope.send = function () {
+    	if ($scope.msgContent.trim()=="") {
+    		return ;
+    	}
         var msg = Message.newMsg(userInfo.userId, $scope.contact.targetId, $scope.msgContent);
         chattingService.addMsg($scope.contact,msg);
         myScroll.refresh();
@@ -100,6 +103,29 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams",
     
 //    var loopInterval = setInterval(loopMsg(),1000);
     
+//    $scope.$on("back", function (event, message) {
+//    	console.log("back-press");
+//        if (message == "back-press") {
+//        	$scope.isBack = true;
+//        	chattingService.createLog($scope.contact.targetId);
+//        	$state.go('main.chat-list');
+//        }
+//    });
+    
+  //disable backbutton
+    document.addEventListener("deviceready", onDeviceReady, false);
+
+    function onDeviceReady() {
+        document.addEventListener("backbutton", onBackKeyDown, false);
+    }
+
+    //press back btn
+    function onBackKeyDown() {
+    	$scope.isBack = true;
+    	chattingService.createLog($scope.contact.targetId);
+    	$state.go('main.chat-list');
+    }
+    
     var insertTestMsg = function(){
     	var msg1 = Message.newMsg(userInfo.userId, $scope.contact.targetId, "aaaaaaaaaa");
         chattingService.addMsg($scope.contact,msg1);
@@ -108,6 +134,7 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams",
         var msg3 = Message.newMsg(userInfo.userId, $scope.contact.targetId, "ccccccccccc");
         chattingService.addMsg($scope.contact,msg3);
     }
+    
     
 //    insertTestMsg();
     

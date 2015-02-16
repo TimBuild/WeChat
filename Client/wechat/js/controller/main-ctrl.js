@@ -49,6 +49,16 @@ weChatApp.controller('main-ctrl', ['$scope', '$timeout', "$stateParams",
     },2*1000);
     
     
+    document.addEventListener("deviceready", onDeviceReady, false);
+
+    function onDeviceReady() {
+        document.addEventListener("backbutton", onBackKeyDown, false);
+    }
+
+    //press back btn do nothing
+    function onBackKeyDown() {
+    	console.log("主 back");
+    }
     
 }]).filter("imgFilter", function () {
     var convert = function (icon) {

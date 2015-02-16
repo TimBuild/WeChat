@@ -27,10 +27,6 @@ ul.request-list {
 	line-height: 55px;
 }
 
-.request-list li:hover {
-	background: #F5F5F5;
-}
-
 .request-list li img {
 	width: 40px;
 	height: 40px;

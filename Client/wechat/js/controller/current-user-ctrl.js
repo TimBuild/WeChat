@@ -27,14 +27,15 @@ weChatApp.controller('current-user-ctrl', ['$scope', '$timeout','userInfo','curr
         
         $scope.requests = [];
         var getRequest = function(){
-        	currentUserService.getRequest().then(function(response){
+        	currentUserService.getRequest().then(function(result){
         		console.log("获得请求成功");
-        		if(response != null) {
-        			if (response.contactRequest.length == undefined) {
-        				$scope.requests.push(response.contactRequest);
+        		//0 未处理 ， 2拒绝， 1 同意
+        		if(result != null && result != undefined) {
+        			if (result.length == undefined) {
+        				$scope.requests.push(result);
         			} else {
-        				for (var i = 0; i < response.contactRequest.length; i++) {
-        					$scope.requests.push(response.contactRequest[i]);
+        				for (var i = 0; i < result.length; i++) {
+        					$scope.requests.push(result[i]);
         				}
         			}
         		}
@@ -46,5 +47,17 @@ weChatApp.controller('current-user-ctrl', ['$scope', '$timeout','userInfo','curr
         
         $scope.back = function(){
         	$state.go("main.current-user");
+        }
+        
+        $scope.changeStatus = function($index,userId, status){
+        	currentUserService.changeStatus(userId, status).then(function(response){
+        		if (response!="true") {
+        			alert("operation failure");
+        		} else {
+        			$scope.requests[$index].cr.status = status;
+        		}
+        	},function(response){
+        		alert("operation failure");
+        	});
         }
 }]);

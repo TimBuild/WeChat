@@ -56,8 +56,8 @@ weChatApp.service('current-user-service', [
     		var deferred = $q.defer();
     		$http.get(appInfo.basicUrl + "getContactRequests/" + tempToken + "/"
     						+ userInfo.userId).success(function(response) {
-    			console.log("get request success" + response);
-    			deferred.resolve(response);
+    			console.log("get request success" + response.userRelatedToCR);
+    			deferred.resolve(response.userRelatedToCR);
     		}).error(function(error) {
     			 console.log("get request error " + error);
     			 deferred.reject("null");  
@@ -65,9 +65,23 @@ weChatApp.service('current-user-service', [
     		return deferred.promise;
 		}
 		
+		var changeStatus = function(targetId, status){
+			///setContactRequestStatus/{token}/{userid}
+			var deferred = $q.defer();
+			var tempToken = appInfo.token.replace(/\//g, "__");
+    		var deferred = $q.defer();
+    		$http.get(appInfo.basicUrl + "setContactRequestStatus/" + tempToken + "/"
+    						+ userInfo.userId+"?targetid="+targetId+"&status="+status).success(function(response) {
+    			deferred.resolve(response);
+    		}).error(function(error) {
+    			 deferred.reject("false");  
+    		});
+    		return deferred.promise;
+		}
     	return {
     		getUserDetail:getUserDetail,
     		uploadIcon:uploadIcon,
-    		getRequest:getRequest
+    		getRequest:getRequest,
+    		changeStatus:changeStatus
     	}
     } ]);
