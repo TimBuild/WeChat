@@ -107,9 +107,11 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams",
     	        myScroll.goToPage(0, $scope.messages.length, 100);
     	        $scope.msgContent="";
     	        chattingService.changeHistory($scope.contact,$scope.messages[$scope.messages.length-1]);
+        	} else{
+        		alert("messsage send failure");
         	}
         },function(response){
-        	
+        	alert("messsage send failure");
         });
        
     }
