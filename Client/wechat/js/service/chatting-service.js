@@ -49,10 +49,16 @@ weChatApp.service('chatting-service', ['$http',"appInfo","file-service","userInf
 				for (var i = 0; i < messages[targetId].length; i++) {
 
 					var today = parseInt(messages[targetId][i].date);
+					console.log("startTime" + startTime);
+					console.log("today " + today);
+					console.log("endTime" + endTime);
+					console.log("**************************************");
 					if (today > startTime && today < endTime) {
+						
 						msg_today.push(messages[targetId][i]);
 					}
 				}
+				console.log("push " + JSON.stringify(msg_today));
 				fileService.createLog(targetId, msg_today);
 			}
 
@@ -90,6 +96,7 @@ weChatApp.service('chatting-service', ['$http',"appInfo","file-service","userInf
 					for (var i = data.length-1; i>=0 ; i--) {
 						messages[targetId].unshift(data[i]);
 					}
+					console.log("读取日志成功 " + JSON.stringify(messages[targetId]));
 					deferred.resolve(true);
 				});
 				return deferred.promise;

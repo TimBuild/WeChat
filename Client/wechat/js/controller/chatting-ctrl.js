@@ -37,10 +37,11 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams",
     var getLogFiles = function(){
     	chattingService.getFiles($scope.contact.targetId).then(function(response){
     		files = response;
+    		
     		if (files.length >0) {
+    			$scope.index = files.length-1;
     			$scope.empty=false;
     		}
-    		$scope.index = 0;
     	},function(response){
     		console.log("files error");
     	});
@@ -58,23 +59,25 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams",
     
     $timeout(function(){
     	if (files.length != 0) {//userInfo.userId, $scope.contact.targetId , new Date()
-    		console.log("get log index " + $scope.index);
     		var filePath = files[$scope.index].substring(1,files[$scope.index].length);
+    		console.log("get log file path " + filePath);
     		var today = new Date();
-    		if (filePath.indexOf(today.getFullYear()+"_"+(today.getMonth()+1)+"_"+today.getDay())>-1) {
+    		console.log("today " + (today.getFullYear()+"_"+(today.getMonth()+1)+"_"+today.getDate()));
+    		if (filePath.indexOf(today.getFullYear()+"_"+(today.getMonth()+1)+"_"+today.getDate())>-1) {
+    			console.log("today enter");
         		getLog(filePath);
-        		$scope.index ++;
+        		$scope.index --;
     		} 
     	}
     },300);
     
     $scope.getMore = function(){
-    	if (files.length > 1 && $scope.index <files.length) {
+    	if (files.length > 1 && $scope.index >=0) {
     		var filePath = files[$scope.index].substring(1,files[$scope.index].length);
         	getLog(filePath);
-        	$scope.index ++;
+        	$scope.index --;
     	} else {
-    		$scope.empty=false;
+    		$scope.empty=true;
     	}
     	
     }
@@ -102,6 +105,7 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams",
 
     $scope.back=function(){
     	$scope.isBack = true;
+    	console.log("messages " + JSON.stringify($scope.messages));
     	chattingService.createLog($scope.contact.targetId);
         $state.go('main.chat-list');
     }

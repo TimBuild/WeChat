@@ -56,7 +56,7 @@ weChatApp.service('file-service', [
 				var onGetFileWin = function(fileEntry) {
 					fileEntry.createWriter(function(writer) {
 						writer.onwrite = function() {
-							console.log("保存成功");
+							console.log("保存成功 " + content);
 						}
 						writer.write(content);
 					}, function() {
@@ -95,7 +95,7 @@ weChatApp.service('file-service', [
 				var onGetFileWin = function(fileEntry) {
 					fileEntry.createWriter(function(writer) {
 						writer.onwrite = function() {
-							console.log("日志保存成功");
+							console.log("日志保存成功 " + content);
 						}
 						writer.write(content);
 					}, function() {
