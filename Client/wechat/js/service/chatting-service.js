@@ -9,9 +9,7 @@ weChatApp.service('chatting-service', ['$http',"appInfo","file-service","userInf
 			}
 
 			var addMsg = function(contact, msg) {
-				messages[msg.targetId].push(msg);
-
-				changeHistory(contact, msg);
+				var deferred = $q.defer();
 
 				// addMessage/[token]/[userid]?targetid=[targetid]&content=[content]
 				var tempToken = appInfo.token.replace(/\//g, "__");
@@ -20,9 +18,16 @@ weChatApp.service('chatting-service', ['$http',"appInfo","file-service","userInf
 								+ "&content=" + msg.content).success(
 						function(response) {
 							console.log("发送消息 " + response);
+							if (response=="true") {
+								messages[msg.targetId].push(msg);
+								changeHistory(contact, msg);
+							}
+							deferred.resolve(response);
 						}).error(function(response) {
 					console.log("发送消息失败 " + response);
+					deferred.reject("false");
 				});
+				return deferred.promise;
 			}
 
 			var changeHistory = function(contact, msg) {
@@ -49,10 +54,6 @@ weChatApp.service('chatting-service', ['$http',"appInfo","file-service","userInf
 				for (var i = 0; i < messages[targetId].length; i++) {
 
 					var today = parseInt(messages[targetId][i].date);
-					console.log("startTime" + startTime);
-					console.log("today " + today);
-					console.log("endTime" + endTime);
-					console.log("**************************************");
 					if (today > startTime && today < endTime) {
 						
 						msg_today.push(messages[targetId][i]);
@@ -101,6 +102,20 @@ weChatApp.service('chatting-service', ['$http',"appInfo","file-service","userInf
 				});
 				return deferred.promise;
 			}
+			
+			var getContactDetail = function(targetId){
+				var tempToken = appInfo.token.replace(/\//g, "__");
+	    		var deferred = $q.defer();
+	    		$http.get(appInfo.basicUrl + "queryUserById/" + tempToken + "/"
+	    						+ userInfo.userId+"?id="+targetId).success(function(response) {
+	    			console.log("get user detail success" + response);
+	    			deferred.resolve(response);
+	    		}).error(function(error) {
+	    			console.log("get user detail " + error);
+	    			deferred.reject("error");  
+	    		});
+	    		return deferred.promise;
+			}
 			return {
 				getAllMsg : getAllMsg,
 				loopMsg : loopMsg,
@@ -109,6 +124,7 @@ weChatApp.service('chatting-service', ['$http',"appInfo","file-service","userInf
 				createLog : createLog,
 				changeHistory : changeHistory,
 				getFiles : getFiles,
-				getLog:getLog
+				getLog:getLog,
+				getContactDetail:getContactDetail
 			}
 		} ]);

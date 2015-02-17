@@ -27,7 +27,11 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams",
     $scope.contact.targetName = $stateParams.name;
     $scope.userInfo = userInfo;
     chattingService.createLogDir("wechat/"+userInfo.userId+"/"+$scope.contact.targetId);
-    
+    chattingService.getContactDetail($scope.contact.targetId).then(function(response){
+    	if(response.username != undefined) {
+    		$scope.contact.targetName = response.username;
+    	}
+    });
     $scope.index = 0;
     
     $scope.isBack = false;
@@ -97,10 +101,17 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams",
     		return ;
     	}
         var msg = Message.newMsg(userInfo.userId, $scope.contact.targetId, $scope.msgContent);
-        chattingService.addMsg($scope.contact,msg);
-        myScroll.refresh();
-        myScroll.goToPage(0, $scope.messages.length, 100);
-        $scope.msgContent="";
+        chattingService.addMsg($scope.contact,msg).then(function(response){
+        	if(response=="true") {
+        		myScroll.refresh();
+    	        myScroll.goToPage(0, $scope.messages.length, 100);
+    	        $scope.msgContent="";
+    	        chattingService.changeHistory($scope.contact,$scope.messages[$scope.messages.length-1]);
+        	}
+        },function(response){
+        	
+        });
+       
     }
 
     $scope.back=function(){
