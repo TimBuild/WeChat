@@ -24,6 +24,8 @@ public class TestContactRequest {
 //		System.out.println(contactDao.changeStatus("333", "222", "aa"));
 //		System.out.println(contactDao.getContactRequests("222"));
 		
+		System.out.println(contactDao.getContactRequest("444", "222").getId());
+		
 	}
 
 }

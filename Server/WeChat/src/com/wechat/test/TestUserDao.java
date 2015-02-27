@@ -19,9 +19,10 @@ public class TestUserDao {
 		// User getUserByIdUser = userDaoImpl.getUserById("11");
 		// List<User> user = userDaoImpl.getUsersByName("a");
 //		Boolean modifyUserPswFlag = userDaoImpl.modifyUserPsw("12", "aaa123");
-		String modifyUserPswFlag = userDaoImpl.getToken("19");
-		// Boolean modifyUserName = userDaoImpl.modifyUserName("12", "aa123");
-		System.out.println(modifyUserPswFlag);
+//		String modifyUserPswFlag = userDaoImpl.getToken("19");
+		 Boolean modifyUserName = userDaoImpl.modifyUserName("12", "aa123");
+		 System.out.println(modifyUserName);
+//		System.out.println(modifyUserPswFlag);
 		// fail("Not yet implemented");
 	}
 
