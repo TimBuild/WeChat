@@ -3,9 +3,9 @@
         <ul>
             <li><span class="pull-left">Head</span><img ng-src="{{userInfo.icon |imgFilter}}" class="head-img pull-right" ng-click="uploadIcon()"/></li>
             <hr />
-            <li><span class="pull-left">Name</span><span class="pull-right">{{userInfo.userName}}</span></li>
+            <li ui-sref="change-name"><span class="pull-left">Name</span><span class="pull-right" >{{userInfo.userName}}</span></li>
             <hr />
-            <li><span class="pull-left">Password</span><span class="pull-right">********</span></li>
+            <li ui-sref="change-pwd"><span class="pull-left">Password</span><span class="pull-right">********</span></li>
             <hr />
             <li ui-sref="request-list"><span class="pull-left">Request</span><span class="pull-right">{{requests.length}}</span></li>
             <hr />

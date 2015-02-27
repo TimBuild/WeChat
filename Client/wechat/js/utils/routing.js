@@ -37,19 +37,24 @@ weChatApp.config(function ($stateProvider, $urlRouterProvider) {
             controller: 'add-contact-ctrl'
         }).state('main.current-user', {
             url: '/current-user',
-            templateUrl: 'pages/routepages/current-user.html'
+            templateUrl: 'pages/routepages/current-user.html',
+            controller:'current-user-ctrl'
         }).state('search-user', {
             url: '/search-user',
             templateUrl: 'pages/routepages/search-user.html',
             controller: 'search-user-ctrl'
-        }).state('change-username', {
-            url: '/change-username',
-            templateUrl: 'pages/routepages/change-username.html',
-            controller:'change-username-ctrl'
-        }).state('change-password', {
-            url: '/change-password',
-            templateUrl: 'pages/routepages/change-password.html',
-            controller:'change-password-ctrl'
+        }).state('request-list', {
+            url: '/request-list',
+            templateUrl: 'pages/routepages/request-list.html',
+            controller: 'current-user-ctrl'
+        }).state('change-name', {
+            url: '/change-name',
+            templateUrl: 'pages/routepages/change-name.html',
+            controller: 'change-user-ctrl'
+        }).state('change-pwd', {
+            url: '/change-pwd',
+            templateUrl: 'pages/routepages/change-pwd.html',
+            controller: 'change-user-ctrl'
         });
 
     $urlRouterProvider.otherwise("/login");

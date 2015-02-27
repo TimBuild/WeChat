@@ -5,10 +5,10 @@ weChatApp.service('change-user-service', [
             var tempToken = appInfo.token.replace(/\//g, "__");
             var deferred = $q.defer();
             $http.get(appInfo.basicUrl + "modifyUserNameOrPsw/" + tempToken + "/"
-                    + userInfo.userId+"?username="+userInfo.userName+"&psw="+psw).success(function(response) {
+                    + userInfo.userId+"?psw="+psw).success(function(response) {
                     deferred.resolve(response);
                 }).error(function(response) {
-
+                	 deferred.reject("false");
                 });
             return deferred.promise;
         }
@@ -16,11 +16,12 @@ weChatApp.service('change-user-service', [
         var changeUsername=function(userName){
             var tempToken = appInfo.token.replace(/\//g, "__");
             var deferred = $q.defer();
+           
             $http.get(appInfo.basicUrl + "modifyUserNameOrPsw/" + tempToken + "/"
-                    + userInfo.userId+"?username="+userName+"&psw="+userInfo.psw).success(function(response) {
+                    + userInfo.userId+"?username="+userName).success(function(response) {
                     deferred.resolve(response);
                 }).error(function(response) {
-
+                	deferred.reject("false");
                 });
             return deferred.promise;
         }

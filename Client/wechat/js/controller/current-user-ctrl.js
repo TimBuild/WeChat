@@ -46,6 +46,7 @@ weChatApp.controller('current-user-ctrl', ['$scope', '$timeout','userInfo','curr
         getRequest();
         
         $scope.back = function(){
+        	console.log("back");
         	$state.go("main.current-user");
         }
         

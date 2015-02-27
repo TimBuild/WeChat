@@ -1,0 +1,16 @@
+<div>
+	<div class="header">
+		<div class="back-icon" ng-click="back()">
+			<i class="weChat-icon">&#xea40</i>
+		</div>
+		<div class="content">Change Password</div>
+	</div>
+	<div class="change-form">
+		<!-- <input type="text" placeholder="new password" />  -->
+		<div class="user-info">
+            <input id="password" type="password" placeholder="new password" required ng-model="user.psw">
+        </div>
+		<input type="button" class="btn btn-primary" style="width: 100%; margin-top: 20px;" value="change" ng-click="changePassword()"/>
+	</div>
+
+</div>
