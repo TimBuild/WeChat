@@ -2,9 +2,7 @@ package com.wechat.service;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -148,7 +146,7 @@ public class UserService {
 	 * @param contactId
 	 * @return
 	 */
-	@GET
+	/*@GET
 	@Path("/addContact/{token}/{userid}")
 	@Produces(value = MediaType.TEXT_PLAIN)
 	public String addContact(
@@ -173,7 +171,7 @@ public class UserService {
 		} else {
 			return "false";
 		}
-	}
+	}*/
 	
 	/**
 	 * query user by id
@@ -318,15 +316,21 @@ public class UserService {
 			@QueryParam("targetid") String targetid
 			){
 		if((SystemUtil.changeToken(token)).equals(userDao.getToken(userid))){
-			ContactRequest cr = new ContactRequest();
-			cr.setStatus("0");
-			cr.setUserId(userid);
-			cr.setTargetId(targetid);
-			if(crDao.addContactRequest(cr)){
-				return "true";
+			if(contactDao.getContact(userid, targetid) == null){
+				
+				ContactRequest cr = new ContactRequest();
+				cr.setStatus("0");
+				cr.setUserId(userid);
+				cr.setTargetId(targetid);
+				if(crDao.addContactRequest(cr)){
+					return "true";
+				} else {
+					return "false";
+				}
 			} else {
-				return "false";
+				return "exist";
 			}
+			
 		} else {
 			return "false";
 		}
@@ -355,6 +359,13 @@ public class UserService {
 		}
 	}
 	
+	/**
+	 * @param token
+	 * @param userid
+	 * @param targetid
+	 * @param status
+	 * @return
+	 */
 	@GET
 	@Path("/setContactRequestStatus/{token}/{userid}")
 	@Produces({ MediaType.TEXT_PLAIN })

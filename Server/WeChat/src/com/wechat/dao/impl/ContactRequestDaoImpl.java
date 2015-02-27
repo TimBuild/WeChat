@@ -112,4 +112,10 @@ public class ContactRequestDaoImpl implements ContactRequestDao {
 		return crs;
 	}
 
+	@Override
+	public ContactRequest getContactRequest(String userId, String targetId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
