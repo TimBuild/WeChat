@@ -317,15 +317,19 @@ public class UserService {
 			){
 		if((SystemUtil.changeToken(token)).equals(userDao.getToken(userid))){
 			if(contactDao.getContact(userid, targetid) == null){
-				
-				ContactRequest cr = new ContactRequest();
-				cr.setStatus("0");
-				cr.setUserId(userid);
-				cr.setTargetId(targetid);
-				if(crDao.addContactRequest(cr)){
-					return "true";
+				ContactRequest cr = crDao.getContactRequest(userid, targetid);
+				if(cr != null && "0".equals(cr.getStatus())){
+					return "sent";
 				} else {
-					return "false";
+					ContactRequest cr2 = new ContactRequest();
+					cr2.setStatus("0");
+					cr2.setUserId(userid);
+					cr2.setTargetId(targetid);
+					if(crDao.addContactRequest(cr2)){
+						return "true";
+					} else {
+						return "false";
+					}
 				}
 			} else {
 				return "exist";
