@@ -8,10 +8,9 @@ weChatApp.service('search-user-service', [
                 + userInfo.userId+"?id="+id);
             $http.get(appInfo.basicUrl + "queryUserById/" + tempToken + "/"
                     + userInfo.userId+"?id="+id).success(function(response) {
-                    console.log("response="+response);
                     deferred.resolve(response);
                 }).error(function(response) {
-                    console.log("response="+response+"查询失败")
+                    deferred.reject("false");
                 });
             return deferred.promise;
         }

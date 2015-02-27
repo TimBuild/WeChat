@@ -4,8 +4,8 @@ weChatApp.service('add-contact-service', [
         var addContactCheck = function(contactId) {
             var tempToken = appInfo.token.replace(/\//g, "__");
             var deferred = $q.defer();
-            $http.get(appInfo.basicUrl + "addContact/" + tempToken + "/"
-                    + userInfo.userId+"?contactId="+contactId).success(function(response) {
+            $http.get(appInfo.basicUrl + "addContactRequest/" + tempToken + "/"
+                    + userInfo.userId+"?targetid="+contactId).success(function(response) {
                     deferred.resolve(response);
                 }).error(function(response) {
 
@@ -16,5 +16,4 @@ weChatApp.service('add-contact-service', [
         return {
             addContactCheck:addContactCheck
         }
-
     } ]);

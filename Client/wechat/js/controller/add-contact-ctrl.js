@@ -10,6 +10,15 @@ weChatApp.controller('add-contact-ctrl', ['$scope', '$timeout', "$stateParams", 
         $scope.addToContact=function(){
             addContactServer.addContactCheck($stateParams.userId).then(function(response){
                 console.log("addContact----"+response);
+                if ("sent"==response) {
+                	alert("Already send");
+                } else if (response=="exist"){
+                	alert("Already in your contacts list");
+                } else if (response=="true"){
+                	alert("Request success");
+                } else {
+                	alert("Request failure");
+                }
             });
         }
     }]);
