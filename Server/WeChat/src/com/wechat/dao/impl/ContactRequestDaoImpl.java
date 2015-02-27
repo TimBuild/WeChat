@@ -5,11 +5,13 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import com.wechat.dao.ContactRequestDao;
 import com.wechat.entity.ContactRequest;
 import com.wechat.entity.Message;
+import com.wechat.entity.User;
 import com.wechat.tool.C3P0DBConnectionPool;
 import com.wechat.tool.ReadProperties;
 
@@ -110,6 +112,29 @@ public class ContactRequestDaoImpl implements ContactRequestDao {
 			}
 		}
 		return crs;
+	}
+
+	@Override
+	public ContactRequest getContactRequest(String userId, String targetId) {
+		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
+		ContactRequest contact = null;
+		try {
+			contact = queryRunner.query(conn, ReadProperties
+					.read("sql", "getContactRequest"), new BeanHandler<>(ContactRequest.class),
+					userId, targetId);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return contact;
 	}
 
 }
