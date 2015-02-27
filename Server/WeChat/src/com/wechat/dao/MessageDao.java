@@ -19,5 +19,9 @@ public interface MessageDao {
 	 */
 	public List<Message> getMessages(String ownerId, String contactId);
 	
+	/**
+	 * @param msgs
+	 * @return
+	 */
 	public boolean changeStatus(List<Message> msgs);
 }
