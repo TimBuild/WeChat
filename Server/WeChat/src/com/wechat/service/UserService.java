@@ -318,7 +318,7 @@ public class UserService {
 		if((SystemUtil.changeToken(token)).equals(userDao.getToken(userid))){
 			if(contactDao.getContact(userid, targetid) == null){
 				ContactRequest cr = crDao.getContactRequest(userid, targetid);
-				if(cr != null && "0".equals(cr.getStatus())){
+				if(cr != null){
 					return "sent";
 				} else {
 					ContactRequest cr2 = new ContactRequest();
