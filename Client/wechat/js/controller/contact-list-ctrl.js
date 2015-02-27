@@ -10,15 +10,6 @@ weChatApp.controller('contact-list-ctrl', ['$scope', '$timeout', "$stateParams",
     $scope.result={"noData":true};
     $scope.contacts = contactListService.getContacts();
     
-//    $scope.$watch("contacts",function(){
-//    	console.log("contact change "+ $scope.contacts.length);
-//    	if ($scope.contacts.length==0){
-//    		$scope.result.noData = true;
-//    	} else {
-//    		$scope.result.noData = false;
-//    	}
-//    });
-    
     contactListService.getContactsFromServer().then(function(response){
     	if (response =="null" || response=="") {
     		return ;
@@ -60,6 +51,11 @@ weChatApp.controller('contact-list-ctrl', ['$scope', '$timeout', "$stateParams",
     	});
     }
     
-   
+    $scope.contactDetail= function($index){
+    	localStorage.username = $scope.contacts[$index].username;
+    	localStorage.userid=$scope.contacts[$index].userid;
+    	localStorage.icon=$scope.contacts[$index].icon;
+    	$location.path('/contact-detail');
+    }
    
 }]);

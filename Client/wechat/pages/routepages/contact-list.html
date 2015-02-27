@@ -4,8 +4,7 @@
     	 no datas
     	</div>
 		<ul class="contact-list">
-			<li ng-repeat="contact in contacts"
-				ui-sref="contact-detail({userId:{{contact.userid}},name:'{{contact.username}}',icon:'{{contact.icon}}'})">
+			<li ng-repeat="contact in contacts" ng-click="contactDetail($index)" >
 				<img ng-src="{{contact.icon | imgFilter}}"><span>{{contact.username}}</span>
 				<hr />
 			</li>
