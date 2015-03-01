@@ -13,9 +13,6 @@ weChatApp.controller('chat-list-ctrl', [
 				bounce : false
 			});
 
-			// $scope.chats = chatListService.getChats();
-			// chatListService.getHistory();
-			// fileService.clearTb(userInfo.userId);
 			$scope.result = {
 				"noData" : true
 			};
@@ -46,4 +43,12 @@ weChatApp.controller('chat-list-ctrl', [
 	        },function(){
 	        	console.log("获取信息失败");
 	        });
+			
+			$scope.chating = function($index){
+				localStorage.icon = $scope.chats[$index].icon;
+				localStorage.username = $scope.chats[$index].username;
+				localStorage.userid = $scope.chats[$index].userid;
+				$location.path('/chatting');
+			}
+			
 		} ]);

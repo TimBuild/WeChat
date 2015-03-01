@@ -48,7 +48,6 @@ weChatApp.controller('main-ctrl', ['$scope', '$timeout', "$stateParams",
     	fileService.createRootDir(userInfo.userId);//create dir wechat/userId
     },2*1000);
     
-    
     document.addEventListener("deviceready", onDeviceReady, false);
 
     function onDeviceReady() {
@@ -57,7 +56,11 @@ weChatApp.controller('main-ctrl', ['$scope', '$timeout', "$stateParams",
 
     //press back btn do nothing
     function onBackKeyDown() {
-    	console.log("主 back");
+    	console.log("主 back" + $location.path());
+    	if ($location.path().indexOf("main")>-1) {
+    		navigator.app.exitApp();
+    	}
+//    	navigator.app.exitApp();
     }
     
 }]).filter("imgFilter", function () {

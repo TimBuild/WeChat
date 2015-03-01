@@ -4,7 +4,7 @@
     	 no datas
     	</div>
         <div class="chat-list">
-            <div class="chat-item" ng-repeat="chat in chats track by $index" ui-sref="chatting({userId:{{chat.userid}},name:'{{chat.username}}',icon:'{{chat.icon}}'})">
+            <div class="chat-item" ng-repeat="chat in chats track by $index" ng-click="chating($index)">
                 <div class=" chat-head"><img src="{{chat.icon |imgFilter}}"></div>
                 <div class="chat-container">
                     <div class="user-name">{{chat.username}}</div>

@@ -22,9 +22,9 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams",
     }
     
     $scope.contact = {};
-    $scope.contact.targetIcon = $stateParams.icon;
-    $scope.contact.targetId = $stateParams.userId;
-    $scope.contact.targetName = $stateParams.name;
+    $scope.contact.targetIcon = localStorage.icon;
+    $scope.contact.targetId = localStorage.userid;
+    $scope.contact.targetName = localStorage.username;
     $scope.userInfo = userInfo;
     chattingService.createLogDir("wechat/"+userInfo.userId+"/"+$scope.contact.targetId);
     chattingService.getContactDetail($scope.contact.targetId).then(function(response){
@@ -54,25 +54,25 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams",
 
     var getLog = function(fileName){
 		chattingService.getLog( $scope.contact.targetId,fileName).then(function(response){
-    		$timeout(function(){
+			console.log("get log " + response);
+//    		$timeout(function(){
         		myScroll.refresh();
-        		loopInteraval();
-        	},300);
+//        		loopInteraval();
+//        	},300);
     	});
     }
     
-    $timeout(function(){
-    	if (files.length != 0) {//userInfo.userId, $scope.contact.targetId , new Date()
+    $timeout(function(){//get log today
+    	if (files.length != 0) {
     		var filePath = files[$scope.index].substring(1,files[$scope.index].length);
     		console.log("get log file path " + filePath);
     		var today = new Date();
-    		console.log("today " + (today.getFullYear()+"_"+(today.getMonth()+1)+"_"+today.getDate()));
     		if (filePath.indexOf(today.getFullYear()+"_"+(today.getMonth()+1)+"_"+today.getDate())>-1) {
-    			console.log("today enter");
         		getLog(filePath);
         		$scope.index --;
     		} 
     	}
+    	loopInteraval();
     },300);
     
     $scope.getMore = function(){
@@ -152,7 +152,9 @@ weChatApp.controller('chatting-ctrl', ['$scope', '$timeout', "$stateParams",
     }
 
     //press back btn
-    function onBackKeyDown() {
+    function onBackKeyDown(event) {
+    	event.stopPropagation();
+    	event.preventDefault();
     	$scope.isBack = true;
     	chattingService.createLog($scope.contact.targetId);
     	$state.go('main.chat-list');
