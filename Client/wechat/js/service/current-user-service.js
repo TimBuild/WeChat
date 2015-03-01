@@ -27,12 +27,12 @@ weChatApp.service('current-user-service', [
 			
 			var uri = encodeURI(appInfo.basicUrl+"uploadIcon/"+tempToken+"/"+userInfo.userId);
 			var ft = new FileTransfer();
-			ft.upload(imageURI, uri, function(response){
-				console.log("上传头像成功" + response);
-				deferred.resolve(response);
-			}, function(response){
-				console.log("上传头像失败" + response);
-				deferred.reject(response);
+			ft.upload(imageURI, uri, function(result){
+				console.log("上传头像成功" + result);
+				deferred.resolve(result.response);
+			}, function(result){
+				console.log("上传头像失败" + result);
+				deferred.resolve("false");
 			}, options);
 		}
 

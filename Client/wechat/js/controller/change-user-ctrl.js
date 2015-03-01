@@ -5,6 +5,7 @@ weChatApp.controller('change-user-ctrl', ['$scope', '$timeout',
               $location,$state,changeUserServer,userInfo,appInfo) {
         $scope.user={};
         $scope.user.name="";
+        $scope.user.psw="";
 
         $scope.back=function(){
             $state.go('main.current-user');
@@ -34,7 +35,7 @@ weChatApp.controller('change-user-ctrl', ['$scope', '$timeout',
 
         $scope.changePassword=function(){
             if($scope.user.psw.trim()==""){
-                alert("Please input all fields");
+                alert("Please input new password");
             }else{
             	changeUserServer.changePassword($scope.user.psw).then(function(response){
                     if (response=="true") {

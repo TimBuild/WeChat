@@ -34,7 +34,7 @@ weChatApp.service('chat-list-service', ['$http', "userInfo","file-service","appI
 			console.log("get user detail success" + response);
 			deferred.resolve(response);
 		}).error(function(response) {
-			console.log("get user detail " + error);
+			console.log("get user detail " + response);
 			 deferred.reject("error");  
 		});
 		return deferred.promise;
