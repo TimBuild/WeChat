@@ -309,13 +309,19 @@ public class UserService {
 		}
 	}
 	
+	/**
+	 * @param token
+	 * @param userid
+	 * @return
+	 */
 	@GET
-	@Path("/getMessageCounts/{token}/{userid}")
-	public List<MessageCount> getMessageCounts(@PathParam("token") String token,
+	@Path("/getMessageCount/{token}/{userid}")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public List<MessageCount> getMessageCount(@PathParam("token") String token,
 			@PathParam("userid") String userid
 			){
 		if( (SystemUtil.changeToken(token)).equals(userDao.getToken(userid)) ){
-			return null;
+			return messageDao.getMessageCount(userid);
 		} else {
 			return null;
 		}
