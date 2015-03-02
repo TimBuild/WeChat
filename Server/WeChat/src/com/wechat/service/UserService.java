@@ -28,6 +28,7 @@ import com.wechat.dao.impl.UserDaoImpl;
 import com.wechat.entity.Contact;
 import com.wechat.entity.ContactRequest;
 import com.wechat.entity.Message;
+import com.wechat.entity.MessageCount;
 import com.wechat.entity.User;
 import com.wechat.entity.UserRelatedToCR;
 import com.wechat.tool.SystemUtil;
@@ -303,6 +304,18 @@ public class UserService {
 			List<Message> msgs = messageDao.getMessages(targetid, userid);
 			messageDao.changeStatus(msgs);
 			return msgs;
+		} else {
+			return null;
+		}
+	}
+	
+	@GET
+	@Path("/getMessageCounts/{token}/{userid}")
+	public List<MessageCount> getMessageCounts(@PathParam("token") String token,
+			@PathParam("userid") String userid
+			){
+		if( (SystemUtil.changeToken(token)).equals(userDao.getToken(userid)) ){
+			return null;
 		} else {
 			return null;
 		}
