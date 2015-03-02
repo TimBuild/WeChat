@@ -1,5 +1,8 @@
 package com.wechat.entity;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class MessageRelatedToUser {
 
 	private MessageCount msgCount;
