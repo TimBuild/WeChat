@@ -64,4 +64,8 @@ weChatApp.controller('current-user-ctrl', ['$scope', '$timeout','userInfo','curr
         		alert("operation failure");
         	});
         }
+        
+        $scope.exit = function(){
+        	navigator.app.exitApp();
+        }
 }]);

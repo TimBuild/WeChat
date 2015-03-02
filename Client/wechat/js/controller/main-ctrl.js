@@ -60,7 +60,6 @@ weChatApp.controller('main-ctrl', ['$scope', '$timeout', "$stateParams",
     	if ($location.path().indexOf("main")>-1) {
     		navigator.app.exitApp();
     	}
-//    	navigator.app.exitApp();
     }
     
 }]).filter("imgFilter", function () {

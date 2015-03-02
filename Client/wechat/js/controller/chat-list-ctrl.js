@@ -51,6 +51,7 @@ weChatApp.controller('chat-list-ctrl', [
 				for (var i = 0; i < $scope.chats.length; i++) {
 					if (history.userid == $scope.chats[i].userid) {
 						$scope.chats[i].count = history.count;
+						$scope.chats[i].icon = history.icon;
 						exist = true;
 						break;
 					}
