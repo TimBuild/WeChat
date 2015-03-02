@@ -117,8 +117,27 @@ public class MessageDaoImpl implements MessageDao {
 	}
 
 	@Override
-	public List<MessageCount> getMessageCount(String contactId) {
-		return null;
+	public List<MessageCount> getMessageCount(String targetid) {
+		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
+		List<MessageCount> messageCount = null;
+		try {
+
+			messageCount = queryRunner.query(conn,
+					ReadProperties.read("sql", "getMessageCount"),
+					new BeanListHandler<>(MessageCount.class), targetid);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return messageCount;
 	}
 
 }

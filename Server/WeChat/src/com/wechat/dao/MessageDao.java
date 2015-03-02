@@ -30,5 +30,5 @@ public interface MessageDao {
 	 * @param contactId
 	 * @return
 	 */
-	public List<MessageCount> getMessageCount(String contactId);
+	public List<MessageCount> getMessageCount(String targetid);
 }
