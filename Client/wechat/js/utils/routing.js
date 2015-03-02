@@ -32,7 +32,7 @@ weChatApp.config(function ($stateProvider, $urlRouterProvider) {
             templateUrl: 'pages/routepages/chatting.html',
             controller: 'chatting-ctrl'
         }).state('add-contact', {
-            url: '/add-contact/{userId}/{name}',
+            url: '/add-contact',
             templateUrl: 'pages/routepages/add-contact.html',
             controller: 'add-contact-ctrl'
         }).state('main.current-user', {

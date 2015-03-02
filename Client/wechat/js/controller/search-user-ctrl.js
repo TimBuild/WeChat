@@ -11,7 +11,10 @@ weChatApp.controller('search-user-ctrl', ['$scope', '$timeout', "$stateParams", 
                     if(response==""){
                         alert("Sorry, user doesn't exist");
                     }else{
-                        $location.path("add-contact/"+response.userid+"/"+response.username);
+                    	localStorage.searchId = response.userid;
+                    	localStorage.searchName = response.username;
+                    	localStorage.searchIcon = response.icon;
+                        $location.path("add-contact");
                     }
                 },function(response){
                 	alert("Search failure");

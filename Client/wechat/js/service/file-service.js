@@ -244,8 +244,9 @@ weChatApp.service('file-service', [
 							+ history.icon + "','" + history.content + "')";
 
 					var sqlUpdate = "update tb_" + userId + " set content='"
-							+ history.content + "', userName='"+history.userName+"' where userId='"
+							+ history.content + "', userName='"+history.userName+"', icon='"+history.icon+"' where userId='"
 							+ history.userId + "'";
+					console.log("update " + sqlUpdate);
 
 					tx.executeSql(sql, [], function(tx, result) {
 						var len = result.rows.length;

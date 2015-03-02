@@ -11,6 +11,7 @@ weChatApp.service('login-service', [
                     deferred.resolve(response);
                 }).error(function(response) {
                 	console.log("登录失败 " + response);
+                	deferred.reject(response);
                 });
             return deferred.promise;
         }

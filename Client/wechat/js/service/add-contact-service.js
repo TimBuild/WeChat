@@ -13,6 +13,7 @@ weChatApp.service('add-contact-service', [
             return deferred.promise;
         }
 
+        
         return {
             addContactCheck:addContactCheck
         }

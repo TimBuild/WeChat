@@ -24,6 +24,9 @@ weChatApp.controller('register-ctrl', ['$scope', '$timeout', "$stateParams", "$l
                         console.log("result " + response);
                         $scope.registerCB=true;
                         $scope.registerNum=response;
+                        $scope.user.username="";
+                        $scope.user.psw="";
+                        $scope.user.conPsw="";
                     });
                 }
             }

@@ -5,10 +5,12 @@ weChatApp.controller('add-contact-ctrl', ['$scope', '$timeout', "$stateParams", 
         }
 
 //        console.log($stateParams.name);
-        $scope.username=$stateParams.name;
+        $scope.username=localStorage.searchName;
+        $scope.userId = localStorage.searchId;
+        $scope.icon = localStorage.searchIcon;
 
         $scope.addToContact=function(){
-            addContactServer.addContactCheck($stateParams.userId).then(function(response){
+            addContactServer.addContactCheck($scope.userId).then(function(response){
                 console.log("addContact----"+response);
                 if ("sent"==response) {
                 	alert("Already send");

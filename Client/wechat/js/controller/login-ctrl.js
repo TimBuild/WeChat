@@ -17,6 +17,8 @@ weChatApp.controller('login-ctrl', ['$scope', '$timeout',
                         appInfo.token = response;
                         $state.go('main.chat-list');
                     }
+                },function(response){
+                	alert("Login failed");
                 })
             }
         };
