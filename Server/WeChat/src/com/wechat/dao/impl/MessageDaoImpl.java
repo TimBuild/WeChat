@@ -10,6 +10,7 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 
 import com.wechat.dao.MessageDao;
 import com.wechat.entity.Message;
+import com.wechat.entity.MessageCount;
 import com.wechat.entity.User;
 import com.wechat.tool.C3P0DBConnectionPool;
 import com.wechat.tool.ReadProperties;
@@ -113,6 +114,30 @@ public class MessageDaoImpl implements MessageDao {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public List<MessageCount> getMessageCount(String targetid) {
+		Connection conn = (Connection) C3P0DBConnectionPool.getConnection();
+		List<MessageCount> messageCount = null;
+		try {
+
+			messageCount = queryRunner.query(conn,
+					ReadProperties.read("sql", "getMessageCount"),
+					new BeanListHandler<>(MessageCount.class), targetid);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return messageCount;
 	}
 
 }

@@ -28,6 +28,8 @@ import com.wechat.dao.impl.UserDaoImpl;
 import com.wechat.entity.Contact;
 import com.wechat.entity.ContactRequest;
 import com.wechat.entity.Message;
+import com.wechat.entity.MessageCount;
+import com.wechat.entity.MessageRelatedToUser;
 import com.wechat.entity.User;
 import com.wechat.entity.UserRelatedToCR;
 import com.wechat.tool.SystemUtil;
@@ -303,6 +305,33 @@ public class UserService {
 			List<Message> msgs = messageDao.getMessages(targetid, userid);
 			messageDao.changeStatus(msgs);
 			return msgs;
+		} else {
+			return null;
+		}
+	}
+	
+	/**
+	 * @param token
+	 * @param userid
+	 * @return
+	 */
+	@GET
+	@Path("/getMessageCount/{token}/{userid}")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public List<MessageRelatedToUser> getMessageCount(@PathParam("token") String token,
+			@PathParam("userid") String userid
+			){
+		if( (SystemUtil.changeToken(token)).equals(userDao.getToken(userid)) ){
+			List<MessageCount> list = messageDao.getMessageCount(userid);
+			List<MessageRelatedToUser> msgRTUsers = new ArrayList<>();
+			for(MessageCount msgCount: list){
+				MessageRelatedToUser msgRTUser = new MessageRelatedToUser();
+				User user = userDao.getUserById(msgCount.getUserId());
+				msgRTUser.setMsgCount(msgCount);
+				msgRTUser.setUser(user);
+				msgRTUsers.add(msgRTUser);
+			}
+			return msgRTUsers;
 		} else {
 			return null;
 		}
